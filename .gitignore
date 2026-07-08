@@ -1,0 +1,18 @@
+# macOS
+.DS_Store
+._*
+.Spotlight-V100
+.Trashes
+
+# 編輯器
+.vscode/
+.idea/
+*.swp
+
+# 暫存
+*.tmp
+*.log
+~$*.docx
+
+# CV 原始檔：留在本機，不進版控（含個人資料與 Word 修訂記錄）
+*.docx
