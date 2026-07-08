@@ -351,8 +351,32 @@ em { font-family: var(--news); font-style: italic; }
 .split.rev { grid-template-columns: 1fr 300px; }
 .split.rev .col-photo { order: 2; }
 .split.lead { margin-bottom: clamp(2.5rem, 4.5vw, 4rem); }
-/* 研究／教學頁移除佔位拱形照片後的單欄前言：維持易讀行寬，不撐滿版面 */
+/* 研究頁移除佔位拱形照片後的單欄前言：維持易讀行寬，不撐滿版面 */
 .lead-solo { max-width: 860px; margin-bottom: clamp(2.5rem, 4.5vw, 4rem); }
+
+/* 教學頁前言：左側橫幅課堂合照 ＋ 右側文字（圓角矩形，非拱形） */
+.teach-lead {
+  display: grid;
+  grid-template-columns: minmax(320px, 46%) 1fr;
+  gap: clamp(28px, 4vw, 48px);
+  align-items: center;
+  margin-bottom: clamp(2.5rem, 4.5vw, 4rem);
+}
+.teach-lead .photo {
+  border-radius: 16px;
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+  box-shadow: 0 22px 54px -30px rgba(120, 80, 40, .55);
+}
+.teach-lead .photo img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  filter: sepia(.16) saturate(1.05);   /* 輕暖調，呼應全站色系 */
+}
+@media (max-width: 900px) {
+  .teach-lead { grid-template-columns: 1fr; }
+  .teach-lead .photo { max-width: 520px; }
+}
 
 .photo-frame {
   position: relative;
