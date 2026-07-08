@@ -271,10 +271,14 @@ a { color: inherit; }
   object-fit: cover;
   position: relative; z-index: 1;
 }
-/* 人像照是橫幅，裁成 4:5 直式時人會被切偏。
-   把裁切焦點移到人臉所在的水平位置（約全寬的 38%）。
-   換照片時調這個百分比即可。 */
-#about .photo-frame img { object-position: 38% center; }
+/* 人像照是 3:2 橫幅。相框比它窄（桌機 4:5、手機 16:11），
+   所以 cover 只會左右裁切，不會切到頭頂。
+
+   人臉在原圖約 38% 寬處。但 object-position 的語意是
+   「影像的 X% 點對齊容器的 X% 點」，所以直接填 38% 會讓人偏左。
+   要讓人落在框寬 46% 附近，解 (0.46 - 0.38r)/(1-r)，r = 影像/容器寬比 ≈ 1.88，
+   得 ≈ 0.28。換照片時重算或直接微調這個值。 */
+.photo-frame img[src*="portrait"] { object-position: 28% center; }
 .photo-veil {
   position: absolute; inset: 0; z-index: 2;
   background: linear-gradient(to top, rgba(18,17,16,.28), transparent 55%);
