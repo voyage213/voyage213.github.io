@@ -43,23 +43,36 @@
     });
   }
 
-  /* ---- 捲動揭露 ---- */
+  /* ---- 捲動揭露 ----
+     <head> 的 inline script 已加上 <html class="js">，並設了一條 2 秒的保險絲：
+     若這裡沒把 reveal-ready 標上去，它就把 .js 拿掉，內容恢復可見。
+     所以下面任何一條路徑都必須以 markReady() 收尾。 */
+  function markReady() { document.documentElement.classList.add('reveal-ready'); }
+
   var targets = document.querySelectorAll('.reveal');
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  if (reduced || !('IntersectionObserver' in window)) {
-    // 不做動畫就直接顯示，避免內容永遠隱形
-    targets.forEach(function (el) { el.classList.add('is-in'); });
-  } else {
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (!entry.isIntersecting) return;
-        entry.target.classList.add('is-in');
-        io.unobserve(entry.target);   // 只揭露一次
-      });
-    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+  try {
+    if (reduced || !('IntersectionObserver' in window)) {
+      // 不做動畫就直接顯示，避免內容永遠隱形
+      targets.forEach(function (el) { el.classList.add('is-in'); });
+      markReady();
+    } else {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('is-in');
+          io.unobserve(entry.target);   // 只揭露一次
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
 
-    targets.forEach(function (el) { io.observe(el); });
+      targets.forEach(function (el) { io.observe(el); });
+      markReady();
+    }
+  } catch (err) {
+    // observer 建不起來就全部顯示，寧可沒動畫也不要空白頁
+    targets.forEach(function (el) { el.classList.add('is-in'); });
+    document.documentElement.classList.remove('js');
   }
 
   /* ---- 首頁：捲動時同步 nav 目前區塊 ---- */

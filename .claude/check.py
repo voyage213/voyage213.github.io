@@ -12,6 +12,8 @@
   4. hreflang alternate 成對且正確
   5. <html lang> 與檔名相符
   6. 中文全形字之間沒有換行造成的多餘空格（Chrome 不會移除它）
+  7. 每頁都有 <head> 裡的 .js 啟動腳本，且 style.css 的 .reveal 隱藏規則
+     只在 .js 之下生效 —— 否則 JS 一失效整頁就變空白
 """
 
 import os
@@ -99,6 +101,28 @@ for page in PAGES:
         if hit:
             warnings.append(
                 f'{page}: 全形字之間有空白 {hit.group(0)!r} … {node.strip()[:26]!r}')
+
+    # 7. .js 啟動腳本必須存在，且必須在 <head> 裡（放 body 尾端會先閃一下內容）
+    head = re.search(r'<head>(.*?)</head>', html, re.S)
+    if not head or "classList.add('js')" not in head.group(1):
+        errors.append(f'{page}: <head> 缺少 .js 啟動腳本 —— JS 失效時整頁會空白')
+    if 'reveal-ready' not in html:
+        errors.append(f'{page}: 啟動腳本缺少 reveal-ready 保險絲')
+
+# 8. CSS：.reveal 的 opacity:0 必須被 .js 前綴包住
+css = open('assets/css/style.css', encoding='utf-8').read()
+for m in re.finditer(r'(^|\n)([^\n{}]*\.reveal[^\n{}]*)\{([^}]*)\}', css):
+    selector, block = m.group(2).strip(), m.group(3)
+    if 'opacity: 0' in block or 'opacity:0' in block:
+        if not selector.startswith('.js '):
+            errors.append(
+                f'style.css: `{selector}` 把 .reveal 設成 opacity:0 但沒有 .js 前綴 '
+                '—— JS 失效時內容會永遠隱形')
+
+# 9. main.js 必須在所有路徑標上 reveal-ready 或移除 .js
+js = open('assets/js/main.js', encoding='utf-8').read()
+if 'reveal-ready' not in js:
+    errors.append('main.js: 沒有標記 reveal-ready，保險絲會誤觸發（動畫永遠不會跑）')
 
 for w in warnings:
     print(f'  ⚠  {w}')

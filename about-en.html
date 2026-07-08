@@ -14,6 +14,21 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Serif+TC:wght@300;400;500;600&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="assets/css/style.css">
+
+<script>
+  /* 內容預設可見。加上 .js 後，style.css 的 `.js .reveal` 才會把內容藏起來，
+     交給 main.js 的 IntersectionObserver 逐段揭露。
+
+     保險絲：main.js 若沒載入、被擋、或執行出錯，就不會設 reveal-ready，
+     2 秒後這裡把 .js 拿掉 —— 內容立刻恢復可見，只是沒有動畫。
+     內容的可見性永遠不該取決於 JavaScript。 */
+  document.documentElement.classList.add('js');
+  setTimeout(function () {
+    if (!document.documentElement.classList.contains('reveal-ready')) {
+      document.documentElement.classList.remove('js');
+    }
+  }, 2000);
+</script>
 </head>
 <body>
 

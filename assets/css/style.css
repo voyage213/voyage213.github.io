@@ -542,20 +542,27 @@ footer .f-copy {
   border-top: 1px solid var(--hair-dark);
 }
 
-/* ---------- 捲動揭露 ---------- */
-.reveal {
+/* ---------- 捲動揭露 ----------
+   內容預設「可見」。只有 <html class="js"> 時才隱藏，改由 IntersectionObserver
+   揭露。這個 class 由 <head> 的 inline script 加上，並在 main.js 載入失敗時
+   自動移除。
+
+   絕對不要把 .reveal 的 opacity:0 寫在 .js 之外 —— 那會讓內容的可見性依賴
+   JavaScript。JS 被擋、載入失敗、或分頁在背景被瀏覽器凍結渲染時，
+   整頁就只剩標題（research.html 有 98% 的內容在 .reveal 裡）。 */
+.js .reveal {
   opacity: 0;
   transform: translateY(30px);
   transition: opacity 1s var(--ease-ink), transform 1s var(--ease-ink);
 }
-.reveal.is-in { opacity: 1; transform: none; }
-.reveal.d1 { transition-delay: .08s; }
-.reveal.d2 { transition-delay: .16s; }
-.reveal.d3 { transition-delay: .24s; }
-.reveal.d4 { transition-delay: .32s; }
+.js .reveal.is-in { opacity: 1; transform: none; }
+.js .reveal.d1 { transition-delay: .08s; }
+.js .reveal.d2 { transition-delay: .16s; }
+.js .reveal.d3 { transition-delay: .24s; }
+.js .reveal.d4 { transition-delay: .32s; }
 
 @media (prefers-reduced-motion: reduce) {
-  .reveal { opacity: 1; transform: none; transition: none; }
+  .js .reveal { opacity: 1; transform: none; transition: none; }
   .hero-eyebrow, .hero h1, .hero-sub, .scroll-cue { animation: none; }
   .scroll-cue .line { animation: none; }
 }
