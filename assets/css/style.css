@@ -269,6 +269,10 @@ a { color: inherit; }
   object-fit: cover;
   position: relative; z-index: 1;
 }
+/* 人像照是橫幅，裁成 4:5 直式時人會被切偏。
+   把裁切焦點移到人臉所在的水平位置（約全寬的 38%）。
+   換照片時調這個百分比即可。 */
+#about .photo-frame img { object-position: 38% center; }
 .photo-veil {
   position: absolute; inset: 0; z-index: 2;
   background: linear-gradient(to top, rgba(18,17,16,.28), transparent 55%);
@@ -494,6 +498,31 @@ footer .f-copy {
   .reveal { opacity: 1; transform: none; transition: none; }
   .hero-eyebrow, .hero h1, .hero-sub, .scroll-cue { animation: none; }
   .scroll-cue .line { animation: none; }
+}
+
+/* ============================================================
+   英文版：字距重設
+   全站的 letter-spacing 是為中文方塊字調的，直接套在拉丁字母上
+   會鬆得很難看。英文頁一律收緊。
+   ============================================================ */
+html[lang="en"] body        { line-height: 1.78; }
+html[lang="en"] .brand      { letter-spacing: .03em; }
+html[lang="en"] .hero h1    { letter-spacing: .005em; font-weight: 400; }
+html[lang="en"] .sec-title  { letter-spacing: .005em; }
+html[lang="en"] .page-head h1 { letter-spacing: .005em; }
+html[lang="en"] .f-name     { letter-spacing: .03em; }
+html[lang="en"] .timeline .what,
+html[lang="en"] .pub-list p { letter-spacing: 0; }
+
+/* 中文名字反過來當副標，需要中文字距 */
+html[lang="en"] .hero h1 .zh {
+  display: block;
+  font-size: clamp(.9rem, 1.8vw, 1.05rem);
+  font-weight: 400;
+  letter-spacing: .42em;
+  color: var(--ink-faint);
+  margin-top: 1.6rem;
+  padding-left: .42em;   /* 補償尾字距 */
 }
 
 /* ---------- 內頁頭部 ---------- */
