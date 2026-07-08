@@ -4,22 +4,39 @@
 
 ## 檔案
 
+六個頁面，中英文各一套，共 12 個 HTML 檔。
+
+| 中文 | 英文 | 內容 |
+|---|---|---|
+| `index.html` | `index-en.html` | 首頁：hero + 四張章節卡 + 數字帶 |
+| `about.html` | `about-en.html` | 學歷、學術任職、行政職務、研究經歷、獎項、學術服務 |
+| `research.html` | `research-en.html` | 研究興趣、研究計畫、研討會發表、受邀演講 |
+| `publications.html` | `publications-en.html` | 期刊論文、專書與專章 |
+| `teaching.html` | `teaching-en.html` | 三個機構的授課紀錄 |
+| `contact.html` | `contact-en.html` | 聯絡方式、學術聯繫 |
+
 ```
-index.html             中文首頁（Hero、簡介、研究、著作、教學、聯絡）
-publications.html      中文著作與經歷
-index-en.html          英文首頁
-publications-en.html   英文著作與經歷
 assets/css/style.css
 assets/js/main.js      導覽列、行動選單、捲動揭露
 images/                照片（放進去就會自動顯示，見 images/README.md）
 ```
 
-中英文頁面**成對切換**：中文著作頁的 `EN` 直接跳到英文著作頁，不是回首頁。新增頁面時記得同時更新 `.lang` 連結與 `<link rel="alternate" hreflang>`。
+中英文頁面**成對切換**：中文研究頁的 `EN` 直接跳到 `research-en.html`，不是回首頁。新增頁面時記得同時更新三處 —— nav 的 `.lang` 連結、`<link rel="alternate" hreflang>`、以及所有頁面 nav 裡的新項目。
+
+> 12 份手寫的 nav/footer 很容易改到不一致。改完跑一次檢查（見下方「驗證」）。
 
 ## 本機預覽
 
 ```bash
 python3 .claude/serve.py     # http://127.0.0.1:4173
+```
+
+## 驗證
+
+改完內容跑一次，會檢查連結、nav 一致性、語言切換配對、hreflang，以及中文的多餘空格：
+
+```bash
+python3 .claude/check.py
 ```
 
 不要用 `python3 -m http.server`：它的 `__main__` 會在 argparse 建立預設值時呼叫 `os.getcwd()`，在受限環境下會直接噴 `PermissionError`。

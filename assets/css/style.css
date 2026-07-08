@@ -247,6 +247,8 @@ a { color: inherit; }
   align-items: center;
 }
 .split.rev .col-photo { order: 2; }
+/* 內頁開頭的介紹分欄，跟底下的清單拉開距離 */
+.split.lead { margin-bottom: clamp(3.5rem, 6vw, 5.5rem); }
 
 .photo-frame {
   position: relative;
@@ -328,6 +330,7 @@ a { color: inherit; }
   border-bottom: 1px solid var(--ink-faint);
   transition: color .35s var(--ease), border-color .35s var(--ease), gap .35s var(--ease);
 }
+.page-cta { margin: 3rem 0 0; }
 .cta .arrow { transition: transform .4s var(--ease-ink); }
 .cta:hover { color: var(--clay); border-color: var(--clay); gap: 1.2em; }
 .cta:hover .arrow { transform: translateX(3px); }
@@ -384,6 +387,7 @@ a { color: inherit; }
 
 /* ---------- 著作清單 ---------- */
 .pub-group { margin-bottom: 4.5rem; }
+.contact-grid + .pub-group { margin-top: 4.5rem; }
 .pub-group > h3 {
   font-family: var(--sans);
   font-size: .74rem; font-weight: 500;
@@ -426,6 +430,58 @@ a { color: inherit; }
   margin-left: .5em;
   vertical-align: .12em;
   white-space: nowrap;
+}
+
+/* ---------- 課程（教學頁） ---------- */
+.course { margin-bottom: 3.6rem; }
+.course-head {
+  display: flex; align-items: baseline; gap: 1.2rem;
+  padding-bottom: 1rem; margin-bottom: 1.6rem;
+  border-bottom: 1px solid var(--hair);
+}
+.course-head h4 {
+  margin: 0;
+  font-weight: 500;
+  font-size: 1.32rem;
+  letter-spacing: .06em;
+}
+.course-when {
+  font-family: var(--sans);
+  font-size: .74rem; letter-spacing: .12em;
+  color: var(--clay);
+}
+.course .note {
+  margin: 0 0 1.4rem;
+  color: var(--ink-soft);
+  font-size: .96rem;
+}
+/* 課程本身沒有 hover 行為，別讓它看起來可點 */
+.course .tags li { background: transparent; }
+
+/* ---------- 定義列（簡介頁的職務等） ---------- */
+.facts { list-style: none; margin: 0; padding: 0; }
+.facts li {
+  display: grid;
+  grid-template-columns: 210px 1fr;
+  gap: 1.6rem;
+  padding-block: 1.35rem;
+  border-top: 1px solid var(--hair);
+}
+.facts li:last-child { border-bottom: 1px solid var(--hair); }
+.facts .k {
+  font-family: var(--sans);
+  font-size: .74rem; letter-spacing: .1em;
+  color: var(--clay);
+  padding-top: .4em;
+}
+.facts .v { margin: 0; font-size: 1rem; }
+.facts .v .sub {
+  display: block;
+  font-family: var(--sans);
+  font-size: .78rem;
+  color: var(--ink-faint);
+  margin-top: .35rem;
+  letter-spacing: .03em;
 }
 
 /* ---------- 聯絡 ---------- */
@@ -604,6 +660,11 @@ html[lang="en"] .hero h1 .zh {
 
   .pub-list li { grid-template-columns: 1fr; gap: .4rem; }
   .pub-list .yr { padding-top: 0; }
+
+  .facts li { grid-template-columns: 1fr; gap: .5rem; }
+  .facts .k { padding-top: 0; }
+
+  .course-head { flex-direction: column; gap: .4rem; }
 
   footer .wrap { flex-direction: column; align-items: flex-start; }
 }
