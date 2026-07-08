@@ -19,3 +19,10 @@
 
 # 照片原始檔（4MB 全解析度）：留在本機，網站用的是 images/portrait.jpg
 /照片三.jpg
+
+# 工作區雜項：設計交接檔、暫存收件匣、個人圖片 —— 一律不進版控
+/IMG_*.png
+/untitled/
+/*.zip
+/*.pdf
+.claude/inbox/

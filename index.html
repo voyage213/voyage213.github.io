@@ -15,7 +15,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Serif+TC:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;400;500;600;700&family=Noto+Sans+TC:wght@300;400;500;700&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="assets/css/style.css">
 
@@ -44,7 +44,7 @@
 <div class="veil" aria-hidden="true"></div>
 
 <nav id="nav">
-  <a class="brand" href="index.html">黃芳誼<span class="en">Fang-Yi Huang</span></a>
+  <a class="brand" href="index.html"><span>黃芳誼</span><span class="en">Fang-Yi Huang</span></a>
 
   <button class="nav-toggle" id="navToggle" aria-label="選單" aria-expanded="false" aria-controls="navlinks">
     <span></span><span></span><span></span>
@@ -62,165 +62,70 @@
 
 <main id="top">
 
-  <!-- ══════════ Hero ══════════ -->
-  <header class="hero" id="hero">
-    <div class="hero-inner">
-      <p class="hero-eyebrow">東吳大學社會學系 · Soochow University</p>
+  <!-- ══════════ Hero：左文右拱形照片 ══════════ -->
+  <header class="hero">
+    <div>
+      <p class="hero-eyebrow">東吳大學社會學系 · 副教授</p>
 
-      <h1>
-        黃芳誼
-        <span class="romaji">Huang Fang-Yi</span>
-      </h1>
+      <h1>制度如何在一個人的<br><span class="accent">一生裡留下痕跡</span></h1>
 
-      <p class="hero-sub">制度如何在一個人的一生裡留下痕跡——<br>在健康、在勞動、在退休之後仍然作用的那些痕跡。<span class="en">Medical sociology, social policy, gender, and old-age economic security.</span></p>
+      <p class="hero-sub">在健康、在勞動、在退休之後仍然作用的那些痕跡。醫療社會學、社會政策、性別研究與老年經濟安全。<span class="en">Medical sociology, social policy, gender, and old-age economic security.</span></p>
+
+      <div class="hero-cta">
+        <a class="btn solid" href="research.html">了解研究</a>
+        <a class="btn line" href="publications.html">著作清單</a>
+      </div>
     </div>
 
-    <div class="scroll-cue" aria-hidden="true">
-      <span>Scroll</span>
-      <span class="line"></span>
+    <div class="hero-photo">
+      <img src="images/portrait.jpg" alt="黃芳誼" onerror="this.remove()">
     </div>
   </header>
 
-  <!-- ══════════ 01 簡介 ══════════ -->
-  <section class="chapter">
-    <div class="wrap">
-      <div class="split reveal">
-
-        <div class="col-photo">
-          <div class="photo-frame">
-            <img src="images/portrait.jpg" alt="黃芳誼" onerror="this.remove()">
-            <div class="photo-veil"></div>
-          </div>
-        </div>
-
-        <div class="col-text">
-          <p class="sec-index">01 — 簡介</p>
-          <h2 class="sec-title">
-            關於我
-            <span class="en">About</span>
-          </h2>
-
-          <p class="sec-body">東吳大學社會學系副教授，兼任人事室主任與 AI 與社會研究中心執行長。美國佛羅里達大學社會學博士，曾任教於元智大學，並於中央研究院歐美研究所從事博士後研究。</p>
-
-          <a class="cta" href="about.html">
-            學經歷與職務 <span class="arrow">→</span>
-          </a>
-        </div>
-
-      </div>
-    </div>
+  <!-- ══════════ 三卡：研究 / 著作 / 教學 ══════════ -->
+  <section class="trio reveal">
+    <a href="research.html">
+      <div class="no">01 研究</div>
+      <h3>學術 Scholarship</h3>
+      <p>社會保障制度承接得住誰，又漏掉了誰。聚焦年金性別差距與老年經濟安全。</p>
+    </a>
+    <a href="publications.html">
+      <div class="no">02 著作</div>
+      <h3>出版 Publications</h3>
+      <p>見於 <em>Journal of Asian Public Policy</em>、<em>PLOS ONE</em>、<em>Vaccine</em> 及多本臺灣期刊。</p>
+    </a>
+    <a href="teaching.html">
+      <div class="no">03 教學</div>
+      <h3>課堂 Teaching</h3>
+      <p>自 2013 年授課，橫跨社會學理論、社會政策與 AI 相關課程。</p>
+    </a>
   </section>
 
-  <!-- ══════════ 02 研究 ══════════ -->
-  <section class="chapter">
-    <div class="wrap">
-      <div class="split rev reveal">
-
-        <div class="col-photo">
-          <div class="photo-frame">
-            <img src="images/research.jpg" alt="" onerror="this.remove()">
-            <div class="photo-veil"></div>
-          </div>
-        </div>
-
-        <div class="col-text">
-          <p class="sec-index">02 — 研究</p>
-          <h2 class="sec-title">
-            學術
-            <span class="en">Scholarship</span>
-          </h2>
-
-          <p class="sec-body">研究關切一個問題：當勞動市場改變、當人口老化，社會保障制度承接得住誰，又漏掉了誰。近年聚焦於東亞與歐美的年金性別差距，以及非典型勞動者的老年經濟安全。</p>
-
-          <a class="cta" href="research.html">
-            研究計畫與發表 <span class="arrow">→</span>
-          </a>
-        </div>
-
-      </div>
+  <!-- ══════════ 簡介 ＋ 數據 ══════════ -->
+  <section class="about-teaser">
+    <div class="reveal">
+      <p class="sec-index">簡介 · About</p>
+      <h2 class="sec-title">關於我</h2>
+      <p class="sec-body">東吳大學社會學系副教授，兼任人事室主任與 AI 與社會研究中心執行長。美國佛羅里達大學社會學博士，曾任教於元智大學，並於中央研究院歐美研究所從事博士後研究。</p>
+      <a class="more" href="about.html">學經歷與職務 →</a>
     </div>
-  </section>
 
-  <!-- ══════════ 03 著作 ══════════ -->
-  <section class="chapter">
-    <div class="wrap">
-      <div class="split reveal">
-
-        <div class="col-photo">
-          <div class="photo-frame">
-            <img src="images/publications.jpg" alt="" onerror="this.remove()">
-            <div class="photo-veil"></div>
-          </div>
-        </div>
-
-        <div class="col-text">
-          <p class="sec-index">03 — 著作</p>
-          <h2 class="sec-title">
-            出版
-            <span class="en">Publications</span>
-          </h2>
-
-          <p class="sec-body">論文散見於 <em>Journal of Asian Public Policy</em>、<em>PLOS ONE</em>、<em>Vaccine</em>，以及《人文及社會科學集刊》、《社會政策與社會工作學刊》、《臺灣民主季刊》等期刊。</p>
-
-          <a class="cta" href="publications.html">
-            完整著作清單 <span class="arrow">→</span>
-          </a>
-        </div>
-
+    <div class="stats">
+      <div class="stat reveal d1">
+        <span class="n">20</span>
+        <span class="l">期刊論文</span>
       </div>
-    </div>
-  </section>
-
-  <!-- ══════════ 04 教學 ══════════ -->
-  <section class="chapter">
-    <div class="wrap">
-      <div class="split rev reveal">
-
-        <div class="col-photo">
-          <div class="photo-frame">
-            <img src="images/teaching.jpg" alt="" onerror="this.remove()">
-            <div class="photo-veil"></div>
-          </div>
-        </div>
-
-        <div class="col-text">
-          <p class="sec-index">04 — 教學</p>
-          <h2 class="sec-title">
-            課堂
-            <span class="en">Teaching</span>
-          </h2>
-
-          <p class="sec-body">自 2013 年起在美國與臺灣的大學授課。課程橫跨社會學理論與方法、社會政策，以及近年新開的 AI 相關課程。</p>
-
-          <a class="cta" href="teaching.html">
-            課程一覽 <span class="arrow">→</span>
-          </a>
-        </div>
-
+      <div class="stat reveal d2">
+        <span class="n">6</span>
+        <span class="l">專書及專章</span>
       </div>
-    </div>
-  </section>
-
-  <!-- ══════════ 數字 ══════════ -->
-  <section class="pull">
-    <div class="wrap">
-      <div class="stats">
-        <div class="stat reveal d1">
-          <span class="n">20</span>
-          <span class="l">期刊論文</span>
-        </div>
-        <div class="stat reveal d2">
-          <span class="n">6</span>
-          <span class="l">專書及專章</span>
-        </div>
-        <div class="stat reveal d3">
-          <span class="n">6</span>
-          <span class="l">研究計畫</span>
-        </div>
-        <div class="stat reveal d4">
-          <span class="n">15</span>
-          <span class="l">國際研討會發表</span>
-        </div>
+      <div class="stat reveal d3">
+        <span class="n">6</span>
+        <span class="l">研究計畫</span>
+      </div>
+      <div class="stat reveal d4">
+        <span class="n">15</span>
+        <span class="l">國際研討會發表</span>
       </div>
     </div>
   </section>
@@ -228,18 +133,16 @@
 </main>
 
 <footer>
-  <div class="wrap">
-    <span class="f-name">黃芳誼 ・ Fang-Yi Huang</span>
+  <span class="f-name">黃芳誼 ・ Fang-Yi Huang</span>
 
-    <div class="f-links">
-      <a href="about.html">簡介</a>
-      <a href="publications.html">著作</a>
-      <a href="contact.html">聯絡</a>
-      <a href="#top">回到頂端</a>
-    </div>
-
-    <p class="f-copy">© 2026 Fang-Yi Huang. 東吳大學社會學系.</p>
+  <div class="f-links">
+    <a href="about.html">簡介</a>
+    <a href="publications.html">著作</a>
+    <a href="contact.html">聯絡</a>
+    <a href="#top">回到頂端 ↑</a>
   </div>
+
+  <p class="f-copy">© 2026 Fang-Yi Huang · 東吳大學社會學系</p>
 </footer>
 
 <script src="assets/js/main.js"></script>

@@ -15,7 +15,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Serif+TC:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;400;500;600;700&family=Noto+Sans+TC:wght@300;400;500;700&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="assets/css/style.css">
 
@@ -39,7 +39,7 @@
 <div class="veil" aria-hidden="true"></div>
 
 <nav id="nav">
-  <a class="brand" href="index-en.html">Fang-Yi Huang<span class="en">Soochow University</span></a>
+  <a class="brand" href="index-en.html"><span>Fang-Yi Huang</span><span class="en">Soochow University</span></a>
 
   <button class="nav-toggle" id="navToggle" aria-label="Menu" aria-expanded="false" aria-controls="navlinks">
     <span></span><span></span><span></span>
@@ -58,179 +58,69 @@
 <main id="top">
 
   <!-- ══════════ Hero ══════════ -->
-  <header class="hero" id="hero">
-    <div class="hero-inner">
-      <p class="hero-eyebrow">Department of Sociology · Soochow University</p>
+  <header class="hero">
+    <div>
+      <p class="hero-eyebrow">Soochow University · Associate Professor</p>
 
-      <h1>
-        Fang-Yi Huang
-        <span class="zh" lang="zh-Hant">黃芳誼</span>
-      </h1>
+      <h1>How institutions leave<br><span class="accent">their marks on a life</span><span class="zh" lang="zh-Hant">黃芳誼</span></h1>
 
-      <p class="hero-sub">The traces institutions leave across a life —<br>in health, in work, and long after retirement.<span class="en">Medical sociology, social policy, gender, and old-age economic security.</span></p>
+      <p class="hero-sub">Marks that keep working through health, through labor, and long after retirement.<span class="en">Medical sociology, social policy, gender, and old-age economic security.</span></p>
+
+      <div class="hero-cta">
+        <a class="btn solid" href="research-en.html">Research</a>
+        <a class="btn line" href="publications-en.html">Publications</a>
+      </div>
     </div>
 
-    <div class="scroll-cue" aria-hidden="true">
-      <span>Scroll</span>
-      <span class="line"></span>
+    <div class="hero-photo">
+      <img src="images/portrait.jpg" alt="Fang-Yi Huang" onerror="this.remove()">
     </div>
   </header>
 
-  <!-- ══════════ 01 About ══════════ -->
-  <section class="chapter">
-    <div class="wrap">
-      <div class="split reveal">
-
-        <div class="col-photo">
-          <div class="photo-frame">
-            <img src="images/portrait.jpg" alt="Fang-Yi Huang" onerror="this.remove()">
-            <div class="photo-veil"></div>
-          </div>
-        </div>
-
-        <div class="col-text">
-          <p class="sec-index">01 — About</p>
-          <h2 class="sec-title">
-            About
-            <span class="en" lang="zh-Hant">簡介</span>
-          </h2>
-
-          <p class="sec-body">
-            Associate Professor in the Department of Sociology at Soochow University, also serving as
-            Director of the Personnel Office and Executive Director of the AI and Society Research Center.
-            Ph.D. in Sociology, University of Florida.
-          </p>
-
-          <a class="cta" href="about-en.html">
-            Education &amp; appointments <span class="arrow">→</span>
-          </a>
-        </div>
-
-      </div>
-    </div>
+  <!-- ══════════ Trio ══════════ -->
+  <section class="trio reveal">
+    <a href="research-en.html">
+      <div class="no">01 Research</div>
+      <h3>Scholarship</h3>
+      <p>Whom social protection catches — and whom it lets fall through. Gender pension gaps and old-age economic security.</p>
+    </a>
+    <a href="publications-en.html">
+      <div class="no">02 Publications</div>
+      <h3>Publications</h3>
+      <p>In <em>Journal of Asian Public Policy</em>, <em>PLOS ONE</em>, <em>Vaccine</em>, and leading Taiwanese journals.</p>
+    </a>
+    <a href="teaching-en.html">
+      <div class="no">03 Teaching</div>
+      <h3>Teaching</h3>
+      <p>Teaching since 2013 — sociological theory, social policy, and recent courses on AI and society.</p>
+    </a>
   </section>
 
-  <!-- ══════════ 02 Research ══════════ -->
-  <section class="chapter">
-    <div class="wrap">
-      <div class="split rev reveal">
-
-        <div class="col-photo">
-          <div class="photo-frame">
-            <img src="images/research.jpg" alt="" onerror="this.remove()">
-            <div class="photo-veil"></div>
-          </div>
-        </div>
-
-        <div class="col-text">
-          <p class="sec-index">02 — Research</p>
-          <h2 class="sec-title">
-            Scholarship
-            <span class="en" lang="zh-Hant">學術</span>
-          </h2>
-
-          <p class="sec-body">
-            Her work asks one question: as labour markets shift and populations age,
-            whom does social protection catch — and whom does it let fall through.
-            Recent research centres on gender pension gaps across East Asia, Europe and the United States.
-          </p>
-
-          <a class="cta" href="research-en.html">
-            Grants &amp; presentations <span class="arrow">→</span>
-          </a>
-        </div>
-
-      </div>
+  <!-- ══════════ About + stats ══════════ -->
+  <section class="about-teaser">
+    <div class="reveal">
+      <p class="sec-index">About · 簡介</p>
+      <h2 class="sec-title">About</h2>
+      <p class="sec-body">Associate Professor in the Department of Sociology at Soochow University, also serving as Director of the Personnel Office and Executive Director of the AI and Society Research Center. Ph.D. in Sociology, University of Florida.</p>
+      <a class="more" href="about-en.html">Education &amp; appointments →</a>
     </div>
-  </section>
 
-  <!-- ══════════ 03 Publications ══════════ -->
-  <section class="chapter">
-    <div class="wrap">
-      <div class="split reveal">
-
-        <div class="col-photo">
-          <div class="photo-frame">
-            <img src="images/publications.jpg" alt="" onerror="this.remove()">
-            <div class="photo-veil"></div>
-          </div>
-        </div>
-
-        <div class="col-text">
-          <p class="sec-index">03 — Publications</p>
-          <h2 class="sec-title">
-            Publications
-            <span class="en" lang="zh-Hant">出版</span>
-          </h2>
-
-          <p class="sec-body">
-            Her articles appear in <em>Journal of Asian Public Policy</em>, <em>PLOS ONE</em>,
-            <em>Vaccine</em>, <em>Journal of Social Sciences and Philosophy</em>, and
-            <em>Taiwan Democracy Quarterly</em>.
-          </p>
-
-          <a class="cta" href="publications-en.html">
-            Full list <span class="arrow">→</span>
-          </a>
-        </div>
-
+    <div class="stats">
+      <div class="stat reveal d1">
+        <span class="n">20</span>
+        <span class="l">Journal articles</span>
       </div>
-    </div>
-  </section>
-
-  <!-- ══════════ 04 Teaching ══════════ -->
-  <section class="chapter">
-    <div class="wrap">
-      <div class="split rev reveal">
-
-        <div class="col-photo">
-          <div class="photo-frame">
-            <img src="images/teaching.jpg" alt="" onerror="this.remove()">
-            <div class="photo-veil"></div>
-          </div>
-        </div>
-
-        <div class="col-text">
-          <p class="sec-index">04 — Teaching</p>
-          <h2 class="sec-title">
-            Teaching
-            <span class="en" lang="zh-Hant">課堂</span>
-          </h2>
-
-          <p class="sec-body">
-            Teaching in the United States and Taiwan since 2013. Courses span sociological theory
-            and methods, social policy, and — more recently — the social consequences of AI.
-          </p>
-
-          <a class="cta" href="teaching-en.html">
-            Courses <span class="arrow">→</span>
-          </a>
-        </div>
-
+      <div class="stat reveal d2">
+        <span class="n">6</span>
+        <span class="l">Books &amp; chapters</span>
       </div>
-    </div>
-  </section>
-
-  <!-- ══════════ Numbers ══════════ -->
-  <section class="pull">
-    <div class="wrap">
-      <div class="stats">
-        <div class="stat reveal d1">
-          <span class="n">20</span>
-          <span class="l">Journal Articles</span>
-        </div>
-        <div class="stat reveal d2">
-          <span class="n">6</span>
-          <span class="l">Books &amp; Chapters</span>
-        </div>
-        <div class="stat reveal d3">
-          <span class="n">6</span>
-          <span class="l">Research Grants</span>
-        </div>
-        <div class="stat reveal d4">
-          <span class="n">15</span>
-          <span class="l">Conference Papers</span>
-        </div>
+      <div class="stat reveal d3">
+        <span class="n">6</span>
+        <span class="l">Research grants</span>
+      </div>
+      <div class="stat reveal d4">
+        <span class="n">15</span>
+        <span class="l">Conference papers</span>
       </div>
     </div>
   </section>
@@ -238,18 +128,16 @@
 </main>
 
 <footer>
-  <div class="wrap">
-    <span class="f-name">Fang-Yi Huang ・ <span lang="zh-Hant">黃芳誼</span></span>
+  <span class="f-name">Fang-Yi Huang ・ <span lang="zh-Hant">黃芳誼</span></span>
 
-    <div class="f-links">
-      <a href="about-en.html">About</a>
-      <a href="publications-en.html">Publications</a>
-      <a href="contact-en.html">Contact</a>
-      <a href="#top">Back to top</a>
-    </div>
-
-    <p class="f-copy">© 2026 Fang-Yi Huang. Department of Sociology, Soochow University.</p>
+  <div class="f-links">
+    <a href="about-en.html">About</a>
+    <a href="publications-en.html">Publications</a>
+    <a href="contact-en.html">Contact</a>
+    <a href="#top">Back to top ↑</a>
   </div>
+
+  <p class="f-copy">© 2026 Fang-Yi Huang · Department of Sociology, Soochow University</p>
 </footer>
 
 <script src="assets/js/main.js"></script>
