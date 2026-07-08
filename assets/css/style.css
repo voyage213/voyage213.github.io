@@ -218,7 +218,7 @@ em { font-family: var(--news); font-style: italic; }
 /* 拱形人像 */
 .hero-photo {
   position: relative;
-  border-radius: 220px 220px 26px 26px;
+  border-radius: 20px;
   overflow: hidden;
   animation: rise 1.2s var(--ease-ink) .55s both;
 }
