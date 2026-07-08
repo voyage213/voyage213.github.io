@@ -677,6 +677,30 @@ html[lang="en"] .page-head h1 .en {
   letter-spacing: .3em;
 }
 
+/* ---------- 日文版 ----------
+   日文用 Noto Serif/Sans JP（漢字字形與 TC 不同：呉・欧・医…都要日式字形）。
+   假名與日式漢字若落到 TC 字型會顯得突兀，所以整組覆寫。 */
+html[lang="ja"] {
+  --serif: 'Noto Serif JP', 'Noto Serif TC', serif;
+  --sans:  'Noto Sans JP', 'Noto Sans TC', 'Inter', sans-serif;
+}
+html[lang="ja"] body { line-height: 1.9; }
+/* 日文 hero 標題較長（「制度は一人の生涯に…」），字級收小避免壓到照片 */
+html[lang="ja"] .hero h1 {
+  font-size: clamp(1.9rem, 3.4vw, 2.9rem);
+  letter-spacing: .02em;
+  line-height: 1.34;
+}
+html[lang="ja"] .sec-title { letter-spacing: .02em; }
+/* 日文段落不需要為方塊字加額外字距 */
+html[lang="ja"] .sec-body,
+html[lang="ja"] .lede { letter-spacing: 0; }
+
+/* ---------- 語言切換：兩顆藥丸靠攏成一組 ---------- */
+.navlinks a.lang { padding: .28em .8em; }
+/* 相鄰的兩個語言 <li> 收窄間距，讓 中｜EN｜日 讀起來像一組開關 */
+.navlinks li:has(> a.lang) + li:has(> a.lang) { margin-left: -1.1rem; }
+
 /* ============================================================
    響應式
    ============================================================ */
@@ -714,9 +738,13 @@ html[lang="en"] .page-head h1 .en {
   }
   .navlinks.is-open { opacity: 1; visibility: visible; transform: none; }
   .navlinks li { width: 100%; border-bottom: 1px solid var(--hair); }
-  .navlinks li:last-child { border-bottom: 0; padding-top: 1rem; }
+  .navlinks li:last-child { border-bottom: 0; }
   .navlinks a { display: block; padding: .95em 0; font-size: .94rem; }
   .navlinks a.lang { display: inline-block; }
+  /* 手機直排：兩顆語言藥丸各佔一行。用與桌機完全相同的選擇器重置靠攏負邊距
+     （特異度相同、順序在後、又在 media query 內，才蓋得過），否則第二顆被拉歪。 */
+  .navlinks li:has(> a.lang) + li:has(> a.lang) { margin-left: 0; }
+  .navlinks li:not(:has(> a.lang)) + li:has(> a.lang) { padding-top: 1rem; }
 
   body { font-size: 15.5px; }
 
