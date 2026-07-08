@@ -218,7 +218,7 @@ em { font-family: var(--news); font-style: italic; }
 /* 拱形人像 */
 .hero-photo {
   position: relative;
-  border-radius: 20px;
+  border-radius: 0;
   overflow: hidden;
   animation: rise 1.2s var(--ease-ink) .55s both;
 }
@@ -363,7 +363,7 @@ em { font-family: var(--news); font-style: italic; }
   margin-bottom: clamp(2.5rem, 4.5vw, 4rem);
 }
 .teach-lead .photo {
-  border-radius: 16px;
+  border-radius: 0;
   overflow: hidden;
   aspect-ratio: 4 / 3;
   box-shadow: 0 22px 54px -30px rgba(120, 80, 40, .55);
@@ -380,8 +380,8 @@ em { font-family: var(--news); font-style: italic; }
 
 .photo-frame {
   position: relative;
-  aspect-ratio: 1 / 1;          /* 正方形，配 50% 圓角成正圓 */
-  border-radius: 50%;
+  aspect-ratio: 4 / 5;          /* 直式矩形，無圓角 */
+  border-radius: 0;
   overflow: hidden;
   background: linear-gradient(150deg, var(--sand), #ecd3b3 55%, #e3c49e);
 }
