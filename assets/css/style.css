@@ -351,6 +351,8 @@ em { font-family: var(--news); font-style: italic; }
 .split.rev { grid-template-columns: 1fr 300px; }
 .split.rev .col-photo { order: 2; }
 .split.lead { margin-bottom: clamp(2.5rem, 4.5vw, 4rem); }
+/* 研究／教學頁移除佔位拱形照片後的單欄前言：維持易讀行寬，不撐滿版面 */
+.lead-solo { max-width: 860px; margin-bottom: clamp(2.5rem, 4.5vw, 4rem); }
 
 .photo-frame {
   position: relative;
