@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>East Asia Pension Calculator ・ Taiwan · Japan · Korea ・ Fang-Yi Huang</title>
+<meta name="description" content="Estimate monthly pension benefits and replacement rates for Taiwan (Labor Insurance / National Pension), Japan (Employees' Pension / National Pension) and South Korea (National Pension / Basic Old-Age Pension, BOAP) across employment types and contribution years, using the formulas from Huang (2025).">
+
+<link rel="alternate" hreflang="zh-Hant" href="pension-calculator.html">
+<link rel="alternate" hreflang="en" href="pension-calculator-en.html">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;400;500;600;700&family=Noto+Sans+TC:wght@300;400;500;700&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================================
+   臺日韓年金給付試算器
+   設計語言沿用黃芳誼個人網站：暖陶土 · 米茶 · 四色章節
+   單檔自足（inline CSS/JS），可獨立開啟或掛於個人網站
+   ============================================================ */
+:root{
+  --shell:#efe7db; --paper:#f9f0e4; --sand:#f3e0c9; --card:#fffaf1;
+  --ink:#3a2a20; --ink-soft:#5c4535; --ink-mute:#6b5040; --ink-dim:#7a5a44; --ink-faint:#a2825f;
+  --terra:#b3472e; --terra-deep:#8a3f2a; --orange:#c26b1e; --amber:#d99a2b; --plum:#9b4a6b;
+  --hair:#ecdcc2; --hair-deep:#e2c99f; --pill:#d9a86a; --tag-border:#e2b988;
+  /* 三國代表色 */
+  --jp:#b3472e; --jp-soft:#e7c5b9;
+  --tw:#c68526; --tw-soft:#eddabc;
+  --kr:#9b4a6b; --kr-soft:#e2c9d4;
+  --ok:#4f7a4a;
+  --serif:'Noto Serif TC','Songti TC',serif;
+  --sans:'Noto Sans TC','Inter',-apple-system,sans-serif;
+  --mono:'IBM Plex Mono','Menlo',monospace;
+  --news:'Newsreader','Georgia',serif;
+  --ease:cubic-bezier(.22,.61,.36,1);
+  --sheet:1360px;
+  --pad-x:clamp(18px,4.5vw,60px);
+  --edge:max(var(--pad-x),calc((100% - var(--sheet)) / 2));
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);
+  font-size:16px;line-height:1.85;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+::selection{background:#e9c89a}
+a{color:var(--terra);text-decoration:none}
+a:hover{text-decoration:underline}
+h1,h2,h3{font-family:var(--serif);font-weight:600;color:var(--ink);line-height:1.3}
+.wrap{width:100%;padding-inline:var(--edge)}
+
+/* ---------- 導覽列 ---------- */
+#nav{position:sticky;top:0;z-index:100;height:60px;display:flex;align-items:center;
+  justify-content:space-between;padding-inline:var(--edge);
+  background:rgba(249,240,228,.92);backdrop-filter:saturate(140%) blur(10px);
+  -webkit-backdrop-filter:saturate(140%) blur(10px);border-bottom:1px solid var(--hair)}
+.brand{display:flex;align-items:baseline;gap:10px}
+.brand b{font-family:var(--serif);font-weight:600;font-size:1.12rem;color:var(--terra)}
+.brand span{font-family:var(--mono);font-size:.64rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint)}
+#nav .navright{display:flex;align-items:center;gap:16px}
+#nav .back{font-family:var(--sans);font-size:.85rem;color:var(--ink-dim)}
+#nav .lang{font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;color:var(--ink-faint);
+  border:1px solid var(--hair-deep);border-radius:99px;padding:3px 10px}
+#nav .lang:hover{border-color:var(--pill);color:var(--ink);text-decoration:none}
+
+/* ---------- Hero ---------- */
+.hero{padding:clamp(38px,6vw,72px) 0 clamp(18px,2.5vw,30px)}
+.eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--terra);margin:0 0 16px}
+.hero h1{font-size:clamp(1.9rem,4.4vw,3rem);margin:0 0 .5em;letter-spacing:.01em}
+.hero .sub{font-family:var(--news);font-style:italic;font-size:clamp(1rem,1.7vw,1.25rem);
+  color:var(--ink-mute);margin:0 0 1.2em;letter-spacing:.01em}
+.hero .lede{max-width:60ch;color:var(--ink-soft);font-size:1rem;margin:0}
+.hero .cite{margin-top:20px;font-size:.82rem;color:var(--ink-faint);max-width:70ch;line-height:1.7;
+  border-left:2px solid var(--hair-deep);padding-left:14px}
+
+/* ---------- 面板 ---------- */
+.panel{background:var(--card);border:1px solid var(--hair);border-radius:16px;
+  padding:clamp(20px,2.5vw,30px);margin-bottom:22px;box-shadow:0 1px 0 rgba(122,90,68,.04)}
+.panel > h2{font-size:1.18rem;margin:0 0 4px;display:flex;align-items:center;gap:10px}
+.panel > .hint{color:var(--ink-faint);font-size:.85rem;margin:0 0 20px}
+.sect-num{font-family:var(--mono);font-size:.7rem;color:var(--terra);border:1px solid var(--tag-border);
+  border-radius:999px;padding:2px 9px;letter-spacing:.05em}
+
+/* ---------- 就業類型分段選擇 ---------- */
+.seg{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:6px}
+.seg button{appearance:none;cursor:pointer;text-align:left;background:var(--paper);
+  border:1.5px solid var(--hair-deep);border-radius:13px;padding:15px 16px;transition:.18s var(--ease);
+  font-family:var(--sans);color:var(--ink-soft)}
+.seg button:hover{border-color:var(--pill);transform:translateY(-1px)}
+.seg button.on{border-color:var(--terra);background:#fdf3e6;box-shadow:0 2px 14px rgba(179,71,46,.1)}
+.seg button .t{display:block;font-family:var(--serif);font-weight:600;font-size:1.06rem;color:var(--ink)}
+.seg button .e{display:block;font-family:var(--mono);font-size:.66rem;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--ink-faint);margin-top:3px}
+.seg button .d{display:block;font-size:.8rem;color:var(--ink-dim);margin-top:7px;line-height:1.55}
+
+/* ---------- 共同滑桿 ---------- */
+.rowset{display:grid;grid-template-columns:1fr 1fr;gap:20px 28px;margin-top:22px}
+@media(max-width:640px){.rowset{grid-template-columns:1fr}}
+.field label{display:flex;justify-content:space-between;align-items:baseline;
+  font-size:.86rem;color:var(--ink-mute);margin-bottom:9px;font-weight:500}
+.field label .val{font-family:var(--mono);color:var(--terra);font-size:.95rem;font-weight:500}
+.field label .val small{color:var(--ink-faint);font-weight:400}
+input[type=range]{width:100%;height:5px;-webkit-appearance:none;appearance:none;
+  background:linear-gradient(var(--terra),var(--terra)) 0/var(--fill,50%) 100% no-repeat,var(--hair-deep);
+  border-radius:99px;outline:none;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:19px;height:19px;border-radius:50%;
+  background:var(--card);border:2.5px solid var(--terra);cursor:pointer;box-shadow:0 1px 5px rgba(138,63,42,.28);transition:.12s}
+input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.12)}
+input[type=range]::-moz-range-thumb{width:19px;height:19px;border-radius:50%;background:var(--card);
+  border:2.5px solid var(--terra);cursor:pointer}
+input[type=range]:disabled{opacity:.4;cursor:not-allowed}
+.chips{display:flex;gap:7px;flex-wrap:wrap;margin-top:11px}
+.chips button{font-family:var(--mono);font-size:.75rem;cursor:pointer;background:transparent;
+  border:1px solid var(--hair-deep);border-radius:99px;padding:3px 11px;color:var(--ink-dim);transition:.15s}
+.chips button:hover{border-color:var(--pill);color:var(--ink)}
+.chips button.on{background:var(--terra);border-color:var(--terra);color:#fff}
+.toggle-row{display:flex;gap:14px;flex-wrap:wrap;margin-top:2px;align-items:center}
+.switch{display:inline-flex;align-items:center;gap:9px;font-size:.86rem;color:var(--ink-mute);cursor:pointer}
+.switch input{width:38px;height:21px;-webkit-appearance:none;appearance:none;background:var(--hair-deep);
+  border-radius:99px;position:relative;cursor:pointer;transition:.2s;flex:none}
+.switch input::after{content:"";position:absolute;top:2px;left:2px;width:17px;height:17px;border-radius:50%;
+  background:#fff;transition:.2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.switch input:checked{background:var(--terra)}
+.switch input:checked::after{transform:translateX(17px)}
+
+/* ---------- 結果卡 ---------- */
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+@media(max-width:880px){.cards{grid-template-columns:1fr}}
+.ccard{border:1px solid var(--hair);border-radius:15px;overflow:hidden;background:var(--card);
+  display:flex;flex-direction:column}
+.ccard .cap{padding:14px 18px;display:flex;align-items:center;justify-content:space-between;
+  border-bottom:1px solid var(--hair);color:#fff}
+.ccard[data-c=jp] .cap{background:linear-gradient(135deg,var(--jp),var(--terra-deep))}
+.ccard[data-c=tw] .cap{background:linear-gradient(135deg,var(--tw),#a86b18)}
+.ccard[data-c=kr] .cap{background:linear-gradient(135deg,var(--kr),#7d3a55)}
+.ccard .cap .n{font-family:var(--serif);font-weight:600;font-size:1.14rem;display:flex;align-items:center;gap:9px}
+.ccard .cap .n .flag{font-size:1.2rem}
+.ccard .cap .sys{font-family:var(--mono);font-size:.6rem;letter-spacing:.06em;text-align:right;opacity:.9;line-height:1.5}
+.ccard .body{padding:18px;flex:1;display:flex;flex-direction:column}
+.layers{margin:0 0 14px}
+.layer{display:flex;justify-content:space-between;align-items:baseline;padding:8px 0;
+  border-bottom:1px dashed var(--hair)}
+.layer .ln{font-size:.85rem;color:var(--ink-mute)}
+.layer .ln em{font-family:var(--news);font-style:italic;color:var(--ink-faint);font-size:.78rem;margin-left:5px}
+.layer .lv{font-family:var(--mono);font-size:.92rem;color:var(--ink);white-space:nowrap}
+.layer.muted .lv{color:var(--ink-faint)}
+.total{margin-top:auto;padding-top:14px}
+.total .big{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.total .amt{font-family:var(--mono);font-weight:500;font-size:1.7rem;color:var(--ink);letter-spacing:-.01em}
+.total .cur{font-family:var(--mono);font-size:.8rem;color:var(--ink-faint)}
+.total .ntd{font-size:.85rem;color:var(--ink-dim);margin-top:2px}
+.total .ntd b{font-family:var(--mono);color:var(--ink-mute);font-weight:500}
+.rr{margin-top:15px;padding-top:14px;border-top:1px solid var(--hair)}
+.rr .lbl{font-size:.76rem;color:var(--ink-faint);display:flex;justify-content:space-between}
+.rr .bar{height:9px;border-radius:99px;background:var(--hair-deep);margin-top:7px;overflow:hidden}
+.rr .bar i{display:block;height:100%;border-radius:99px;transition:width .5s var(--ease)}
+.ccard[data-c=jp] .rr .bar i{background:var(--jp)}
+.ccard[data-c=tw] .rr .bar i{background:var(--tw)}
+.ccard[data-c=kr] .rr .bar i{background:var(--kr)}
+.rr .pct{font-family:var(--mono);font-weight:500;font-size:1.28rem;margin-top:8px;display:block}
+.ccard[data-c=jp] .rr .pct{color:var(--jp)}
+.ccard[data-c=tw] .rr .pct{color:var(--tw)}
+.ccard[data-c=kr] .rr .pct{color:var(--kr)}
+.fmla{margin-top:14px;font-family:var(--mono);font-size:.68rem;line-height:1.75;color:var(--ink-dim);
+  background:var(--paper);border:1px solid var(--hair);border-radius:9px;padding:10px 12px;word-break:break-word}
+.fmla b{color:var(--terra);font-weight:500}
+.note-line{font-size:.74rem;color:var(--ink-faint);margin-top:9px;line-height:1.6}
+
+/* ---------- 進階參數 ---------- */
+details.adv{margin-top:22px;border-top:1px solid var(--hair);padding-top:16px}
+details.adv > summary{cursor:pointer;font-size:.9rem;color:var(--ink-mute);font-weight:500;
+  list-style:none;display:flex;align-items:center;gap:8px}
+details.adv > summary::-webkit-details-marker{display:none}
+details.adv > summary::before{content:"＋";font-family:var(--mono);color:var(--terra);transition:.2s}
+details.adv[open] > summary::before{content:"－"}
+.advgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:20px}
+@media(max-width:880px){.advgrid{grid-template-columns:1fr}}
+.advcol{border:1px solid var(--hair);border-radius:12px;padding:16px 16px 18px}
+.advcol h4{margin:0 0 14px;font-size:.95rem;display:flex;align-items:center;gap:8px}
+.advcol h4 .dot{width:10px;height:10px;border-radius:50%;flex:none}
+.advcol[data-c=jp] h4 .dot{background:var(--jp)} .advcol[data-c=tw] h4 .dot{background:var(--tw)} .advcol[data-c=kr] h4 .dot{background:var(--kr)}
+.nfield{margin-bottom:13px}
+.nfield label{display:block;font-size:.78rem;color:var(--ink-mute);margin-bottom:5px}
+.nfield input[type=number]{width:100%;font-family:var(--mono);font-size:.9rem;padding:8px 10px;
+  border:1px solid var(--hair-deep);border-radius:8px;background:var(--paper);color:var(--ink)}
+.nfield input:focus{outline:2px solid var(--pill);outline-offset:-1px;border-color:var(--pill)}
+.nfield .u{font-size:.72rem;color:var(--ink-faint);margin-left:4px}
+
+/* ---------- 控制項標題 / 國家（工作）選擇 ---------- */
+.ctl-label{font-family:var(--serif);font-weight:600;font-size:1rem;color:var(--ink);
+  margin:0 0 12px;display:flex;align-items:baseline;gap:9px}
+.ctl-label span{font-family:var(--news);font-style:italic;font-weight:400;font-size:.8rem;color:var(--ink-faint)}
+.segc{grid-template-columns:repeat(4,1fr)}
+@media(max-width:640px){.segc{grid-template-columns:1fr 1fr}}
+.segc button{padding:13px 15px}
+.segc button .t{display:block;font-family:var(--serif);font-weight:600;font-size:1.02rem;color:var(--ink)}
+.segc button .d{display:block;font-size:.72rem;color:var(--ink-dim);margin-top:5px;font-family:var(--mono);letter-spacing:.01em}
+.segc button.on{border-color:var(--terra);background:#fdf3e6}
+
+/* 薪資金額輸入（單國模式） */
+.amt-input{display:flex;align-items:center;gap:8px;border:1.5px solid var(--hair-deep);border-radius:11px;
+  padding:9px 14px;background:var(--paper);transition:.15s}
+.amt-input:focus-within{border-color:var(--pill);box-shadow:0 0 0 3px rgba(217,168,106,.18)}
+.amt-input .cur{font-family:var(--mono);font-size:.95rem;color:var(--terra);font-weight:500}
+.amt-input input{flex:1;border:0;background:transparent;font-family:var(--mono);font-size:1.15rem;
+  color:var(--ink);outline:none;width:100%;padding:0}
+.amt-input .per{font-family:var(--mono);font-size:.78rem;color:var(--ink-faint);white-space:nowrap}
+.amt-row{display:flex;gap:10px;align-items:center;margin-top:10px}
+.amt-hint{font-size:.75rem;color:var(--ink-faint)}
+.amt-avg{font-family:var(--mono);font-size:.75rem;cursor:pointer;background:transparent;
+  border:1px solid var(--hair-deep);border-radius:99px;padding:3px 11px;color:var(--ink-dim);white-space:nowrap}
+.amt-avg:hover{border-color:var(--pill);color:var(--ink)}
+.total .tlabel{font-family:var(--mono);font-size:.68rem;letter-spacing:.06em;color:var(--ink-faint);margin-bottom:3px}
+
+/* 模式切換：三國比較 vs 單國詳解 */
+.only-single{display:none}
+body.mode-single .only-single{display:block}
+body.mode-single .only-all{display:none}
+body.mode-single #cards,body.mode-single #ntd-compare{display:none}
+body.mode-all #single{display:none}
+
+/* ---------- 單國詳解面板 ---------- */
+.single{display:grid;grid-template-columns:1.12fr .88fr;gap:22px;align-items:stretch}
+@media(max-width:760px){.single{grid-template-columns:1fr}}
+.single-main{border:1px solid var(--hair);border-radius:15px;overflow:hidden;background:var(--card)}
+.single-head{display:flex;align-items:center;gap:14px;padding:16px 20px;color:#fff}
+.single[data-c=jp] .single-head{background:linear-gradient(135deg,var(--jp),var(--terra-deep))}
+.single[data-c=tw] .single-head{background:linear-gradient(135deg,var(--tw),#a86b18)}
+.single[data-c=kr] .single-head{background:linear-gradient(135deg,var(--kr),#7d3a55)}
+.single-head .flag{font-size:1.9rem;line-height:1}
+.single-head h3{color:#fff;margin:0;font-size:1.35rem}
+.single-head .s-sys{font-family:var(--mono);font-size:.64rem;letter-spacing:.05em;opacity:.92;display:block;margin-top:2px}
+.single-head .role-badge{margin-left:auto;font-family:var(--sans);font-size:.82rem;font-weight:500;
+  background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.35);border-radius:99px;padding:4px 13px}
+.prows{padding:6px 20px 20px}
+.prow{display:flex;justify-content:space-between;align-items:baseline;padding:15px 0;border-bottom:1px solid var(--hair)}
+.prow .pn{font-family:var(--serif);font-weight:600;font-size:1.02rem;color:var(--ink)}
+.prow .pn em{font-family:var(--news);font-style:italic;font-weight:400;color:var(--ink-faint);font-size:.8rem;margin-left:8px}
+.prow .pv{font-family:var(--mono);font-size:1.12rem;color:var(--ink);white-space:nowrap}
+.prow.zero .pn,.prow.zero .pv{color:var(--ink-faint)}
+.prow.total{border-bottom:0;padding-bottom:2px}
+.prow.total .pn{color:var(--terra-deep)}
+.prow.total .pv{font-size:1.7rem;font-weight:500;color:var(--ink)}
+.s-ntd{font-size:.86rem;color:var(--ink-dim);padding-top:8px}
+.s-ntd b{font-family:var(--mono);color:var(--ink-mute);font-weight:500}
+.single-side{border:1px solid var(--hair);border-radius:15px;background:var(--paper);padding:20px;
+  display:flex;flex-direction:column}
+.s-rr-label{font-size:.82rem;color:var(--ink-mute);display:flex;justify-content:space-between;align-items:baseline}
+.s-rr-label span:last-child{font-size:.72rem;color:var(--ink-faint)}
+.s-rr{font-family:var(--mono);font-weight:500;font-size:2.6rem;letter-spacing:-.02em;margin:6px 0 0}
+.single[data-c=jp] .s-rr{color:var(--jp)} .single[data-c=tw] .s-rr{color:var(--tw)} .single[data-c=kr] .s-rr{color:var(--kr)}
+.s-bar{height:10px;border-radius:99px;background:var(--hair-deep);overflow:hidden;margin:9px 0 4px}
+.s-bar i{display:block;height:100%;border-radius:99px;transition:width .5s var(--ease)}
+.single[data-c=jp] .s-bar i{background:var(--jp)} .single[data-c=tw] .s-bar i{background:var(--tw)} .single[data-c=kr] .s-bar i{background:var(--kr)}
+.s-lump{font-size:.78rem;color:var(--orange);margin-top:10px;line-height:1.5}
+.single-side .fmla{margin-top:auto}
+
+/* ---------- 比較圖 ---------- */
+.chartwrap{margin-top:4px}
+.chart{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(10px,2vw,26px);
+  align-items:end;min-height:230px;padding:0 4px}
+.cgroup{border-top:0}
+.cgroup .gt{text-align:center;font-family:var(--serif);font-weight:600;font-size:.95rem;
+  margin-top:12px;padding-top:10px;border-top:1px solid var(--hair);color:var(--ink)}
+.cgroup.active .gt{color:var(--terra)}
+.cgroup .gt small{display:block;font-family:var(--mono);font-weight:400;font-size:.6rem;
+  letter-spacing:.05em;text-transform:uppercase;color:var(--ink-faint);margin-top:2px}
+.bars{display:flex;gap:6px;align-items:end;justify-content:center;height:210px}
+.bar3{flex:1;max-width:52px;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%}
+.bar3 .col{width:100%;border-radius:6px 6px 0 0;min-height:3px;transition:height .55s var(--ease);position:relative;
+  display:flex;justify-content:center;align-items:flex-start}
+.bar3[data-c=jp] .col{background:linear-gradient(var(--jp),#c9583d)}
+.bar3[data-c=tw] .col{background:linear-gradient(var(--tw),#dba43e)}
+.bar3[data-c=kr] .col{background:linear-gradient(var(--kr),#b25f80)}
+.bar3 .v{font-family:var(--mono);font-size:.68rem;color:var(--ink-mute);margin-bottom:5px;white-space:nowrap}
+.cgroup.active .bar3 .col{box-shadow:0 3px 12px rgba(0,0,0,.12)}
+.cgroup:not(.active){opacity:.62}
+.legend{display:flex;gap:20px;justify-content:center;margin-top:22px;flex-wrap:wrap}
+.legend span{display:inline-flex;align-items:center;gap:7px;font-size:.82rem;color:var(--ink-mute)}
+.legend i{width:12px;height:12px;border-radius:3px;display:inline-block}
+.chart-note{text-align:center;font-size:.76rem;color:var(--ink-faint);margin-top:14px}
+
+/* ---------- 頁尾／方法 ---------- */
+.method{font-size:.83rem;color:var(--ink-dim);line-height:1.85}
+.method h3{font-size:1rem;margin:22px 0 8px}
+.method ul{margin:6px 0 0;padding-left:20px}
+.method li{margin-bottom:7px}
+.method code{font-family:var(--mono);font-size:.85em;background:var(--paper);padding:1px 5px;border-radius:5px;
+  border:1px solid var(--hair);color:var(--terra-deep)}
+footer{padding:40px 0 60px;color:var(--ink-faint);font-size:.8rem;border-top:1px solid var(--hair);margin-top:30px}
+footer .wrap>div{max-width:80ch}
+.disclaimer{background:#fbf1e2;border:1px solid var(--tag-border);border-radius:11px;padding:14px 18px;
+  font-size:.82rem;color:var(--ink-mute);line-height:1.7;margin-top:8px}
+.disclaimer b{color:var(--terra-deep)}
+@media print{#nav,.chips,details.adv summary::before,.seg button:not(.on){print-color-adjust:exact}}
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <a class="brand" href="index-en.html"><b>Fang-Yi Huang</b><span>黃芳誼</span></a>
+  <div class="navright">
+    <a class="back" href="research-en.html">← Research</a>
+    <a class="lang" href="pension-calculator.html" lang="zh-Hant">中文</a>
+  </div>
+</nav>
+
+<header class="hero"><div class="wrap">
+  <p class="eyebrow">Microsimulation · Taiwan · Japan · Korea</p>
+  <h1>East Asia Pension Calculator</h1>
+  <p class="sub">Taiwan · Japan · Korea — pension benefits for non-regular workers</p>
+  <p class="lede">Choose an employment type and contribution years to instantly compare monthly pension benefits and replacement rates across <strong>Taiwan (Labor Insurance / National Pension)</strong>, <strong>Japan (Employees' Pension / National Pension)</strong> and <strong>South Korea (National Pension / Basic Old-Age Pension, BOAP)</strong> — reproducing the protection gaps between worker types under dual-track, Bismarckian and Beveridgean designs.</p>
+  <p class="cite">Formulas from Huang, F.-Y. (2025), "A Microsimulation Analysis of Pension Benefit Levels for Non-Regular Workers: The Cases of Taiwan, Japan, and South Korea," <em>Journal of Public Administration and Policy</em>. A current-institution comparison based on 2023 statutory parameters and national average wages — not a long-term projection.</p>
+</div></header>
+
+<main class="wrap">
+
+  <!-- 1. 情境設定 -->
+  <section class="panel">
+    <h2><span class="sect-num">01</span> Your profile <em style="font-family:var(--news);font-style:italic;font-weight:400;color:var(--ink-faint);font-size:.85rem">個人情境設定</em></h2>
+    <p class="hint">Enter <strong>role</strong>, <strong>job (country &amp; system)</strong>, <strong>years insured</strong> and <strong>monthly wage</strong> to estimate the <strong>basic pension</strong>, <strong>occupational pension</strong> and <strong>total</strong>. Defaults follow the paper's Table 3 standardized assumptions and can be freely adjusted; in single-country mode you can enter an actual monthly wage.</p>
+
+    <div class="ctl-label">① Role <span>就業身份</span></div>
+    <div class="seg" id="seg">
+      <button data-t="fulltime" class="on">
+        <span class="t">Full-time</span><span class="e">全職者</span>
+        <span class="d">Full career · national average wage · full occupational pension</span>
+      </button>
+      <button data-t="parttime">
+        <span class="t">Part-time</span><span class="e">部分工時者</span>
+        <span class="d">Half the years · about half the wage · non-regular work</span>
+      </button>
+      <button data-t="homemaker">
+        <span class="t">Homemaker</span><span class="e">家庭工作者</span>
+        <span class="d">No occupational pension · basic pension only</span>
+      </button>
+    </div>
+
+    <div class="ctl-label" style="margin-top:26px">② Job — country &amp; system <span>國家與制度</span></div>
+    <div class="seg segc" id="segCountry">
+      <button data-c="all" class="on"><span class="t">📊 Compare all</span><span class="d">TW · JP · KR</span></button>
+      <button data-c="tw"><span class="t">🇹🇼 Taiwan</span><span class="d">Labor Ins. · Nat'l Pension</span></button>
+      <button data-c="jp"><span class="t">🇯🇵 Japan</span><span class="d">Employees' · National</span></button>
+      <button data-c="kr"><span class="t">🇰🇷 Korea</span><span class="d">National Pension · BOAP</span></button>
+    </div>
+
+    <div class="rowset" style="margin-top:26px">
+      <div class="field">
+        <label for="yrs">③ Years insured <span class="e" style="font-family:var(--news);font-style:italic;color:var(--ink-faint)">投保年數</span>
+          <span class="val" id="yrsVal">40 <small>yr</small></span></label>
+        <input type="range" id="yrs" min="0" max="45" step="1" value="40">
+        <div class="chips" id="yrsChips">
+          <button data-y="10">10</button><button data-y="20">20</button>
+          <button data-y="30">30</button><button data-y="40" class="on">40</button>
+        </div>
+      </div>
+      <div class="field">
+        <label>④ Monthly wage <span class="e" id="wageSubLabel" style="font-family:var(--news);font-style:italic;color:var(--ink-faint)">% of full-time avg</span>
+          <span class="val" id="wageVal">100 <small>%</small></span></label>
+        <div class="only-all">
+          <input type="range" id="wage" min="0" max="150" step="5" value="100">
+          <div class="chips" id="wageChips">
+            <button data-w="25">25</button><button data-w="50">50</button>
+            <button data-w="75">75</button><button data-w="100" class="on">100</button>
+          </div>
+        </div>
+        <div class="only-single">
+          <div class="amt-input">
+            <span class="cur" id="wageCur">NT$</span>
+            <input type="number" id="wageAmt" min="0" step="100" value="58545">
+            <span class="per">/ mo</span>
+          </div>
+          <div class="amt-row">
+            <button type="button" class="amt-avg" id="wageAvgBtn">Use national average</button>
+            <span class="amt-hint" id="wageAmtHint"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="toggle-row" style="margin-top:22px">
+      <label class="switch"><input type="checkbox" id="krBoap" checked> Korea: eligible for Basic Pension (BOAP) <span style="color:var(--ink-faint);font-size:.78rem">· bottom 70% by income</span></label>
+    </div>
+
+    <details class="adv" id="adv">
+      <summary>Advanced parameters — fine-tune insured wage, years and constants per country</summary>
+      <div class="advgrid">
+        <div class="advcol" data-c="jp">
+          <h4><span class="dot"></span>Japan 日本</h4>
+          <div class="nfield"><label>Employees' Pension · avg standard monthly wage <span class="u">¥/mo</span></label><input type="number" id="jpSalary" value="382917"></div>
+          <div class="nfield"><label>Employees' Pension · years insured <span class="u">yr</span></label><input type="number" id="jpYrsEmp" value="40"></div>
+          <div class="nfield"><label>National Pension · years <span class="u">yr (full at 40)</span></label><input type="number" id="jpYrsNat" value="40"></div>
+          <div class="nfield"><label>National Pension · full annual amount <span class="u">¥/yr</span></label><input type="number" id="jpKokAnnual" value="795000"></div>
+        </div>
+        <div class="advcol" data-c="tw">
+          <h4><span class="dot"></span>Taiwan 臺灣</h4>
+          <div class="nfield"><label>System <span class="u">LI = employed / NP = not employed</span></label>
+            <select id="twSys" style="width:100%;font-family:var(--mono);font-size:.9rem;padding:8px 10px;border:1px solid var(--hair-deep);border-radius:8px;background:var(--paper);color:var(--ink)">
+              <option value="labor">Labor Insurance (old-age)</option>
+              <option value="national">National Pension</option>
+            </select></div>
+          <div class="nfield"><label>Monthly insured wage/amount <span class="u">NT$/mo</span></label><input type="number" id="twInsured" value="45800"></div>
+          <div class="nfield"><label>Years insured <span class="u">yr</span></label><input type="number" id="twYrs" value="40"></div>
+        </div>
+        <div class="advcol" data-c="kr">
+          <h4><span class="dot"></span>Korea 南韓</h4>
+          <div class="nfield"><label>Own avg monthly insured income (B) <span class="u">₩/mo</span></label><input type="number" id="krB" value="4101500"></div>
+          <div class="nfield"><label>All-insured average (A) <span class="u">₩/mo · 2023</span></label><input type="number" id="krA" value="2861091"></div>
+          <div class="nfield"><label>National Pension · years insured <span class="u">yr</span></label><input type="number" id="krYrs" value="40"></div>
+          <div class="nfield"><label>Basic Pension (BOAP) full <span class="u">₩/mo · single</span></label><input type="number" id="krBoapMax" value="323180"></div>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- 2. 結果卡 -->
+  <section class="panel">
+    <h2><span class="sect-num">02</span> Basic · Occupational · Total <em style="font-family:var(--news);font-style:italic;font-weight:400;color:var(--ink-faint);font-size:.85rem">基礎・職業・總額</em></h2>
+    <p class="hint"><strong>Occupational pension</strong> (earnings-related: JP Employees' / TW Labor Insurance / KR National Pension) + <strong>basic pension</strong> (flat-rate: JP National / TW National / KR BOAP) = <strong>total</strong>. Each layer is computed in local currency, then converted to NTD at 2023 rates (1 JPY = 0.222, 1 KRW = 0.023). Replacement rate = total ÷ that country's full-time average monthly wage.</p>
+
+    <!-- 三國比較模式 -->
+    <div class="cards" id="cards">
+      <!-- 日本 -->
+      <article class="ccard" data-c="jp">
+        <div class="cap"><div class="n"><span class="flag">🇯🇵</span>Japan</div><div class="sys">Employees'<br>+ National</div></div>
+        <div class="body">
+          <div class="layers">
+            <div class="layer"><span class="ln">Occupational <em>Employees' Pension</em></span><span class="lv" id="jp-l1">—</span></div>
+            <div class="layer"><span class="ln">Basic <em>National Pension</em></span><span class="lv" id="jp-l2">—</span></div>
+          </div>
+          <div class="total">
+            <div class="tlabel">TOTAL / MO</div>
+            <div class="big"><span class="amt" id="jp-amt">—</span><span class="cur">¥ / mo</span></div>
+            <div class="ntd">≈ <b id="jp-ntd">—</b> NTD / mo</div>
+          </div>
+          <div class="rr">
+            <div class="lbl"><span>Replacement rate</span><span>vs. full-time avg wage</span></div>
+            <div class="bar"><i id="jp-rrbar"></i></div>
+            <span class="pct" id="jp-rr">—</span>
+          </div>
+          <div class="fmla" id="jp-fmla">—</div>
+        </div>
+      </article>
+      <!-- 臺灣 -->
+      <article class="ccard" data-c="tw">
+        <div class="cap"><div class="n"><span class="flag">🇹🇼</span>Taiwan</div><div class="sys" id="tw-sysname">Labor<br>Insurance</div></div>
+        <div class="body">
+          <div class="layers">
+            <div class="layer"><span class="ln" id="tw-l1n">Occupational <em>Labor Insurance</em></span><span class="lv" id="tw-l1">—</span></div>
+            <div class="layer muted"><span class="ln" id="tw-l2n">Basic <em>National Pension</em></span><span class="lv" id="tw-l2">—</span></div>
+          </div>
+          <div class="total">
+            <div class="tlabel">TOTAL / MO</div>
+            <div class="big"><span class="amt" id="tw-amt">—</span><span class="cur">NT$ / mo</span></div>
+            <div class="ntd" id="tw-lump" style="color:var(--ink-faint)"></div>
+          </div>
+          <div class="rr">
+            <div class="lbl"><span>Replacement rate</span><span>vs. full-time avg wage</span></div>
+            <div class="bar"><i id="tw-rrbar"></i></div>
+            <span class="pct" id="tw-rr">—</span>
+          </div>
+          <div class="fmla" id="tw-fmla">—</div>
+        </div>
+      </article>
+      <!-- 南韓 -->
+      <article class="ccard" data-c="kr">
+        <div class="cap"><div class="n"><span class="flag">🇰🇷</span>Korea</div><div class="sys">National<br>+ Basic</div></div>
+        <div class="body">
+          <div class="layers">
+            <div class="layer"><span class="ln">Occupational <em>National Pension (NPS)</em></span><span class="lv" id="kr-l1">—</span></div>
+            <div class="layer"><span class="ln">Basic <em>BOAP</em></span><span class="lv" id="kr-l2">—</span></div>
+          </div>
+          <div class="total">
+            <div class="tlabel">TOTAL / MO</div>
+            <div class="big"><span class="amt" id="kr-amt">—</span><span class="cur">₩ / mo</span></div>
+            <div class="ntd">≈ <b id="kr-ntd">—</b> NTD / mo</div>
+          </div>
+          <div class="rr">
+            <div class="lbl"><span>Replacement rate</span><span>vs. full-time avg wage</span></div>
+            <div class="bar"><i id="kr-rrbar"></i></div>
+            <span class="pct" id="kr-rr">—</span>
+          </div>
+          <div class="fmla" id="kr-fmla">—</div>
+        </div>
+      </article>
+    </div>
+    <p class="note-line" id="ntd-compare" style="margin-top:16px;text-align:center;font-size:.85rem;color:var(--ink-mute)"></p>
+
+    <!-- 單國詳解模式 -->
+    <div class="single" id="single" data-c="tw">
+      <div class="single-main">
+        <div class="single-head">
+          <span class="flag" id="s-flag">🇹🇼</span>
+          <div><h3 id="s-country">Taiwan</h3><span class="s-sys" id="s-sys">Labor Insurance · National Pension</span></div>
+          <span class="role-badge" id="s-role">Full-time</span>
+        </div>
+        <div class="prows">
+          <div class="prow" id="s-occ-row"><span class="pn">Occupational <em id="s-occ-name">Labor Insurance</em></span><b class="pv" id="s-occ">—</b></div>
+          <div class="prow" id="s-basic-row"><span class="pn">Basic <em id="s-basic-name">National Pension</em></span><b class="pv" id="s-basic">—</b></div>
+          <div class="prow total"><span class="pn">Total <em>per month</em></span><b class="pv" id="s-total">—</b></div>
+          <div class="s-ntd" id="s-ntd"></div>
+        </div>
+      </div>
+      <div class="single-side">
+        <div class="s-rr-label"><span>Replacement rate</span><span>vs. full-time avg wage</span></div>
+        <div class="s-rr" id="s-rr">—</div>
+        <div class="s-bar"><i id="s-rrbar"></i></div>
+        <div class="s-lump" id="s-lump"></div>
+        <div class="fmla" id="s-fmla" style="margin-top:14px">—</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. 替代率比較圖 -->
+  <section class="panel">
+    <h2><span class="sect-num">03</span> Replacement-rate comparison <em style="font-family:var(--news);font-style:italic;font-weight:400;color:var(--ink-faint);font-size:.85rem">三國替代率</em></h2>
+    <p class="hint">Reproducing the paper's Table 3: replacement rates for three employment types across the three countries. The selected type is computed live from your inputs and highlighted; the other two use standardized assumptions. Japan's dual-tier system shows the smallest gap across worker types.</p>
+    <div class="chartwrap">
+      <div class="chart" id="chart"></div>
+      <div class="legend">
+        <span><i style="background:var(--jp)"></i>Japan</span>
+        <span><i style="background:var(--tw)"></i>Taiwan</span>
+        <span><i style="background:var(--kr)"></i>Korea</span>
+      </div>
+      <p class="chart-note">Vertical axis: replacement rate (%) = monthly pension ÷ that country's full-time average monthly wage × 100</p>
+    </div>
+  </section>
+
+  <!-- 4. 方法與公式 -->
+  <section class="panel">
+    <h2><span class="sect-num">04</span> Formulas &amp; notes <em style="font-family:var(--news);font-style:italic;font-weight:400;color:var(--ink-faint);font-size:.85rem">公式與說明</em></h2>
+    <div class="method">
+      <h3>🇯🇵 Japan (dual-tier: Employees' Pension + National Pension)</h3>
+      <ul>
+        <li>Employees' Pension (monthly) = avg standard monthly wage × <code>5.481 ÷ 1000</code> × years insured</li>
+        <li>National Pension (monthly) = <code>795,000 ÷ 12</code> × (years ÷ 40); full ¥66,250/mo at 40 years (FY2023 / Reiwa 5)</li>
+        <li>Homemakers are "Category-3 insured": they receive the full National Pension without paying premiums.</li>
+      </ul>
+      <h3>🇹🇼 Taiwan (Labor Insurance and National Pension are mutually exclusive)</h3>
+      <ul>
+        <li>Labor Insurance old-age pension (≥15 yrs) = monthly insured wage × years × <code>1.55%</code>; under 15 years only a lump sum is available.</li>
+        <li>National Pension = monthly insured amount × years × <code>0.65%</code> + <code>3,772</code> (higher of this and × 1.3%).</li>
+        <li>Top insured-wage grade is 45,800; the 2023 National-Pension insured amount is 19,761.</li>
+      </ul>
+      <h3>🇰🇷 South Korea (dual-tier: National Pension + Basic Old-Age Pension, BOAP)</h3>
+      <ul>
+        <li>National Pension (monthly) = <code>1.275 × (A + B) × (years ÷ 20) ÷ 12</code>; A = all-insured average, B = own average insured income. The (years ÷ 20) factor captures 50% at 10 years, +5% per additional year, and the post-20-year bonus (no monthly pension under 10 years).</li>
+        <li>Basic Pension (BOAP): full ₩323,180 (single). If the National Pension exceeds 150% of the base (₩484,770), a linked reduction applies — <code>323,180 − ⅔ × A-benefit</code> — with the ₩161,590 supplementary pension as a floor; no benefit if recognized income exceeds the ₩2,020,000 selection threshold.</li>
+      </ul>
+      <div class="disclaimer">
+        <b>How to read this.</b> This calculator is for <strong>institutional comparison and teaching</strong>. It uses 2023 statutory formulas and national average wages — an "ideal-type / current-institution" estimate that excludes wage growth, inflation, discounting and DC individual accounts (e.g. Taiwan's new Labor Pension), and does not equal any country's actual disbursements. <strong>It is not a guarantee or advice about any individual's pension.</strong> For actual benefits, consult each country's pension authority (Bureau of Labor Insurance, Japan Pension Service, National Pension Service of Korea).
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer><div class="wrap"><div>
+  <p>East Asia Pension Calculator · Built on Huang, F.-Y. (2025), "A Microsimulation Analysis of Pension Benefit Levels for Non-Regular Workers: The Cases of Taiwan, Japan, and South Korea" · Exchange-rate base 2023 (1 JPY = 0.222 NTD, 1 KRW = 0.023 NTD)</p>
+  <p style="margin-top:6px">© <span id="yr"></span> Fang-Yi Huang · Department of Sociology, Soochow University</p>
+</div></div></footer>
+
+<script>
+"use strict";
+/* ============================================================
+   計算引擎 —— 依論文附錄一公式
+   ============================================================ */
+const FX = { jp:0.222, kr:0.023 };                 // 2023 平均匯率 → NTD
+const REF = { jp:382917, tw:58545, kr:2861091 };   // 各國全職者平均月薪（替代率分母）
+
+/* 2023 臺灣勞保投保薪資分級表：實際薪資向上取最接近之級距（上限 45,800） */
+const TW_GRADES=[11100,12540,13500,15840,16500,17280,17880,19047,20008,21009,22000,23100,24000,25250,26400,27600,28800,30300,31800,33300,34800,36300,38200,40100,42000,43900,45800];
+function twGrade(income){ if(income>=45800) return 45800; for(const g of TW_GRADES){ if(g>=income) return g; } return 45800; }
+
+/* 三種就業類型的標準化預設（重現表三） */
+const PRESETS = {
+  fulltime : { yrs:40, wage:100, boap:false,
+    jp:{salary:382917, yrsEmp:40, yrsNat:40},
+    tw:{sys:'labor',    insured:45800, yrs:40},
+    kr:{B:4101500, yrs:40} },
+  parttime : { yrs:20, wage:50, boap:true,
+    jp:{salary:191459, yrsEmp:20, yrsNat:40},
+    tw:{sys:'labor',    insured:30300, yrs:20},
+    kr:{B:2050750, yrs:20} },
+  homemaker: { yrs:0,  wage:0, boap:true,
+    jp:{salary:0,      yrsEmp:0,  yrsNat:40},
+    tw:{sys:'national', insured:19761, yrs:16},
+    kr:{B:0, yrs:0} }
+};
+
+/* ---- 日本 ---- */
+function calcJP(p){
+  const kosei = p.salary * 5.481/1000 * p.yrsEmp;          // 厚生年金 月額
+  const kokFull = p.kokAnnual/12;                          // 國民年金 滿額月額
+  const kok = kokFull * Math.min(p.yrsNat,40)/40;
+  const total = kosei + kok;
+  return { l1:kosei, l2:kok, total, ntd:total*FX.jp, rr:total/REF.jp*100,
+    fmla:`EPI ${fmtL(p.salary)} × 5.481/1000 × ${p.yrsEmp} = <b>¥${fmt(kosei)}</b><br>`
+        +`NP 66,250 × ${(Math.min(p.yrsNat,40))}/40 = <b>¥${fmt(kok)}</b>` };
+}
+/* ---- 臺灣 ---- */
+function calcTW(p){
+  let l1=0,l2=0,lump=0,f='';
+  if(p.sys==='labor'){
+    if(p.yrs>=15){
+      const a=p.insured*p.yrs*0.00775+3000, b=p.insured*p.yrs*0.0155;
+      l1=Math.max(a,b);
+      f=`LI ${fmtL(p.insured)} × ${p.yrs} × 1.55% = <b>NT$${fmt(l1)}</b>`;
+    }else{
+      const baseMonths = p.yrs<=15 ? p.yrs : 15+(p.yrs-15)*2;
+      lump = p.insured*baseMonths;
+      f=`< 15 yrs → lump sum ${fmtL(p.insured)} × ${baseMonths} = <b>NT$${fmt(lump)}</b> (one-time)`;
+    }
+  }else{
+    l2=Math.max(p.insured*p.yrs*0.0065+3772, p.insured*p.yrs*0.013);
+    f=`NP ${fmtL(p.insured)} × ${p.yrs} × 0.65% + 3,772 = <b>NT$${fmt(l2)}</b>`;
+  }
+  const total=l1+l2;
+  return { l1,l2,lump,total,ntd:total,rr:total/REF.tw*100,sys:p.sys,fmla:f };
+}
+/* ---- 南韓 ---- */
+function calcKR(p){
+  let nps=0;
+  if(p.yrs>=10) nps = 1.275*(p.A+p.B)*(p.yrs/20)/12;       // 國民年金 月額
+  let boap=0, bf='BOAP not eligible = <b>₩0</b>';
+  if(p.boap){
+    const base=p.boapMax, thr150=base*1.5, sel=2020000, add=base*0.5;
+    if(nps>sel){ boap=0; bf='Income above selection threshold → BOAP = <b>₩0</b>'; }
+    else if(nps<=thr150){ boap=base; bf=`NPS ≤ 150% of base → full = <b>₩${fmt(base)}</b>`; }
+    else{
+      const aBen=nps*0.5, linked=base-(2/3)*aBen;
+      boap=Math.min(Math.max(linked,add),base);
+      if(nps+boap>sel) boap=Math.max(0,sel-nps);
+      bf=`Linked reduction ${fmt(base)} − ⅔×${fmt(aBen)} → <b>₩${fmt(boap)}</b>`;
+    }
+  }
+  const total=nps+boap;
+  return { l1:nps,l2:boap,total,ntd:total*FX.kr,rr:total/REF.kr*100,
+    fmla:`NPS 1.275×(${fmtK(p.A)}+${fmtK(p.B)})×${p.yrs}/20 ÷12 = <b>₩${fmt(nps)}</b><br>${bf}` };
+}
+
+/* ============================================================
+   讀取 UI → 組參數
+   ============================================================ */
+const $ = id => document.getElementById(id);
+let curType = 'fulltime';
+let curCountry = 'all';                              // all | tw | jp | kr
+
+const SALREF = { tw:58545, jp:382917, kr:4101500 };  // wage%=100% 對應之全職平均月薪（薪資輸入基準）
+const CUR    = { tw:'NT$', jp:'¥', kr:'₩' };
+const CMETA  = {
+  jp:{flag:'🇯🇵',name:'Japan',fx:FX.jp,sys:"Employees' Pension (occ.) · National Pension (basic)"},
+  tw:{flag:'🇹🇼',name:'Taiwan',fx:1,   sys:'Labor Insurance (occ.) · National Pension (basic)'},
+  kr:{flag:'🇰🇷',name:'Korea',fx:FX.kr,sys:'National Pension (occ.) · Basic Pension BOAP'}
+};
+const ROLE = { fulltime:'Full-time', parttime:'Part-time', homemaker:'Homemaker' };
+
+function readParams(){
+  return {
+    jp:{ salary:+$('jpSalary').value, yrsEmp:+$('jpYrsEmp').value,
+         yrsNat:+$('jpYrsNat').value, kokAnnual:+$('jpKokAnnual').value },
+    tw:{ sys:$('twSys').value, insured:+$('twInsured').value, yrs:+$('twYrs').value },
+    kr:{ B:+$('krB').value, A:+$('krA').value, yrs:+$('krYrs').value,
+         boap:$('krBoap').checked, boapMax:+$('krBoapMax').value }
+  };
+}
+
+/* 依就業類型 + 年資% + 薪資% 推導進階欄位（使用者可再覆寫） */
+function applyProfile(){
+  const P = PRESETS[curType];
+  const yrs = +$('yrs').value;
+  const wagePct = +$('wage').value/100;
+  const home = curType==='homemaker';
+
+  // 日本
+  $('jpSalary').value = Math.round(382917*wagePct);
+  $('jpYrsEmp').value = home?0:yrs;
+  $('jpYrsNat').value = P.jp.yrsNat;      // 部分工時/家庭工作者仍假設 40 年國民年金
+  // 臺灣
+  $('twSys').value = home?'national':'labor';
+  if(home){ $('twInsured').value=19761; $('twYrs').value=Math.min(yrs||16,16)||16; }
+  else{ $('twInsured').value=twGrade(58545*wagePct); $('twYrs').value=yrs; }
+  // 南韓
+  $('krB').value = home?0:Math.round(4101500*wagePct);
+  $('krYrs').value = home?0:yrs;
+  $('krBoap').checked = P.boap;
+
+  updateSalaryField();
+  syncRange(); render();
+}
+
+/* 單國模式：以 % 同步「實際月薪金額」輸入框 */
+function updateSalaryField(){
+  if(curCountry==='all') return;
+  const home = curType==='homemaker';
+  const ref = SALREF[curCountry];
+  $('wageCur').textContent = CUR[curCountry];
+  $('wageAmt').value = home ? 0 : Math.round(ref * (+$('wage').value)/100);
+  $('wageAmt').disabled = home;
+  $('wageAmtHint').textContent = home ? 'Homemaker: no occupational-pension wage' : ('National avg '+CUR[curCountry]+fmt(ref));
+}
+
+/* 使用者直接輸入實際月薪 → 反推 % 並設定該國投保薪資 */
+function onAmt(){
+  if(curCountry==='all') return;
+  const amt = +$('wageAmt').value || 0;
+  const ref = SALREF[curCountry];
+  let pct = ref ? amt/ref*100 : 0;
+  const w = $('wage');
+  w.value = Math.round(Math.max(0, Math.min(pct, +w.max)));
+  $('wageVal').innerHTML = Math.round(pct)+' <small>%</small>';
+  w.style.setProperty('--fill',(w.value/w.max*100)+'%');
+  if(curType!=='homemaker'){
+    if(curCountry==='tw') $('twInsured').value = twGrade(amt);
+    if(curCountry==='jp') $('jpSalary').value = amt;
+    if(curCountry==='kr') $('krB').value = amt;
+  }
+  render();
+}
+
+/* 只算某一類型（供比較圖使用預設值） */
+function calcTypeStd(type){
+  const P = PRESETS[type];
+  return {
+    jp: calcJP({salary:P.jp.salary,yrsEmp:P.jp.yrsEmp,yrsNat:P.jp.yrsNat,kokAnnual:795000}),
+    tw: calcTW({sys:P.tw.sys,insured:P.tw.insured,yrs:P.tw.yrs}),
+    kr: calcKR({B:P.kr.B,A:2861091,yrs:P.kr.yrs,boap:P.boap,boapMax:323180})
+  };
+}
+
+/* ============================================================
+   渲染
+   ============================================================ */
+function render(){
+  const pr = readParams();
+  const jp=calcJP(pr.jp), tw=calcTW(pr.tw), kr=calcKR(pr.kr);
+
+  // 日本
+  $('jp-l1').textContent = '¥'+fmt(jp.l1);
+  $('jp-l2').textContent = '¥'+fmt(jp.l2);
+  $('jp-amt').textContent = fmt(jp.total);
+  $('jp-ntd').textContent = 'NT$'+fmt(jp.ntd);
+  setRR('jp',jp.rr); $('jp-fmla').innerHTML = jp.fmla;
+
+  // 臺灣
+  $('tw-sysname').innerHTML = tw.sys==='labor'?'Labor<br>Insurance':'National<br>Pension';
+  $('tw-l1n').style.opacity = tw.sys==='labor'?1:.4;
+  $('tw-l2n').parentElement.classList.toggle('muted', tw.sys==='labor');
+  $('tw-l1n').parentElement.classList.toggle('muted', tw.sys!=='labor');
+  $('tw-l1').textContent = tw.sys==='labor'? (tw.l1>0?'NT$'+fmt(tw.l1):'—') : '—';
+  $('tw-l2').textContent = tw.sys==='national'? 'NT$'+fmt(tw.l2) : '—';
+  $('tw-amt').textContent = tw.total>0?fmt(tw.total):'0';
+  $('tw-lump').textContent = tw.lump>0 ? ('Old-age lump sum NT$'+fmt(tw.lump)+' (under 15 yrs, one-time)') : '';
+  setRR('tw', tw.rr); $('tw-fmla').innerHTML = tw.fmla;
+
+  // 南韓
+  $('kr-l1').textContent = '₩'+fmt(kr.l1);
+  $('kr-l2').textContent = '₩'+fmt(kr.l2);
+  $('kr-amt').textContent = fmt(kr.total);
+  $('kr-ntd').textContent = 'NT$'+fmt(kr.ntd);
+  setRR('kr', kr.rr); $('kr-fmla').innerHTML = kr.fmla;
+
+  // NTD 比較句
+  const arr=[['Japan',jp.ntd],['Taiwan',tw.total],['Korea',kr.ntd]].sort((a,b)=>b[1]-a[1]);
+  $('ntd-compare').innerHTML = `In NTD: <b style="font-family:var(--mono)">${arr[0][0]} NT$${fmt(arr[0][1])}</b> &gt; ${arr[1][0]} NT$${fmt(arr[1][1])} &gt; ${arr[2][0]} NT$${fmt(arr[2][1])}/mo`;
+
+  if(curCountry!=='all') renderSingle({jp,tw,kr});
+
+  renderChart(jp,tw,kr);
+}
+
+/* 單國詳解：基礎年金 / 職業年金 / 年金總額 */
+function renderSingle(res){
+  const c=curCountry, m=CMETA[c], r=res[c], cur=CUR[c];
+  const S=$('single'); S.dataset.c=c;
+  $('s-flag').textContent=m.flag; $('s-country').textContent=m.name;
+  $('s-sys').textContent=m.sys; $('s-role').textContent=ROLE[curType];
+
+  let occN,occV,basN,basV;
+  if(c==='jp'){ occN="Employees' Pension"; occV=r.l1; basN='National Pension'; basV=r.l2; }
+  else if(c==='kr'){ occN='National Pension (NPS)'; occV=r.l1; basN='Basic Pension (BOAP)'; basV=r.l2; }
+  else { // tw：勞保與國保互斥
+    if(r.sys==='labor'){ occN='Labor Insurance old-age'; occV=r.l1; basN='National Pension (excl. with LI)'; basV=0; }
+    else { occN='Labor Insurance (not enrolled)'; occV=0; basN='National Pension'; basV=r.l2; }
+  }
+  $('s-occ-name').textContent=occN; $('s-occ').textContent=cur+fmt(occV);
+  $('s-basic-name').textContent=basN; $('s-basic').textContent=cur+fmt(basV);
+  $('s-occ-row').classList.toggle('zero', occV<=0);
+  $('s-basic-row').classList.toggle('zero', basV<=0);
+  $('s-total').textContent=cur+fmt(r.total);
+  $('s-ntd').innerHTML = c==='tw' ? 'Amounts are already in NTD.'
+                                  : ('≈ <b>NT$'+fmt(r.ntd)+'</b> / mo ('+CUR[c]+'1 = '+m.fx+' NTD)');
+  $('s-rr').textContent=r.rr.toFixed(1)+'%';
+  $('s-rrbar').style.width=Math.min(r.rr,100)+'%';
+  $('s-fmla').innerHTML=r.fmla;
+  $('s-lump').textContent = (c==='tw' && r.lump>0)
+    ? ('※ Under 15 yrs: Labor Insurance pays a lump sum of NT$'+fmt(r.lump)+' (not monthly)') : '';
+}
+
+function setRR(c,rr){
+  $(c+'-rr').textContent = rr.toFixed(1)+'%';
+  $(c+'-rrbar').style.width = Math.min(rr,100)+'%';
+}
+
+/* 比較圖：三類型 × 三國，目前類型用即時值、其餘用標準值 */
+function renderChart(jpCur,twCur,krCur){
+  const order=['fulltime','parttime','homemaker'];
+  const label={fulltime:['Full-time','全職者'],parttime:['Part-time','部分工時'],homemaker:['Homemaker','家庭工作者']};
+  const data={};
+  order.forEach(t=>{ data[t] = calcTypeStd(t); });
+  data[curType] = {jp:jpCur,tw:twCur,kr:krCur};       // 覆寫為即時結果
+
+  // 找最大值定標
+  let max=10;
+  order.forEach(t=>['jp','tw','kr'].forEach(c=>max=Math.max(max,data[t][c].rr)));
+  max=Math.ceil(max/10)*10;
+
+  const chart=$('chart'); chart.innerHTML='';
+  order.forEach(t=>{
+    const g=document.createElement('div');
+    g.className='cgroup'+(t===curType?' active':'');
+    const bars=document.createElement('div'); bars.className='bars';
+    ['jp','tw','kr'].forEach(c=>{
+      const rr=data[t][c].rr;
+      const b=document.createElement('div'); b.className='bar3'; b.dataset.c=c;
+      b.innerHTML=`<span class="v">${rr.toFixed(1)}</span><div class="col" style="height:${Math.max(rr/max*100,1.5)}%"></div>`;
+      bars.appendChild(b);
+    });
+    g.appendChild(bars);
+    const gt=document.createElement('div'); gt.className='gt';
+    gt.innerHTML=`${label[t][0]}<small>${label[t][1]}</small>`;
+    g.appendChild(gt);
+    chart.appendChild(g);
+  });
+}
+
+/* ============================================================
+   格式化與滑桿
+   ============================================================ */
+function fmt(n){ return Math.round(n).toLocaleString('en-US'); }
+function fmtL(n){ return Math.round(n).toLocaleString('en-US'); }
+function fmtK(n){ return Math.round(n).toLocaleString('en-US'); }
+
+function syncRange(){
+  const y=$('yrs'), w=$('wage');
+  $('yrsVal').innerHTML = y.value+' <small>yr</small>';
+  $('wageVal').innerHTML = w.value+' <small>%</small>';
+  y.style.setProperty('--fill',(y.value/y.max*100)+'%');
+  w.style.setProperty('--fill',(w.value/w.max*100)+'%');
+  const home=curType==='homemaker';
+  y.disabled=false; w.disabled=home;
+  // chips 標亮
+  document.querySelectorAll('#yrsChips button').forEach(b=>b.classList.toggle('on',+b.dataset.y===+y.value));
+  document.querySelectorAll('#wageChips button').forEach(b=>b.classList.toggle('on',+b.dataset.w===+w.value));
+}
+
+/* ============================================================
+   事件
+   ============================================================ */
+$('seg').addEventListener('click',e=>{
+  const btn=e.target.closest('button'); if(!btn) return;
+  curType=btn.dataset.t;
+  document.querySelectorAll('#seg button').forEach(b=>b.classList.toggle('on',b===btn));
+  const P=PRESETS[curType];
+  $('yrs').value=P.yrs; $('wage').value=P.wage;
+  applyProfile();
+});
+$('yrs').addEventListener('input',()=>{ syncRange(); applyProfile2(); });
+$('wage').addEventListener('input',()=>{ syncRange(); applyProfile2(); });
+$('yrsChips').addEventListener('click',e=>{ const b=e.target.closest('button'); if(!b)return; $('yrs').value=b.dataset.y; syncRange(); applyProfile2(); });
+$('wageChips').addEventListener('click',e=>{ const b=e.target.closest('button'); if(!b)return; $('wage').value=b.dataset.w; syncRange(); applyProfile2(); });
+$('krBoap').addEventListener('change',()=>{ render(); });
+
+// 工作・國家選擇：切換三國比較 / 單國詳解
+$('segCountry').addEventListener('click',e=>{
+  const b=e.target.closest('button'); if(!b) return;
+  curCountry=b.dataset.c;
+  document.querySelectorAll('#segCountry button').forEach(x=>x.classList.toggle('on',x===b));
+  const single = curCountry!=='all';
+  document.body.classList.toggle('mode-single', single);
+  document.body.classList.toggle('mode-all', !single);
+  $('wageSubLabel').textContent = single ? 'Actual monthly wage' : '% of full-time avg';
+  applyProfile();
+});
+// 實際月薪輸入
+$('wageAmt').addEventListener('input', onAmt);
+$('wageAvgBtn').addEventListener('click',()=>{ $('wage').value=100; syncRange(); applyProfile(); });
+
+// 滑桿更動時只更新推導欄位（保留目前類型）
+function applyProfile2(){ applyProfile(); }
+
+// 進階欄位手動更動 → 直接重算（不覆寫）
+['jpSalary','jpYrsEmp','jpYrsNat','jpKokAnnual','twSys','twInsured','twYrs','krB','krA','krYrs','krBoapMax']
+  .forEach(id=>$(id).addEventListener('input',render));
+
+$('yr').textContent=new Date().getFullYear();
+
+// 初始化
+document.body.classList.add('mode-all');
+applyProfile();
+</script>
+</body>
+</html>
