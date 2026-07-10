@@ -468,6 +468,19 @@ em { font-family: var(--news); font-style: italic; }
 .pub-list .venue { color: var(--ink-faint); }
 .pub-list a { color: var(--terra); border-bottom: 1px solid var(--tag-border); }
 .pub-list a:hover { border-bottom-color: var(--terra); }
+/* 每篇文章末端的 Google 學術搜尋連結：小巧、不搶戲 */
+.pub-list a.scholar {
+  font-family: var(--mono);
+  font-size: .68rem; letter-spacing: .04em;
+  white-space: nowrap;
+  color: var(--ink-faint);
+  border: 1px solid var(--hair-deep);
+  border-radius: 999px;
+  padding: .1em .6em;
+  margin-left: .5em;
+  vertical-align: .1em;
+}
+.pub-list a.scholar:hover { color: var(--terra); border-color: var(--terra); background: var(--paper); }
 
 .badge {
   display: inline-block;
