@@ -468,6 +468,9 @@ em { font-family: var(--news); font-style: italic; }
 .pub-list .venue { color: var(--ink-faint); }
 .pub-list a { color: var(--terra); border-bottom: 1px solid var(--tag-border); }
 .pub-list a:hover { border-bottom-color: var(--terra); }
+/* 標題連結：連到該篇真實文章頁。用內文色＋淡底線，可辨識為連結又不搶戲 */
+.pub-list a.ref { color: var(--ink); border-bottom: 1px solid var(--hair-deep); }
+.pub-list a.ref:hover { color: var(--terra); border-bottom-color: var(--terra); }
 
 .badge {
   display: inline-block;
