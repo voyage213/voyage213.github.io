@@ -1,0 +1,1284 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>東吳大學社會學系 AI 社會研究中心 ・ Research Center for AI and Society</title>
+<meta name="description" content="東吳大學社會學系 AI 社會研究中心（成立於 2021 年）。以社會學視角研究人工智慧：中心宗旨、成員、課程、教學活動、研究成果與國際視野。">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="東吳大學社會學系 AI 社會研究中心">
+<meta property="og:description" content="以社會學視角研究人工智慧。AI 與不平等、性別、犯罪學、社會福祉、生態與社會工作的教學與研究。">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;800&family=IBM+Plex+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<script>
+  /* 內容預設可見。加上 .js 後，style.css 的 `.js .reveal` 才會把內容藏起來，
+     交給 main.js 的 IntersectionObserver 逐段揭露。
+     保險絲：main.js 若沒載入，2 秒後把 .js 拿掉，內容立刻恢復可見。 */
+  document.documentElement.classList.add('js');
+  setTimeout(function () {
+    if (!document.documentElement.classList.contains('reveal-ready')) {
+      document.documentElement.classList.remove('js');
+    }
+  }, 2000);
+</script>
+
+<style>
+/* ============================================================
+   AI 社會研究中心 — 深空科技版
+   設計語言：深空藍 · 電光青 · 星雲紫 · 等寬資料標籤
+   ============================================================ */
+
+:root {
+  --bg:      #060a18;   /* 深空底 */
+  --bg2:     #0a1126;
+  --panel:   #0d1530;   /* 卡片面板 */
+  --panel2:  #111a3a;
+  --bright:  #eef2ff;   /* 標題白 */
+  --txt:     #c9d4ef;   /* 內文 */
+  --dim:     #8a96c0;   /* 弱化 */
+  --faint:   #5d6890;
+  --cyan:    #4ee1e6;   /* 主色：電光青 */
+  --violet:  #9d7bff;   /* 星雲紫 */
+  --blue:    #3e7bfa;
+  --hair:    #1c2749;   /* 細線 */
+  --hair2:   #2a3768;
+  --grad:    linear-gradient(90deg, var(--cyan), var(--violet));
+
+  --sans: 'Noto Sans TC', -apple-system, 'PingFang TC', sans-serif;
+  --mono: 'IBM Plex Mono', 'SF Mono', Menlo, monospace;
+
+  --ease: cubic-bezier(.22,.61,.36,1);
+  --ease-ink: cubic-bezier(.19,1,.22,1);
+  --sheet: 1440px;
+  --pad-x: clamp(20px, 4.5vw, 60px);
+  --edge: max(var(--pad-x), calc((100% - var(--sheet)) / 2));
+  --nav-h: 64px;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  background-image:
+    radial-gradient(900px 560px at 85% -10%, rgba(157,123,255,.16), transparent 60%),
+    radial-gradient(760px 520px at 0% 12%, rgba(78,225,230,.10), transparent 55%),
+    radial-gradient(900px 700px at 50% 115%, rgba(62,123,250,.12), transparent 60%);
+  background-attachment: fixed;
+  color: var(--txt);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.95;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection { background: rgba(78,225,230,.35); color: #fff; }
+img { max-width: 100%; display: block; }
+a { color: inherit; text-decoration: none; }
+
+.wrap { width: 100%; padding-inline: var(--edge); }
+
+/* ---------- 進場薄紗 ---------- */
+.veil {
+  position: fixed; inset: 0; z-index: 999;
+  background: var(--bg);
+  pointer-events: none;
+  animation: veil-lift .9s var(--ease-ink) .1s forwards;
+}
+@keyframes veil-lift { to { opacity: 0; visibility: hidden; } }
+@media (prefers-reduced-motion: reduce) { .veil { display: none; } }
+
+/* ---------- 導覽列 ---------- */
+#nav {
+  position: sticky; top: 0; z-index: 100;
+  height: var(--nav-h);
+  display: flex; align-items: center; justify-content: space-between;
+  padding-inline: var(--edge);
+  background: rgba(6,10,24,.78);
+  backdrop-filter: saturate(140%) blur(12px);
+  -webkit-backdrop-filter: saturate(140%) blur(12px);
+  border-bottom: 1px solid var(--hair);
+}
+#nav.is-scrolled { border-bottom-color: var(--hair2); }
+
+.brand { display: flex; align-items: baseline; gap: 10px; }
+.brand,
+.brand :first-child { font-weight: 700; font-size: 1.13rem; color: #fff; letter-spacing: .02em; }
+.brand :first-child { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.brand .en {
+  font-family: var(--mono);
+  font-size: .66rem; font-weight: 400;
+  letter-spacing: .16em; text-transform: uppercase;
+  color: var(--faint);
+}
+
+.navlinks { list-style: none; display: flex; align-items: center; gap: 1.6rem; margin: 0; padding: 0; }
+.navlinks a {
+  font-size: .875rem; color: var(--dim);
+  position: relative; padding-block: .35em;
+  transition: color .3s var(--ease);
+}
+.navlinks a:hover { color: var(--cyan); }
+.navlinks a.lang {
+  font-family: var(--mono);
+  font-size: .75rem; letter-spacing: .1em;
+  color: var(--cyan);
+  border: 1px solid rgba(78,225,230,.4);
+  border-radius: 999px;
+  padding: .3em 1em;
+}
+.navlinks a.lang:hover { background: rgba(78,225,230,.08); box-shadow: 0 0 18px -6px var(--cyan); }
+
+.nav-toggle {
+  display: none;
+  background: none; border: 0; cursor: pointer;
+  width: 32px; height: 24px; padding: 0;
+  flex-direction: column; justify-content: space-between;
+}
+.nav-toggle span {
+  display: block; height: 1.5px; width: 100%;
+  background: var(--txt);
+  transition: transform .4s var(--ease-ink), opacity .3s var(--ease);
+}
+.nav-toggle[aria-expanded="true"] span:nth-child(1) { transform: translateY(10.5px) rotate(45deg); }
+.nav-toggle[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.nav-toggle[aria-expanded="true"] span:nth-child(3) { transform: translateY(-10.5px) rotate(-45deg); }
+
+/* ---------- Hero ---------- */
+.center-hero {
+  position: relative;
+  padding: clamp(64px, 8vw, 110px) var(--edge) clamp(44px, 5.5vw, 64px);
+  border-bottom: 1px solid var(--hair);
+  overflow: hidden;
+}
+.center-hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(78,225,230,.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(78,225,230,.05) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(720px 480px at 30% 20%, #000 30%, transparent 75%);
+  -webkit-mask-image: radial-gradient(720px 480px at 30% 20%, #000 30%, transparent 75%);
+  pointer-events: none;
+}
+.center-hero > * { position: relative; }
+.center-hero .est {
+  font-family: var(--mono);
+  font-size: .78rem; letter-spacing: .22em;
+  color: var(--cyan); text-transform: uppercase;
+  margin: 0 0 1.2rem;
+}
+.center-hero h1 {
+  font-weight: 800;
+  font-size: clamp(1.9rem, 4.8vw, 3.4rem);
+  line-height: 1.3;
+  letter-spacing: .01em;
+  color: var(--bright);
+  margin: 0 0 .5rem;
+}
+.center-hero h1 .accent {
+  background: var(--grad);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.center-hero .en-name {
+  font-family: var(--mono);
+  font-size: clamp(.82rem, 1.4vw, .95rem);
+  letter-spacing: .08em;
+  color: var(--faint);
+  margin: 0 0 1.6rem;
+}
+.center-hero .hero-sub { max-width: 46em; color: var(--dim); margin: 0; font-size: 1.02rem; }
+
+.anchor-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 2rem; }
+.anchor-row a {
+  font-family: var(--mono);
+  font-size: .78rem;
+  color: var(--cyan);
+  border: 1px solid rgba(78,225,230,.35);
+  border-radius: 999px;
+  padding: .38em 1.05em;
+  background: rgba(78,225,230,.04);
+  transition: background .3s var(--ease), box-shadow .3s var(--ease), border-color .3s var(--ease);
+}
+.anchor-row a:hover {
+  background: rgba(78,225,230,.12);
+  border-color: var(--cyan);
+  box-shadow: 0 0 22px -8px var(--cyan);
+}
+
+/* ---------- 章節通用 ---------- */
+.chapter { padding: clamp(44px, 5.5vw, 60px) 0 24px; }
+.chapter > .wrap { padding-inline: var(--edge); }
+
+.sec-index {
+  font-family: var(--mono);
+  font-size: .7rem; letter-spacing: .22em; text-transform: uppercase;
+  color: var(--cyan);
+  margin: 0 0 .8rem;
+}
+.sec-index::before { content: '// '; color: var(--faint); }
+.sec-title {
+  font-weight: 700;
+  font-size: clamp(1.55rem, 2.6vw, 1.95rem);
+  line-height: 1.35;
+  color: var(--bright);
+  margin: 0 0 1.1rem;
+}
+.sec-title .en {
+  display: block;
+  font-family: var(--mono);
+  font-size: .72rem; font-weight: 400;
+  letter-spacing: .2em; text-transform: uppercase;
+  color: var(--faint);
+  margin-top: .55rem;
+}
+.sec-body { font-size: 1rem; color: var(--dim); margin: 0 0 1.1rem; max-width: 62em; }
+.sec-body:last-of-type { margin-bottom: 1.8rem; }
+h3 { color: var(--bright); }
+
+/* 焦點清單 */
+.focus-list {
+  list-style: none; padding: 0;
+  margin: 1.6rem 0 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 14px 28px;
+}
+.focus-list li {
+  font-size: .93rem; line-height: 1.85; color: var(--txt);
+  padding-left: 1.5em; position: relative;
+}
+.focus-list li::before {
+  content: '▸'; position: absolute; left: 0; top: 0;
+  color: var(--cyan);
+}
+
+.note-line { font-size: .85rem; color: var(--faint); margin-top: 1.4rem; }
+.note-line a, .sec-body a { color: var(--cyan) !important; border-bottom: 1px solid rgba(78,225,230,.3); }
+.note-line a:hover, .sec-body a:hover { border-bottom-color: var(--cyan); }
+
+/* ---------- 執行長 ---------- */
+.director {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 2fr);
+  gap: clamp(24px, 4vw, 56px);
+  align-items: start;
+  background: linear-gradient(160deg, rgba(157,123,255,.08), rgba(13,21,48,.85));
+  border: 1px solid var(--hair2);
+  border-radius: 16px;
+  padding: clamp(24px, 3.5vw, 44px);
+  margin-top: 2rem;
+  position: relative;
+}
+.director::before {
+  content: '';
+  position: absolute; inset: -1px auto auto -1px; width: 100%; height: 2px;
+  background: var(--grad);
+  border-radius: 16px 16px 0 0;
+}
+.director .photo img {
+  width: 100%; max-width: 320px;
+  border-radius: 14px;
+  display: block;
+  border: 1px solid var(--hair2);
+  box-shadow: 0 0 44px -18px rgba(78,225,230,.55);
+}
+.director h3 { font-size: 1.6rem; font-weight: 700; margin: 0 0 .2rem; color: var(--bright); }
+.director .title { color: var(--faint); font-size: .88rem; font-family: var(--mono); margin: 0 0 1.1rem; }
+.director p { font-size: .95rem; line-height: 1.95; color: var(--txt); margin: 0 0 1rem; }
+.director a { color: var(--cyan); border-bottom: 1px solid rgba(78,225,230,.3); }
+.director a:hover { border-bottom-color: var(--cyan); }
+@media (max-width: 720px) { .director { grid-template-columns: 1fr; } }
+
+/* ---------- 成員卡片 ---------- */
+.people-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+  gap: clamp(18px, 2.2vw, 28px);
+  margin-top: 2rem;
+}
+.person {
+  background: var(--panel);
+  border: 1px solid var(--hair);
+  border-radius: 14px;
+  padding: 24px 24px 22px;
+  position: relative;
+  overflow: hidden;
+}
+.person::before {
+  content: '';
+  position: absolute; top: 0; left: 0; width: 100%; height: 2px;
+  background: linear-gradient(90deg, var(--cyan), transparent 70%);
+}
+.person:nth-child(2n)::before { background: linear-gradient(90deg, var(--violet), transparent 70%); }
+.person:nth-child(3n)::before { background: linear-gradient(90deg, var(--blue), transparent 70%); }
+.person .role {
+  font-family: var(--mono);
+  font-size: .68rem; letter-spacing: .18em;
+  color: var(--cyan);
+  margin: 0 0 .7rem;
+}
+.person:nth-child(2n) .role { color: var(--violet); }
+.person h4 { font-size: 1.22rem; font-weight: 700; margin: 0 0 .15rem; color: var(--bright); }
+.person .title { font-size: .82rem; color: var(--faint); font-family: var(--mono); margin: 0 0 .85rem; }
+.person p.bio { font-size: .9rem; line-height: 1.85; color: var(--dim); margin: 0; }
+.person p.bio a { color: var(--cyan); border-bottom: 1px solid rgba(78,225,230,.3); }
+.person p.bio a:hover { border-bottom-color: var(--cyan); }
+
+/* ---------- 課程卡片 ---------- */
+.course-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: clamp(18px, 2.2vw, 26px);
+  margin-top: 2rem;
+}
+.ccard {
+  background: var(--panel);
+  border: 1px solid var(--hair);
+  border-radius: 14px;
+  padding: 22px 24px;
+  position: relative;
+  overflow: hidden;
+  transition: border-color .3s var(--ease), box-shadow .3s var(--ease), transform .3s var(--ease);
+}
+.ccard::before {
+  content: '';
+  position: absolute; top: 0; left: 0; width: 100%; height: 2px;
+  background: linear-gradient(90deg, var(--cyan), transparent 75%);
+}
+.ccard:nth-child(3n+2)::before { background: linear-gradient(90deg, var(--violet), transparent 75%); }
+.ccard:nth-child(3n)::before   { background: linear-gradient(90deg, var(--blue), transparent 75%); }
+.ccard:hover { border-color: var(--hair2); box-shadow: 0 14px 44px -22px rgba(78,225,230,.4); transform: translateY(-2px); }
+.ccard .cno {
+  font-family: var(--mono);
+  font-size: .7rem; letter-spacing: .1em;
+  color: var(--faint);
+  margin: 0 0 .55rem;
+}
+.ccard h4 { font-size: 1.12rem; font-weight: 700; margin: 0 0 .3rem; color: var(--bright); }
+.ccard .who { font-size: .8rem; color: var(--cyan); font-family: var(--mono); margin: 0 0 .7rem; }
+.ccard p { font-size: .88rem; line-height: 1.85; color: var(--dim); margin: 0; }
+
+/* ---------- 模組流程 ---------- */
+.module-flow {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 18px;
+  margin-top: 1.6rem;
+  counter-reset: step;
+}
+.module-step {
+  background: var(--panel);
+  border: 1px solid var(--hair);
+  border-radius: 14px;
+  padding: 22px 24px;
+}
+.module-step .mno {
+  font-family: var(--mono);
+  font-size: .7rem; letter-spacing: .18em;
+  color: var(--violet);
+  margin: 0 0 .5rem;
+}
+.module-step h5 { font-size: 1.05rem; font-weight: 700; margin: 0 0 .5rem; color: var(--bright); }
+.module-step p { font-size: .86rem; line-height: 1.85; color: var(--dim); margin: 0; }
+
+/* ---------- 表格 ---------- */
+.table-scroll { overflow-x: auto; margin-top: 1.6rem; border: 1px solid var(--hair); border-radius: 12px; }
+table.center-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .88rem;
+  line-height: 1.75;
+  min-width: 520px;
+}
+table.center-table th {
+  font-family: var(--mono);
+  font-weight: 600;
+  font-size: .78rem;
+  letter-spacing: .1em;
+  text-align: left;
+  color: var(--cyan);
+  background: var(--panel2);
+  padding: .7em 1em;
+  border-bottom: 1px solid var(--hair2);
+  white-space: nowrap;
+}
+table.center-table td {
+  padding: .7em 1em;
+  border-bottom: 1px solid var(--hair);
+  color: var(--dim);
+  vertical-align: top;
+  background: rgba(13,21,48,.4);
+}
+table.center-table tr:last-child td { border-bottom: 0; }
+table.center-table td.job { font-weight: 600; color: var(--bright); white-space: nowrap; }
+
+/* ---------- 年度數字帶 ---------- */
+.stat-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 16px;
+  margin-top: 2rem;
+}
+.stat {
+  background: var(--panel);
+  border: 1px solid var(--hair);
+  border-radius: 14px;
+  padding: 18px 20px;
+  position: relative;
+  overflow: hidden;
+}
+.stat::before {
+  content: '';
+  position: absolute; top: 0; left: 0; width: 100%; height: 2px;
+  background: linear-gradient(90deg, var(--cyan), transparent 70%);
+}
+.stat:nth-child(2)::before { background: linear-gradient(90deg, var(--violet), transparent 70%); }
+.stat:nth-child(3)::before { background: linear-gradient(90deg, var(--blue), transparent 70%); }
+.stat:nth-child(4)::before { background: linear-gradient(90deg, var(--cyan), transparent 70%); }
+.stat:nth-child(5)::before { background: linear-gradient(90deg, var(--violet), transparent 70%); }
+.stat .num {
+  font-family: var(--mono);
+  font-size: 2.4rem;
+  font-weight: 600;
+  line-height: 1.15;
+  background: var(--grad);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.stat .lbl { font-size: .84rem; color: var(--dim); line-height: 1.6; margin-top: .3rem; }
+
+/* ---------- 系列標籤 ---------- */
+.series-tag {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: .7rem;
+  letter-spacing: .06em;
+  color: var(--cyan);
+  border: 1px solid rgba(78,225,230,.35);
+  border-radius: 999px;
+  padding: .12em .8em;
+  white-space: nowrap;
+  background: rgba(78,225,230,.05);
+}
+
+/* ---------- 實驗室特寫框 ---------- */
+.lab-box {
+  background: linear-gradient(170deg, rgba(157,123,255,.10), rgba(13,21,48,.9) 45%);
+  border: 1px solid var(--hair2);
+  border-radius: 18px;
+  padding: clamp(24px, 3.5vw, 42px);
+  margin-top: 2.4rem;
+  position: relative;
+  overflow: hidden;
+}
+.lab-box::before {
+  content: '';
+  position: absolute; top: 0; left: 0; width: 100%; height: 2px;
+  background: var(--grad);
+}
+.lab-box .lab-kicker {
+  font-family: var(--mono);
+  font-size: .72rem; letter-spacing: .2em;
+  color: var(--violet);
+  margin: 0 0 .7rem;
+}
+.lab-box h3 { font-size: 1.45rem; font-weight: 700; margin: 0 0 .3rem; color: var(--bright); }
+.lab-box .lab-en {
+  font-family: var(--mono);
+  font-size: .78rem; letter-spacing: .1em;
+  color: var(--faint);
+  margin: 0 0 1.3rem;
+}
+.lab-box p { font-size: .93rem; line-height: 1.9; color: var(--dim); margin: 0 0 1rem; }
+.lab-cols {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin-top: 1.4rem;
+}
+.lab-col {
+  background: rgba(6,10,24,.55);
+  border: 1px solid var(--hair);
+  border-radius: 12px;
+  padding: 18px 20px;
+}
+.lab-col h6 { font-size: .98rem; font-weight: 700; margin: 0 0 .5rem; color: var(--cyan); }
+.lab-col ul { margin: 0; padding-left: 1.2em; }
+.lab-col li { font-size: .86rem; line-height: 1.85; color: var(--dim); }
+.lab-col li::marker { color: var(--cyan); }
+
+/* ---------- 活動卡片 ---------- */
+.activity {
+  border-left: 2px solid rgba(78,225,230,.5);
+  padding: 6px 0 6px 24px;
+  margin-top: 2rem;
+  position: relative;
+}
+.activity::before {
+  content: '';
+  position: absolute; left: -5px; top: 12px;
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--cyan);
+  box-shadow: 0 0 12px var(--cyan);
+}
+.activity .when {
+  font-family: var(--mono);
+  font-size: .74rem; letter-spacing: .12em;
+  color: var(--cyan);
+  margin: 0 0 .4rem;
+}
+.activity h4 { font-size: 1.18rem; font-weight: 700; margin: 0 0 .45rem; color: var(--bright); }
+.activity p { font-size: .92rem; line-height: 1.9; color: var(--dim); margin: 0 0 .4rem; }
+.activity a { color: var(--cyan); border-bottom: 1px solid rgba(78,225,230,.3); }
+.activity a:hover { border-bottom-color: var(--cyan); }
+
+/* ---------- 清單群組 ---------- */
+.pub-group { margin-bottom: 3.2rem; }
+.pub-group > h3 {
+  display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap;
+  font-size: 1.4rem; font-weight: 700;
+  color: var(--bright);
+  margin: 0 0 .4rem;
+  border-top: 2px solid transparent;
+  border-image: linear-gradient(90deg, var(--cyan), transparent 60%) 1;
+  padding-top: 16px;
+}
+.pub-group:nth-of-type(2n) > h3 { border-image: linear-gradient(90deg, var(--violet), transparent 60%) 1; }
+.pub-group > h3 .en {
+  font-family: var(--mono);
+  font-size: .66rem; font-weight: 400;
+  letter-spacing: .18em; text-transform: uppercase;
+  color: var(--faint);
+}
+.pub-list { list-style: none; margin: 0; padding: 0; }
+.pub-list li {
+  display: grid;
+  grid-template-columns: 108px 1fr;
+  gap: 20px;
+  padding: 15px 0;
+  border-top: 1px solid var(--hair);
+}
+.pub-list li:first-child { border-top: 0; }
+.pub-list .yr {
+  font-family: var(--mono);
+  font-size: .78rem;
+  color: var(--cyan);
+  padding-top: .25em;
+}
+.pub-list p { margin: 0; font-size: .94rem; line-height: 1.85; color: var(--txt); }
+.pub-list .venue { color: var(--faint); }
+.pub-list a { color: var(--cyan); border-bottom: 1px solid rgba(78,225,230,.3); }
+.pub-list a:hover { border-bottom-color: var(--cyan); }
+
+.badge {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: .62rem; font-weight: 600;
+  letter-spacing: .08em;
+  color: #06131a;
+  background: var(--cyan);
+  border-radius: 5px;
+  padding: 2px 8px;
+  margin-left: .5em;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+/* ---------- CTA ---------- */
+.cta {
+  display: inline-flex; align-items: center; gap: .7em;
+  font-family: var(--mono);
+  font-size: .8rem; letter-spacing: .06em;
+  color: var(--cyan);
+  transition: gap .3s var(--ease);
+}
+.cta:hover { gap: 1em; text-decoration: underline; text-underline-offset: 5px; }
+.cta .arrow { transition: transform .35s var(--ease-ink); }
+.cta:hover .arrow { transform: translateX(3px); }
+.page-cta { margin: 3rem 0 0; }
+
+/* ---------- 頁尾 ---------- */
+footer {
+  padding: 34px var(--edge);
+  border-top: 1px solid var(--hair);
+  display: flex; flex-wrap: wrap; gap: 14px;
+  align-items: center; justify-content: space-between;
+  margin-top: 48px;
+}
+footer .wrap { padding-inline: 0; display: contents; }
+footer .f-name {
+  font-size: .95rem; font-weight: 600;
+  background: var(--grad);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+footer .f-links { display: flex; gap: 22px; }
+footer a { font-size: .81rem; color: var(--dim); transition: color .3s var(--ease); }
+footer a:hover { color: var(--cyan); }
+footer .f-copy {
+  width: 100%;
+  font-family: var(--mono);
+  font-size: .7rem; letter-spacing: .1em;
+  color: var(--faint);
+  margin: 0;
+  padding-top: 1.2rem;
+  border-top: 1px solid var(--hair);
+}
+
+/* ---------- 捲動揭露（同原站機制：內容預設可見，.js 才隱藏） ---------- */
+.js .reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity .9s var(--ease-ink), transform .9s var(--ease-ink);
+}
+.js .reveal.is-in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .js .reveal { opacity: 1; transform: none; transition: none; }
+}
+
+/* ---------- 響應式 ---------- */
+@media (max-width: 760px) {
+  .nav-toggle { display: flex; }
+  .navlinks {
+    position: absolute;
+    top: 100%; left: 0; right: 0;
+    flex-direction: column; align-items: flex-start;
+    gap: 0;
+    background: #0a1126;
+    border-bottom: 1px solid var(--hair2);
+    box-shadow: 0 24px 48px -28px rgba(0,0,0,.8);
+    padding: 10px 20px 24px;
+    opacity: 0; visibility: hidden;
+    transform: translateY(-10px);
+    transition: opacity .35s var(--ease), transform .35s var(--ease-ink), visibility .35s;
+  }
+  .navlinks.is-open { opacity: 1; visibility: visible; transform: none; }
+  .navlinks li { width: 100%; border-bottom: 1px solid var(--hair); list-style: none; }
+  .navlinks li:last-child { border-bottom: 0; }
+  .navlinks a { display: block; padding: .95em 0; font-size: .94rem; }
+  .navlinks a.lang { display: inline-block; margin-top: 1rem; }
+
+  body { font-size: 15.5px; }
+  .pub-list li { grid-template-columns: 1fr; gap: .35rem; }
+  .pub-list .yr { padding-top: 0; }
+  footer { flex-direction: column; align-items: flex-start; }
+}
+</style>
+</head>
+<body>
+
+<div class="veil" aria-hidden="true"></div>
+
+<nav id="nav">
+  <a class="brand" href="#top"><span>AI 社會研究中心</span><span class="en">RCAIS · SCU Sociology</span></a>
+
+  <button class="nav-toggle" id="navToggle" aria-label="選單" aria-expanded="false" aria-controls="navlinks">
+    <span></span><span></span><span></span>
+  </button>
+
+  <ul class="navlinks" id="navlinks">
+    <li><a href="#mission">宗旨</a></li>
+    <li><a href="#people">成員</a></li>
+    <li><a href="#courses">課程</a></li>
+    <li><a href="#activities">教學活動</a></li>
+    <li><a href="#research">研究</a></li>
+    <li><a href="#global">國際視野</a></li>
+    <li><a href="index.html" class="lang">黃芳誼個人網站</a></li>
+  </ul>
+</nav>
+
+<main id="top">
+
+  <!-- ══════════ Hero ══════════ -->
+  <header class="center-hero">
+    <p class="est">Est. 2021 ・ Soochow University ・ Department of Sociology</p>
+    <h1>東吳大學社會學系<br><span class="accent">AI 社會研究中心</span></h1>
+    <p class="en-name">Research Center for AI and Society (RCAIS)</p>
+    <p class="hero-sub">當大家都在學怎麼使用 AI，社會學更在思考：AI 會如何改變人類、關係與社會？本中心成立於 2021 年，由一群關注人工智慧發展與社會創新議題的教師創立，從社會學視角研究 AI 帶來的社會、經濟、文化與倫理變遷。</p>
+
+    <div class="anchor-row">
+      <a href="#mission">中心宗旨</a>
+      <a href="#director">執行長</a>
+      <a href="#people">中心成員</a>
+      <a href="#courses">AI 系列課程</a>
+      <a href="#module">跨域學習模組</a>
+      <a href="#activities">年度成果與活動</a>
+      <a href="#lab">東亞社會未來實驗室</a>
+      <a href="#research">研究成果</a>
+      <a href="#global">國際視野</a>
+    </div>
+  </header>
+
+  <!-- ══════════ 中心宗旨 ══════════ -->
+  <section class="chapter" id="mission">
+    <div class="wrap">
+      <p class="sec-index">01 宗旨</p>
+      <h2 class="sec-title">中心宗旨<span class="en">Mission</span></h2>
+
+      <p class="sec-body">人工智慧的發展不只是技術的進步，更牽動社會、經濟、文化與倫理的深層變化。演算法決定誰被看見、誰被排除；資料決定誰被記住、誰被遺漏。這些都是社會學的問題。本中心致力於以社會學的理論與方法，深入探討 AI 發展所帶來的各種社會現象，並推動教學、研究與社會實踐三者的結合。</p>
+
+      <p class="sec-body">中心關注的核心議題包括：</p>
+
+      <ul class="focus-list reveal">
+        <li>AI 對就業與勞動力市場的衝擊與轉型</li>
+        <li>AI 在教育、醫療、政治、法律與社會福利領域的應用及其社會後果</li>
+        <li>隱私、安全與資料保護</li>
+        <li>演算法偏見：AI 可能產生或加深的不平等與歧視</li>
+        <li>AI 的倫理、道德與人類尊嚴議題</li>
+        <li>AI 技術與社會價值觀之間的對話與協調</li>
+        <li>AI 與性別、身體、人機關係的重新界定</li>
+        <li>AI 在犯罪預防、警政與刑事司法中的應用與風險</li>
+      </ul>
+
+      <p class="note-line">中心觀點寫作平台：<a href="https://rcais.medium.com/" target="_blank" rel="noopener" style="color:var(--terra);">rcais.medium.com</a> ・ 官方頁面：<a href="https://scusoc.pso.scu.edu.tw/service/14" target="_blank" rel="noopener" style="color:var(--terra);">東吳大學社會學系 — AI 社會研究中心</a></p>
+    </div>
+  </section>
+
+  <!-- ══════════ 執行長 ══════════ -->
+  <section class="chapter" id="director">
+    <div class="wrap">
+      <p class="sec-index">02 執行長</p>
+      <h2 class="sec-title">執行長介紹<span class="en">Executive Director</span></h2>
+
+      <div class="director reveal">
+        <div class="photo">
+          <img src="images/portrait.jpg" alt="黃芳誼" onerror="this.closest('.photo').remove()">
+        </div>
+        <div>
+          <h3>黃芳誼</h3>
+          <p class="title">東吳大學社會學系副教授 兼 AI 社會研究中心執行長 ・ Fang-Yi Huang, Ph.D.</p>
+
+          <p>研究領域為醫療社會學、社會政策、性別研究與老年經濟安全，長期關注制度如何在一個人的一生裡留下痕跡——在健康、在勞動、在退休之後仍然作用的那些痕跡。近年將 AI 帶入社會學的教學與研究，在系上開設「人工智慧在犯罪學的應用」與「AI 與社會福祉增益」兩門課程，帶領學生從犯罪預測、風險評估到社會福利科技，思考演算法時代的公平與正義。</p>
+
+          <p>研究實作上，以微模擬方法分析臺日韓年金制度的性別差距，並將論文成果轉化為公眾可用的<a href="pension-calculator.html">臺日韓年金給付試算器</a>與十分鐘紀錄動畫<a href="pension-film.html">《十分鐘倒數：誰的老後被制度記住？》</a>，是「把研究變成公共溝通作品」的具體示範。目前並指導多項國科會大專學生研究計畫，包括 AI 與性別議題的跨國比較研究。</p>
+
+          <p>→ <a href="about.html">個人簡介</a> ・ <a href="research.html">研究</a> ・ <a href="publications.html">著作</a> ・ <a href="teaching.html">教學</a></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════ 中心成員 ══════════ -->
+  <section class="chapter" id="people">
+    <div class="wrap">
+      <p class="sec-index">03 成員</p>
+      <h2 class="sec-title">中心成員<span class="en">People</span></h2>
+
+      <p class="sec-body">中心成員均為社會學系教師，涵蓋科技與社會、社會學理論、性別研究、社會政策、犯罪學與社會設計等領域，並親自開設中心的 AI 系列課程，共同支撐中心的教學與研究能量。</p>
+
+      <div class="people-grid reveal">
+
+        <div class="person">
+          <p class="role">執行長 DIRECTOR</p>
+          <h4>黃芳誼</h4>
+          <p class="title">社會學系副教授 兼 AI 社會研究中心執行長</p>
+          <p class="bio">現任執行長。開設「人工智慧在犯罪學的應用」與跨院課程「AI 與社會福祉增益」，並統籌中心演講系列、高中生 AI 夏令營與跨國研究。詳見上方<a href="#director">執行長介紹</a>。</p>
+        </div>
+
+        <div class="person">
+          <p class="role">前任執行長 FORMER DIRECTOR</p>
+          <h4>劉育成</h4>
+          <p class="title">社會學系教授</p>
+          <p class="bio">中心創立時期執行長。政治大學社會學博士，研究專長為人工智慧與社會、俗民方法論、系統理論、科技與社會、社會設計與設計思考。開設「AI 與社會學」，近年研究聚焦於「作為社會現象的人工智慧」與自駕科技的社會研究，是臺灣社會學界最早系統性研究 AI 的學者之一。</p>
+        </div>
+
+        <div class="person">
+          <p class="role">中心成員 MEMBER</p>
+          <h4>張君玫</h4>
+          <p class="title">社會學系教授</p>
+          <p class="bio">研究專長為社會學理論、科技與社會、性別研究與後人類思想，長期耕耘賽伯格女性主義（cyborg feminism）的理論與翻譯工作。開設「AI 與賽伯格女性主義」與「生態智慧與 AI」兩門課程，從性別、生態與科技的交會處，帶領學生思考人機關係、身體與界線。</p>
+        </div>
+
+        <div class="person">
+          <p class="role">中心成員 MEMBER</p>
+          <h4>紀建良</h4>
+          <p class="title">社會學系教師</p>
+          <p class="bio">開設「AI 協作的社會設計：AI 如何改變社會」，以社會設計方法結合 AI 協作工具，帶領學生理解 AI 如何影響勞動、教育與日常生活，並動手做出回應真實社會問題的設計提案。</p>
+        </div>
+
+        <div class="person">
+          <p class="role">中心成員 MEMBER</p>
+          <h4>葉崇揚</h4>
+          <p class="title">社會學系教授</p>
+          <p class="bio">研究專長為社會政策、福利國家理論、年金制度與東亞福利體制比較。關注數位轉型與人口老化交會之下，社會保障制度如何回應新的風險結構，為中心在「AI 與社會政策」議題上的重要研究能量，並共同召集「東亞社會未來實驗室」跨系教師社群。</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════ 課程 ══════════ -->
+  <section class="chapter" id="courses">
+    <div class="wrap">
+      <p class="sec-index">04 課程</p>
+      <h2 class="sec-title">AI 系列課程<span class="en">Courses</span></h2>
+
+      <p class="sec-body">依 112–114 學年度開課紀錄，中心成員共開設七門 AI 課程：六門於社會學系，從大二的社會設計、大三的理論核心到大四的專題應用形成完整修課階梯；另於商學院人工智慧學程開設跨院課程「AI 與社會福祉增益」，帶領學生認識「社會學如何看待 AI」。</p>
+
+      <div class="course-grid reveal">
+
+        <div class="ccard">
+          <p class="cno">BSO35001 ・ 社三Ａ ・ 3 學分</p>
+          <h4>AI 與社會學</h4>
+          <p class="who">劉育成</p>
+          <p>中心的理論核心課程，探討人工智慧如何影響人的行為、社會結構與制度：不平等與分配、演算法偏見與倫理、政策與治理框架。113 學年第一學期 26 人修課、114 學年第二學期 25 人修課，穩定開設。</p>
+        </div>
+
+        <div class="ccard">
+          <p class="cno">BSO29201 ・ 社二Ａ ・ 3 學分 ・ 114-1</p>
+          <h4>AI 協作的社會設計：AI 如何改變社會</h4>
+          <p class="who">紀建良</p>
+          <p>以社會設計方法結合 AI 協作工具，理解 AI 如何影響勞動、教育、生活與社會結構，並動手做出回應真實社會問題的設計提案。114 學年第一學期開設即有 51 人修課，是中心最熱門的大二課程。</p>
+        </div>
+
+        <div class="ccard">
+          <p class="cno">BSO29601 ・ 社二Ａ ・ 3 學分 ・ 114-1</p>
+          <h4>AI 與賽伯格女性主義</h4>
+          <p class="who">張君玫</p>
+          <p>從性別與科技的角度，思考人機關係、身體與界線。以 Donna Haraway 的賽伯格宣言為起點，檢視 AI 時代的性別政治、身體邊界與科技親密性。114 學年第一學期開設，44 人修課。</p>
+        </div>
+
+        <div class="ccard">
+          <p class="cno">BSO41801 ・ 社四Ａ ・ 2 學分 ・ 114-1</p>
+          <h4>人工智慧在犯罪學的應用</h4>
+          <p class="who">黃芳誼</p>
+          <p>探討 AI、機器學習與新興科技帶來的犯罪學與刑事司法政策挑戰：預測性警務、演算法與正當程序、AI 偏見與犯罪者歧視、虛擬金融犯罪、假訊息防治、犯罪地圖與 Python 犯罪資料實作。114 學年第一學期 59 人修課，接近滿班。</p>
+        </div>
+
+        <div class="ccard">
+          <p class="cno">BSO53401 ・ 社四Ａ ・ 3 學分 ・ 114-2</p>
+          <h4>生態智慧與 AI</h4>
+          <p class="who">張君玫</p>
+          <p>探索 AI 在環境治理、永續發展與生態保護中的角色：氣候預測、環境監測與綠色 AI，以及科技解方背後的環境正義問題。114 學年第二學期開設之大四專題課程。</p>
+        </div>
+
+        <div class="ccard">
+          <p class="cno">BSO52401 ・ 社三Ａ ・ 2 學分 ・ 112-2</p>
+          <h4>人工智慧與資料庫運用</h4>
+          <p class="who">黃芳誼</p>
+          <p>資料庫思維與 AI 工具的實作入門：SQL、資料清理與機器學習於社會研究的應用。112 學年第二學期排課（後停開），為中心最早規劃的資料實作課程，課程模組現已納入「人工智慧在犯罪學的應用」的 Python 與資料庫實作單元。</p>
+        </div>
+
+        <div class="ccard">
+          <p class="cno">PAI12201 ・ 商學院人工智慧學程 ・ 2 學分 ・ 114-1</p>
+          <h4>AI 與社會福祉增益</h4>
+          <p class="who">黃芳誼</p>
+          <p>以「AI for Social Good」為主題的跨院課程：從 Gemini AI 漫畫繪本創作、機器學習疾病分佈分析、AI 網站設計實作，到人道危機應用、東亞監控與科技治理、高齡照護、性別與照護自動化、全球南方的技術邊緣化，期末以「社會影響 AI 原型設計」收尾，把社會問題轉譯為 AI 可處理的任務。</p>
+        </div>
+
+      </div>
+
+      <p class="note-line">114 學年第一學期，「AI 與社會福祉增益」（商學院合作）與「人工智慧在犯罪學的應用」（人社學院）兩門課共有 82 位學生修課，課堂並導入凱比機器人與 n8n 自動化流程教學。學生作品集：<a href="https://scu-portfolio.web.app/#" target="_blank" rel="noopener" style="color:var(--terra);">scu-portfolio.web.app</a> ・ <a href="https://portfolio-web-coral-one.vercel.app/" target="_blank" rel="noopener" style="color:var(--terra);">portfolio-web-coral-one.vercel.app</a> ・ 日本交流：<a href="https://scu-japan2.web.app/#/" target="_blank" rel="noopener" style="color:var(--terra);">scu-japan2.web.app</a></p>
+    </div>
+  </section>
+
+  <!-- ══════════ 跨域學習模組 ══════════ -->
+  <section class="chapter" id="module">
+    <div class="wrap">
+      <p class="sec-index">05 學習模組</p>
+      <h2 class="sec-title">人社學院 AI 跨域學習模組<span class="en">Curriculum Module</span></h2>
+
+      <p class="sec-body">中心成員參與規劃校內數位人文跨域學程的人社學院學習模組，主軸為「社會實踐與智慧創新——從『洞察』到『問題解決』」：讓學生把人文社會科學的洞察，轉化為可執行的資料分析、公共敘事與服務原型。</p>
+
+      <div class="module-flow reveal">
+        <div class="module-step">
+          <p class="mno">STAGE 1 ・ 基礎核心（大一、大二）</p>
+          <h5>建立 AI 技能底座</h5>
+          <p>人工智慧跨域應用 → Python 程式設計入門 → 人工智慧：概觀與國際認證。建立 AI 基礎觀念、資料處理能力，並輔導考取國際證照。</p>
+        </div>
+        <div class="module-step">
+          <p class="mno">STAGE 2 ・ 進階應用（大二、大三）</p>
+          <h5>從洞察到分析</h5>
+          <p>AI 與社會學（不平等、偏見與 AI 治理）、空間、社區與社會（深入士林社區的田野調查與空間資料分析），提出可被驗證的洞察與可行方案。</p>
+        </div>
+        <div class="module-step">
+          <p class="mno">STAGE 3 ・ 實作深化（大三、大四）</p>
+          <h5>作品集與原型</h5>
+          <p>文化地景與媒體運用（數位敘事 × 公共溝通）→ 智慧創新整合實務（Capstone）：與公部門、NGO、產業共創題目，完成 AI 方案原型與影響評估。</p>
+        </div>
+      </div>
+
+      <h3 style="font-family:var(--serif); font-size:1.25rem; margin:3rem 0 0;">職涯對接</h3>
+      <div class="table-scroll reveal">
+        <table class="center-table">
+          <thead>
+            <tr><th>職業名稱</th><th>核心對應課程</th><th>主要工作內容</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="job">服務設計師<br><span style="font-size:.8em;color:var(--ink-faint);">Service Designer</span></td>
+              <td>智慧創新整合實務（Capstone）、人工智慧跨域應用</td>
+              <td>使用者研究與服務藍圖、跨部門共創解方、以 AI 輔助方案製作與驗證原型並持續迭代。</td>
+            </tr>
+            <tr>
+              <td class="job">地方創生專案管理<br><span style="font-size:.8em;color:var(--ink-faint);">Local Revitalization PM</span></td>
+              <td>空間、社區與社會、文化地景與媒體運用</td>
+              <td>盤點地方資源與需求、執行政府計畫與標案、串聯在地組織辦理活動並評估成效。</td>
+            </tr>
+            <tr>
+              <td class="job">專案／活動策展人員<br><span style="font-size:.8em;color:var(--ink-faint);">Exhibition Planner</span></td>
+              <td>文化地景與媒體運用、AI 與賽伯格女性主義</td>
+              <td>以科技—社會視角建構策展論述、沉浸式場域營造、多元包容的內容企劃與風險檢核。</td>
+            </tr>
+            <tr>
+              <td class="job">政策輿情數據分析師<br><span style="font-size:.8em;color:var(--ink-faint);">Policy &amp; Sentiment Analyst</span></td>
+              <td>Python 程式設計入門、AI 與社會學</td>
+              <td>大數據清洗與資料集建置、文字探勘與情緒／立場分析、輸出儀表板與政策溝通建議。</td>
+            </tr>
+            <tr>
+              <td class="job">社區營造專員<br><span style="font-size:.8em;color:var(--ink-faint);">Community Specialist</span></td>
+              <td>AI 與社會福祉增益、空間、社區與社會</td>
+              <td>導入 AI 社工工具（健康監測、智能提醒、陪伴科技）、設計高齡與弱勢照顧方案、精準化需求盤點與福利媒合。</td>
+            </tr>
+            <tr>
+              <td class="job">公共事務專員<br><span style="font-size:.8em;color:var(--ink-faint);">Public Affairs Specialist</span></td>
+              <td>AI 與社會學、AI 在犯罪學的應用、智能警政與數位犯罪</td>
+              <td>社會風險評估與倡議策略、應對網攻與假訊息的危機預警、AI 倫理與個資議題的法規遵循溝通。</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════ 年度成果與教學活動 ══════════ -->
+  <section class="chapter" id="activities">
+    <div class="wrap">
+      <p class="sec-index">06 教學活動</p>
+      <h2 class="sec-title">114 學年度成果與教學活動<span class="en">Annual Highlights &amp; Activities</span></h2>
+
+      <p class="sec-body">114 學年度中心以「AI × 社會政策」為主軸，教學、研究、服務三線並進：跨域演講進入社會系課堂、兩組跨域社群（教學社群與論文研究社群）成形、三門正式課程教案共備，並向下延伸至高中端、向外連結全國學術社群。</p>
+
+      <div class="stat-row reveal">
+        <div class="stat"><div class="num">15</div><div class="lbl">場中心系列演講<br>（第一學期）</div></div>
+        <div class="stat"><div class="num">6</div><div class="lbl">場跨系社群演講與研討<br>（第二學期）</div></div>
+        <div class="stat"><div class="num">3</div><div class="lbl">門正式課程<br>教案共備</div></div>
+        <div class="stat"><div class="num">82</div><div class="lbl">位 AI 課程<br>修課學生</div></div>
+        <div class="stat"><div class="num">6</div><div class="lbl">國跨國研究網絡<br>（臺日韓港星中）</div></div>
+      </div>
+
+      <!-- ── 第一學期：中心系列演講 ── -->
+      <h3 style="font-size:1.25rem; margin:3.2rem 0 0;">中心系列演講（114 學年第一學期）</h3>
+      <p class="sec-body" style="margin-top:.8rem;">分為「AI 應用與創作」、「社會不平等與家庭研究」、「AI 政策、法律與犯罪學」三大系列，講者橫跨漫畫創作、中研院、國內外大學與政府機構。</p>
+
+      <div class="table-scroll reveal">
+        <table class="center-table">
+          <thead>
+            <tr><th>日期</th><th>系列</th><th>講題</th><th>講者</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>2025/09/15</td><td><span class="series-tag">AI 應用與創作</span></td><td>Gemini AI 漫畫與繪本應用</td><td>曾建華（資深連載漫畫家）</td></tr>
+            <tr><td>2025/09/30</td><td><span class="series-tag">AI 應用與創作</span></td><td>音樂人工智慧：最新發展與挑戰</td><td>蘇黎（中研院資訊科學所副研究員）</td></tr>
+            <tr><td>2025/10/09</td><td><span class="series-tag">不平等與家庭</span></td><td>Creating a Podcast for Advocating through Storytelling</td><td>Dr. Grace Francis、Dr. Jodi Duke</td></tr>
+            <tr><td>2025/10/13</td><td><span class="series-tag">政策法律犯罪學</span></td><td>負責任的 AI 與政策制定</td><td>陳惇凱（淡江大學資工系助理教授）</td></tr>
+            <tr><td>2025/10/20</td><td><span class="series-tag">AI 應用與創作</span></td><td>AI 進入生活後的人類新體驗——AI 與機器人大量進入物理與數位世界後，為人類帶來的新體驗，幫助大家察覺、反思與因應（實體＋線上直播）</td><td>温明輝（國立臺北商業大學商業設計管理系教授・UxerLab 使用者體驗設計實驗室）</td></tr>
+            <tr><td>2025/10/27</td><td><span class="series-tag">政策法律犯罪學</span></td><td>AI 如何保存國家檔案</td><td>徐紹綱（國發會檔案管理局）</td></tr>
+            <tr><td>2025/10/30</td><td><span class="series-tag">不平等與家庭</span></td><td>南韓 AI 與女性在勞動市場的發展</td><td>洪伊真（臺灣大學國發所副教授）</td></tr>
+            <tr><td>2025/11/25</td><td><span class="series-tag">政策法律犯罪學</span></td><td>AI 科技與政治領導研究</td><td>蔡文軒（中研院政治所）</td></tr>
+            <tr><td>2025/12/02</td><td><span class="series-tag">政策法律犯罪學</span></td><td>從 AI 到性別回應：女性受刑人處遇</td><td>楊士隆（中正大學）</td></tr>
+            <tr><td>2025/12/04</td><td><span class="series-tag">不平等與家庭</span></td><td>中國 AI 社會中年金的變革</td><td>Mark W. Frazier（The New School）</td></tr>
+            <tr><td>2025/12/16</td><td><span class="series-tag">政策法律犯罪學</span></td><td>人工智慧時代的犯罪新樣貌</td><td>劉俊良</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note-line">上表為留有完整場次資訊的演講；全學期系列活動共 15 場，另含凱比機器人與 n8n 自動化實作教學。</p>
+
+      <!-- ── 東亞社會未來實驗室 ── -->
+      <div class="lab-box reveal" id="lab">
+        <p class="lab-kicker">跨系教師社群 ・ 人本 AI 研究中心補助 ・ 114 學年度</p>
+        <h3>東亞社會未來實驗室：AI 與福利的邊界</h3>
+        <p class="lab-en">Frontiers of AI and Welfare in East Asia</p>
+
+        <p>生成式 AI 與大型語言模型快速進入社會保障與社福決策流程——從救助資格認定、長期照顧評估到詐欺偵測皆涉入其中。本社群由黃芳誼副教授、葉崇揚教授擔任召集人，攜手洪惠芬教授（東吳社會工作學系）與李韶芬助理教授（陽明交通大學衛生福利研究所），以三組張力作為對話起點：演算法治理 vs. 分配正義、弱勢保護 vs. 人本倫理、在地資料 vs. 跨國比較的可證性。</p>
+
+        <div class="table-scroll">
+          <table class="center-table">
+            <thead>
+              <tr><th>日期</th><th>場次</th><th>講者／與會</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>2026/03/25</td><td>從文本到社會：生成式 AI 如何分析人類語言</td><td>蘇明祥（東吳大學資料科學系教授）</td></tr>
+              <tr><td>2026/03/26</td><td>社群成員論文研討：平台經濟與單親母親的累積性不安定就業</td><td>黃芳誼、葉崇揚、洪惠芬、李韶芬</td></tr>
+              <tr><td>2026/04/15</td><td>人文社會學科中 GAI 的能與不能</td><td>林盈翔（東吳大學中國文學系副教授）</td></tr>
+              <tr><td>2026/04/22</td><td>用白話文寫程式的社會學統計課</td><td>陳玫蓉（東吳大學英文學系教授）</td></tr>
+              <tr><td>2026/04/29</td><td>沉浸式體驗：虛實互動的教育應用</td><td>金凱儀（東吳大學巨量資料管理學院院長）</td></tr>
+              <tr><td>2026/05/06</td><td>AI 在刑事司法的統計調查分析與應用</td><td>顧以謙（法務部司法官學院犯罪防治研究中心研究員）</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="lab-cols">
+          <div class="lab-col">
+            <h6>課程教案共備</h6>
+            <ul>
+              <li>人工智慧在犯罪學的應用：期末報告以 TSCS 資料探討社安網 AI 預警偏誤，部分小組延伸為畢業論文題目</li>
+              <li>人工智慧與社會福祉增益：分組辯論「演算法治理的倫理紅線」，完成「我與 AI 的社政對話」反思札記</li>
+              <li>社會統計資料處理：五場演講於此時段舉行，作業改採白話文＋AI 輔助實作</li>
+            </ul>
+          </div>
+          <div class="lab-col">
+            <h6>學生五大學習面向</h6>
+            <ul>
+              <li>AI 文本分析操作（向量化語意空間）</li>
+              <li>GAI 識讀能力（改寫風險、引用真偽）</li>
+              <li>AI 輔助統計實作（白話文寫程式）</li>
+              <li>沉浸式教學應用（VR/AR 長照模擬）</li>
+              <li>演算法偏誤辨識（敏感度／特異度與問責）</li>
+            </ul>
+          </div>
+          <div class="lab-col">
+            <h6>政策產出：白皮書草案</h6>
+            <ul>
+              <li>《AI 時代的社會保障政策白皮書（草案）》四大章節</li>
+              <li>Ch.1 模型導入門檻 ・ Ch.2 偏誤監測機制</li>
+              <li>Ch.3 申訴與透明 ・ Ch.4 影響評估指標</li>
+              <li>聚焦弱勢族群的可近用性、公平與問責；115 學年出版電子版並送請相關部會</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── 對外服務 ── -->
+      <div class="activity reveal">
+        <p class="when">2026.07.06 – 07.07 ・ 東吳大學 B608 電腦教室</p>
+        <h4>高中生 AI 夏令營：「AI、大數據與沉浸式創作」工作坊</h4>
+        <p>由執行長黃芳誼統籌並親自主講「AI 犯罪學實驗室」。兩天議程集結跨域講者：曾建華（AI 科技與文藝創作）、葉崇揚（Claude 網站設計）、劉維公（高中生也能做的生成式 AI 作品）、劉育成（從靈感變成一場說故事的展覽）、金凱儀（AR/VR/MR 故事現場）、NVIDIA 講師（打造可落地的 AI 產品）、陳玫蓉（Gen AI 之英語歌曲與多模態創作）。營隊五大產出：Podcast 節目、AI 網站、AI 音樂、AI 繪本與短影音廣告——以社會學視角帶領高中生實作 AI 創作，把中心的教學能量向下延伸至高中端。</p>
+      </div>
+
+      <div class="activity reveal">
+        <p class="when">籌辦中 ・ 台灣社會學會年會</p>
+        <h4>跨域論壇：「AI 就業力與社會不平等」</h4>
+        <p>AI 重構勞動市場的能力需求與高教課程地圖，本論壇把「社會不平等」設為貫穿全場的視角，直接面對誰受惠、誰掉隊的分配問題。與會講者：金凱儀（巨量資料管理學院院長）、蘇明祥（AI 應用學程主任）、林盈翔（中國文學系）、陳玫蓉（英文學系），由黃芳誼（社會學系・中心執行長）主持與設計提問，共十道題、四條主軸。</p>
+      </div>
+
+      <div class="activity reveal">
+        <p class="when">114 學年度 ・ 獲選與補助</p>
+        <h4>計畫獲選與學術肯定</h4>
+        <p>執行長獲選 2026 年教育部數位人文創新人才計畫與人文 AI 試育計畫參與教師；「東亞社會未來實驗室」通過人本 AI 研究中心 114 年度跨系教師社群補助計畫；另有研究成果進入國科會 AI 創新獎複審。</p>
+      </div>
+
+      <div class="activity reveal">
+        <p class="when">線上平台</p>
+        <h4>中心 Medium 專欄與學生作品集</h4>
+        <p>中心於 <a href="https://rcais.medium.com/" target="_blank" rel="noopener">Medium 平台</a>發表 AI 與社會觀察文章；AI 課程學生作品集公開於 <a href="https://scu-portfolio.web.app/#" target="_blank" rel="noopener">scu-portfolio.web.app</a>，並建置<a href="https://scu-japan2.web.app/#/" target="_blank" rel="noopener">日本交流網站</a>作為國際連結窗口。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════ 研究 ══════════ -->
+  <section class="chapter" id="research">
+    <div class="wrap">
+      <p class="sec-index">07 研究</p>
+      <h2 class="sec-title">研究<span class="en">Research</span></h2>
+
+      <p class="sec-body">中心的研究能量同時來自教師與學生。114 學年度三項研究計畫從在地平台勞動、東亞跨國比較到美國政治與科技外交三線並進；教師研究另涵蓋「作為社會現象的人工智慧」、AI 與犯罪學、AI 與社會福祉等主題；學生則在教師指導下，以國科會大專學生研究計畫與小論文競賽持續產出 AI 相關研究。</p>
+
+      <div class="pub-group reveal" style="margin-top:2.4rem;">
+        <h3>114 學年度研究計畫<span class="en">Current Research Projects</span></h3>
+        <ol class="pub-list">
+          <li>
+            <span class="yr">研究一</span>
+            <p>東亞單親女性的數位平台勞動類型——〈Cumulating Precarity in a Hybrid Platform Economy: Gender, Class, and the Social Exclusion of Single Mothers in Taiwan〉。以單親母親在臺灣混合型平台經濟中的處境為核心，結合性別、階級與社會再生產視角，分析數位平台勞動如何累積形成不安定就業；質性深度訪談涵蓋食物外送、線上接案、家庭代工等多元型態與北中南東跨區域樣本。<span class="venue">黃芳誼、葉崇揚、洪惠芬、李韶芬。投稿 Journal of Asian Public Policy，第二輪審查中。</span></p>
+          </li>
+          <li>
+            <span class="yr">研究二</span>
+            <p>東亞三重轉型六國跨國 AI 研究——人口轉型 × 數位（AI）轉型 × 氣候轉型下的東亞社會政策比較，成員來自臺、日、韓、港、星、中六國（延世大學、立命館大學、嶺南大學、新加坡管理大學、華南師範大學等）。2026 年 1 月於首爾延世大學舉行國際工作坊，黃芳誼於「數位（AI）轉型」場次報告〈Gendered Risks and Protections: Pension Reform and Labor Market Change amid Triple Transitions in Taiwan〉，提出「第三類社會風險」概念。<span class="venue">臺灣團隊：黃芳誼、葉崇揚（東吳社會系）、顏維婷（中研院政治所）。</span></p>
+          </li>
+          <li>
+            <span class="yr">研究三</span>
+            <p>從 CHIPS Act 到 Trump AI Action Plan——美國保守派如何重構台海嚇阻與台美 AI／半導體合作。串連民粹外交、宗教政治與地緣經濟三條文獻，以佛羅里達州為「菁英—媒體—草根」三角驗證場域進行半結構式菁英訪談，分析保守派內部對台承諾如何被交易化、條件化，以及「矽盾」的兩面性。<span class="venue">黃芳誼。訪談與文本分析進行中。</span></p>
+          </li>
+          <li>
+            <span class="yr">產出</span>
+            <p>《AI 時代的社會保障政策白皮書（草案）》章節分工完成；共同研究草案「東亞 AI 再犯預測模型偏誤的比較研究」啟動；EASP 2026 Annual Conference 摘要送審；並規劃投稿《社會政策與社會工作學刊》、《臺灣社會福利學刊》。</p>
+          </li>
+        </ol>
+      </div>
+
+      <div class="pub-group reveal">
+        <h3>學生研究亮點<span class="en">Student Research</span></h3>
+        <ol class="pub-list">
+          <li>
+            <span class="yr">2026</span>
+            <p>顏珮安，「當 AI 遇見性別議題：台韓社群平台演算法如何再現或消解月經污名」。<span class="venue">115 學年度國科會大專學生研究計畫，通過。指導教授：黃芳誼。</span></p>
+          </li>
+          <li>
+            <span class="yr">2026</span>
+            <p>張喻涵，「定位軟體對大專生的影響」。<span class="venue">東吳大學社會學系小論文競賽。</span> <span class="badge">獲獎</span></p>
+          </li>
+        </ol>
+      </div>
+
+      <div class="pub-group reveal">
+        <h3>教師研究主題<span class="en">Faculty Research Themes</span></h3>
+        <ol class="pub-list">
+          <li>
+            <span class="yr">主題</span>
+            <p>作為社會現象的人工智慧：從俗民方法論觀點研究 AI 與人機互動、自駕科技的社會研究。<span class="venue">劉育成</span></p>
+          </li>
+          <li>
+            <span class="yr">主題</span>
+            <p>AI 在犯罪學與刑事司法的應用與風險：預測性警務、演算法偏見與正當程序。<span class="venue">黃芳誼</span></p>
+          </li>
+          <li>
+            <span class="yr">主題</span>
+            <p>年金制度的性別差距微模擬分析，及其公共溝通轉譯——<a href="pension-calculator.html">臺日韓年金給付試算器</a>與<a href="pension-film.html">紀錄動畫《十分鐘倒數》</a>。<span class="venue">黃芳誼</span></p>
+          </li>
+          <li>
+            <span class="yr">主題</span>
+            <p>福利國家與年金政治：數位轉型與人口老化下的東亞社會保障制度比較。<span class="venue">葉崇揚</span></p>
+          </li>
+          <li>
+            <span class="yr">主題</span>
+            <p>賽伯格女性主義與後人類思想：AI 時代的性別、身體與界線。<span class="venue">張君玫</span></p>
+          </li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════ 國際視野 ══════════ -->
+  <section class="chapter" id="global">
+    <div class="wrap">
+      <p class="sec-index">08 國際視野</p>
+      <h2 class="sec-title">國際視野：大學 AI 研究中心標竿<span class="en">Global Benchmarks</span></h2>
+
+      <p class="sec-body">設置在大學內、具有跨學院、跨領域與對外合作功能的 AI 研究中心，在美國與台灣都有代表性的例子。其中南加州大學的 Center for AI in Society（CAIS）聚焦 AI for Public Policy、AI for Social Good、刑事司法與社會福利，與本中心「以社會科學研究 AI」的定位最為接近。</p>
+
+      <h3 style="font-family:var(--serif); font-size:1.25rem; margin:2.4rem 0 0;">美國代表性大學 AI 研究中心</h3>
+      <div class="table-scroll reveal">
+        <table class="center-table">
+          <thead>
+            <tr><th>中心</th><th>大學</th><th>特色</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="job">Stanford HAI</td>
+              <td>Stanford University</td>
+              <td>2019 年成立，全球最具影響力的 AI 中心之一。人本 AI：AI × 法律、教育、醫療、公共政策與 AI 治理；與 OpenAI、Google DeepMind、WHO、OECD 等合作。</td>
+            </tr>
+            <tr>
+              <td class="job">MIT CSAIL</td>
+              <td>MIT</td>
+              <td>世界最大的 AI 研究中心之一。基礎模型、機器人學、電腦視覺、LLM、AI for Science。</td>
+            </tr>
+            <tr>
+              <td class="job">BAIR</td>
+              <td>UC Berkeley</td>
+              <td>機器學習、強化學習、LLM、機器人學與 AI 倫理，研究人員逾三百位。</td>
+            </tr>
+            <tr>
+              <td class="job">Kempner Institute</td>
+              <td>Harvard University</td>
+              <td>自然智能與人工智能的交會：AI × 神經科學、基礎模型、AI 生物學。</td>
+            </tr>
+            <tr>
+              <td class="job">ML@GT</td>
+              <td>Georgia Tech</td>
+              <td>AI、機器人、智慧城市與 AI 安全。</td>
+            </tr>
+            <tr>
+              <td class="job">CAIS ★</td>
+              <td>USC</td>
+              <td>Center for AI in Society——AI for Public Policy、AI for Social Good、刑事司法與社會福利，最接近社會科學取向的 AI 研究中心。</td>
+            </tr>
+            <tr>
+              <td class="job">Center for ML</td>
+              <td>Carnegie Mellon</td>
+              <td>NLP、AI 安全、機器人與強化學習。</td>
+            </tr>
+            <tr>
+              <td class="job">Michigan AI Lab</td>
+              <td>University of Michigan</td>
+              <td>自主系統、電腦視覺、LLM 與醫療 AI。</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 style="font-family:var(--serif); font-size:1.25rem; margin:3rem 0 0;">台灣代表性大學 AI 研究中心</h3>
+      <div class="table-scroll reveal">
+        <table class="center-table">
+          <thead>
+            <tr><th>大學</th><th>AI 中心</th><th>特色</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="job">臺灣大學</td>
+              <td>AI Center of Research Excellence（AI Core）</td>
+              <td>2025 年成立的校級旗艦中心：可信任 AI、可解釋 AI、基礎模型、綠色 AI、多語言大型模型、AI 教育與倫理；與 MIT、Stanford、Google DeepMind 等國際合作。</td>
+            </tr>
+            <tr>
+              <td class="job">臺灣大學</td>
+              <td>AINTU（人工智慧技術暨全幅健康照護聯合研究中心）</td>
+              <td>2018 年成立。醫療 AI、NLP、電腦視覺、AI 法律與政策，為國科會 AI 創新研究中心計畫重要據點。</td>
+            </tr>
+            <tr>
+              <td class="job">陽明交通大學</td>
+              <td>PAIR（普適人工智慧研究中心）</td>
+              <td>AI 機器人、智慧交通、醫療 AI 與智慧城市。</td>
+            </tr>
+            <tr>
+              <td class="job">清華大學</td>
+              <td>AIMS（人工智慧製造系統研究中心）</td>
+              <td>智慧製造、工業 AI、數位孿生與邊緣 AI。</td>
+            </tr>
+            <tr>
+              <td class="job">成功大學</td>
+              <td>AI 生物科技研究中心</td>
+              <td>生醫 AI、精準醫療、醫學影像與藥物開發。</td>
+            </tr>
+            <tr>
+              <td class="job">陽明交通大學</td>
+              <td>緯創—陽明交大嵌入式 AI 研究中心</td>
+              <td>產學合作型中心：嵌入式 AI、邊緣 AI、智慧製造與智慧交通。</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="note-line">本中心以「社會學視角研究 AI」為定位，在上述以工程與醫療為主的版圖中，補上台灣高教現場少見、卻日益關鍵的一塊：AI 的社會研究。</p>
+    </div>
+  </section>
+
+  <!-- ══════════ 聯絡 ══════════ -->
+  <section class="chapter" id="contact">
+    <div class="wrap">
+      <p class="sec-index">09 聯絡</p>
+      <h2 class="sec-title">聯絡我們<span class="en">Contact</span></h2>
+      <p class="sec-body">東吳大學社會學系 AI 社會研究中心（臺北市士林區臨溪路 70 號）<br>
+      電話：02-2881-9471 分機 6291–6294、6302 ・ 信箱：<a href="mailto:society@scu.edu.tw" style="color:var(--terra);">society@scu.edu.tw</a><br>
+      Medium：<a href="https://rcais.medium.com/" target="_blank" rel="noopener" style="color:var(--terra);">rcais.medium.com</a> ・ 系網：<a href="https://scusoc.pso.scu.edu.tw/" target="_blank" rel="noopener" style="color:var(--terra);">scusoc.pso.scu.edu.tw</a> ・ Instagram：<a href="https://www.instagram.com/scusociety/" target="_blank" rel="noopener" style="color:var(--terra);">@scusociety</a></p>
+
+      <p class="page-cta reveal">
+        <a class="cta" href="index.html">前往執行長個人網站 <span class="arrow">→</span></a>
+      </p>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span class="f-name">AI 社會研究中心 ・ RCAIS</span>
+
+    <div class="f-links">
+      <a href="#mission">宗旨</a>
+      <a href="#courses">課程</a>
+      <a href="#research">研究</a>
+      <a href="#top">回到頂端</a>
+    </div>
+
+    <p class="f-copy">© 2026 Research Center for AI and Society. 東吳大學社會學系.</p>
+  </div>
+</footer>
+
+<script src="assets/js/main.js"></script>
+</body>
+</html>
