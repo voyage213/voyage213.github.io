@@ -10,7 +10,217 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;800&family=IBM+Plex+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="../assets/css/ai-center.css">
+<link rel="stylesheet" href="../assets/css/ai-center-tech.css">
+
+<style>
+  /* ───────── 宇宙封面 ───────── */
+  body { background: #04060f; }
+
+  .cosmos {
+    position: relative;
+    height: calc(100vh - var(--nav-h));
+    min-height: 620px;
+    overflow: hidden;
+    background:
+      radial-gradient(900px 520px at 78% 18%, rgba(157,123,255,.14), transparent 60%),
+      radial-gradient(700px 480px at 12% 72%, rgba(78,225,230,.10), transparent 55%),
+      #04060f;
+    cursor: default;
+    touch-action: pan-y;
+  }
+  .cosmos canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+  /* 軌道環 */
+  .orbit-ring {
+    position: absolute;
+    border: 1px dashed rgba(120,140,200,.16);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  /* 中央恆星 */
+  .sun {
+    position: absolute;
+    width: 150px; height: 150px;
+    border-radius: 50%;
+    display: grid; place-items: center;
+    text-align: center;
+    background: radial-gradient(circle at 36% 32%, #fff6d8, #ffd76a 34%, #e2952c 62%, #8a4a12 100%);
+    box-shadow:
+      0 0 44px 6px rgba(255,196,90,.45),
+      0 0 130px 30px rgba(255,170,60,.18);
+    animation: sun-breathe 5.5s ease-in-out infinite;
+    z-index: 4;
+    user-select: none;
+  }
+  @keyframes sun-breathe {
+    0%, 100% { box-shadow: 0 0 44px 6px rgba(255,196,90,.45), 0 0 130px 30px rgba(255,170,60,.18); }
+    50%      { box-shadow: 0 0 60px 10px rgba(255,196,90,.6),  0 0 170px 44px rgba(255,170,60,.26); }
+  }
+  .sun .t {
+    font-weight: 800; font-size: .95rem; line-height: 1.5;
+    color: #4a2708;
+  }
+  .sun .t small {
+    display: block;
+    font-family: var(--mono);
+    font-size: .5rem; letter-spacing: .18em;
+    color: #7a4512;
+  }
+
+  /* 星球 */
+  .planet {
+    position: absolute;
+    border-radius: 50%;
+    display: block;
+    z-index: 5;
+    cursor: grab;
+    touch-action: none;
+    user-select: none;
+    -webkit-user-drag: none;
+    transition: filter .3s ease;
+    will-change: left, top;
+  }
+  .planet:active { cursor: grabbing; }
+  .planet .body {
+    width: 100%; height: 100%;
+    border-radius: 50%;
+    position: relative;
+    transition: transform .3s ease;
+  }
+  .planet:hover .body { transform: scale(1.14); }
+  .planet:hover { filter: drop-shadow(0 0 22px rgba(160,200,255,.5)); z-index: 9; }
+  .planet .label {
+    position: absolute;
+    top: calc(100% + 10px); left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    white-space: nowrap;
+    pointer-events: none;
+  }
+  .planet .label b {
+    display: block;
+    font-size: .92rem; font-weight: 800;
+    color: #eef2ff;
+    text-shadow: 0 2px 12px rgba(0,0,0,.9);
+  }
+  .planet .label small {
+    font-family: var(--mono);
+    font-size: .6rem; letter-spacing: .16em;
+    color: #8a96c0;
+  }
+
+  /* 各星球樣貌 */
+  .p-mission  .body { background: radial-gradient(circle at 32% 30%, #ffe2b8, #e0a01e 48%, #6e3f0e 100%); box-shadow: inset -10px -10px 24px rgba(0,0,0,.45), 0 0 18px rgba(224,160,30,.35); }
+  .p-people   .body { background: radial-gradient(circle at 34% 30%, #c8fff4, #2bb3a3 50%, #093f3a 100%); box-shadow: inset -10px -12px 26px rgba(0,0,0,.5), 0 0 18px rgba(43,179,163,.35); }
+  .p-people   .body::before { content: ''; position: absolute; inset: 18% 10% auto auto; width: 26%; height: 26%; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #ffe9f4, #e879ab 60%, #7a2c50 100%); box-shadow: 0 0 10px rgba(232,121,171,.5); }
+  .p-directors .body { background: radial-gradient(circle at 34% 32%, #fdf0cd, #cfa64a 52%, #5c4416 100%); box-shadow: inset -12px -12px 26px rgba(0,0,0,.5); }
+  .p-directors .ring { position: absolute; left: 50%; top: 50%; width: 185%; height: 58%; transform: translate(-50%,-50%) rotate(-18deg); border: 3px solid rgba(230,196,120,.55); border-radius: 50%; box-shadow: 0 0 12px rgba(230,196,120,.25); pointer-events: none; }
+  .p-courses  .body { background:
+      repeating-linear-gradient(-12deg, rgba(255,255,255,.14) 0 6px, transparent 6px 15px),
+      radial-gradient(circle at 32% 30%, #d6f2ff, #3e7bfa 52%, #0d2050 100%);
+    box-shadow: inset -12px -12px 28px rgba(0,0,0,.5), 0 0 20px rgba(62,123,250,.35); }
+  .p-activities .body { background: radial-gradient(circle at 30% 30%, #ffe0b0, #e2622b 48%, #5e1508 100%); box-shadow: inset -10px -12px 26px rgba(0,0,0,.5), 0 0 26px rgba(226,98,43,.5); animation: lava 3.6s ease-in-out infinite; }
+  @keyframes lava { 0%,100% { box-shadow: inset -10px -12px 26px rgba(0,0,0,.5), 0 0 22px rgba(226,98,43,.42); } 50% { box-shadow: inset -10px -12px 26px rgba(0,0,0,.5), 0 0 40px rgba(255,130,60,.65); } }
+  .p-research .body { background: radial-gradient(circle at 34% 28%, #ead9ff, #8f6bff 50%, #221055 100%); box-shadow: inset -12px -12px 28px rgba(0,0,0,.55), 0 0 22px rgba(143,107,255,.4); }
+  .p-research .body::before { content: ''; position: absolute; inset: 30% auto auto 16%; width: 20%; height: 20%; border-radius: 50%; background: rgba(0,0,0,.28); }
+  .p-global   .body { background:
+      radial-gradient(circle at 62% 58%, rgba(94,214,132,.75) 0 14%, transparent 26%),
+      radial-gradient(circle at 30% 36%, rgba(94,214,132,.6) 0 10%, transparent 20%),
+      radial-gradient(circle at 33% 30%, #d9f3ff, #3f8fd2 52%, #0d2c55 100%);
+    box-shadow: inset -12px -12px 28px rgba(0,0,0,.5), 0 0 20px rgba(63,143,210,.4); }
+
+  /* 場景說明 */
+  .cosmos .hint {
+    position: absolute;
+    left: 50%; bottom: 20px;
+    transform: translateX(-50%);
+    font-family: var(--mono);
+    font-size: .68rem; letter-spacing: .2em;
+    color: #5d6890;
+    z-index: 6;
+    pointer-events: none;
+    text-align: center;
+    animation: hint-fade 2.4s ease-in-out infinite;
+  }
+  @keyframes hint-fade { 0%,100% { opacity: .55; } 50% { opacity: 1; } }
+  .cosmos .title-tag {
+    position: absolute;
+    left: var(--edge); top: 26px;
+    z-index: 6;
+    pointer-events: none;
+  }
+  .cosmos .title-tag .est {
+    font-family: var(--mono);
+    font-size: .7rem; letter-spacing: .2em;
+    color: var(--cyan); text-transform: uppercase;
+    margin: 0 0 .4rem;
+  }
+  .cosmos .title-tag p { margin: 0; font-size: .85rem; color: #8a96c0; max-width: 34em; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sun, .p-activities .body { animation: none; }
+  }
+
+  /* ───────── 深色版中心動態 ───────── */
+  .news-zone {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+    gap: clamp(18px, 2.2vw, 28px);
+    margin-top: 2rem;
+  }
+  .news-col {
+    background: var(--panel);
+    border: 1px solid var(--hair);
+    border-radius: 14px;
+    padding: 20px 22px 16px;
+    display: flex; flex-direction: column;
+  }
+  .news-col > h3 {
+    display: flex; justify-content: space-between; align-items: baseline;
+    font-size: 1.05rem; font-weight: 800;
+    color: var(--bright);
+    margin: 0 0 .6rem;
+    padding-bottom: .55rem;
+    border-bottom: 2px solid var(--cyan);
+  }
+  .news-col:nth-child(2) > h3 { border-bottom-color: var(--violet); }
+  .news-col:nth-child(3) > h3 { border-bottom-color: var(--blue); }
+  .news-col:nth-child(4) > h3 { border-bottom-color: var(--cyan); }
+  .news-col > h3 .more {
+    font-family: var(--mono);
+    font-size: .68rem; font-weight: 400;
+    letter-spacing: .08em;
+    color: var(--cyan);
+  }
+  .news-col > h3 .more:hover { text-decoration: underline; text-underline-offset: 4px; }
+  .news-list { list-style: none; margin: 0; padding: 0; flex: 1; }
+  .news-list li {
+    padding: .65rem 0;
+    border-bottom: 1px dashed var(--hair);
+    font-size: .88rem; line-height: 1.7;
+    color: var(--txt);
+  }
+  .news-list li:last-child { border-bottom: 0; }
+  .news-list .d {
+    display: block;
+    font-family: var(--mono);
+    font-size: .7rem; letter-spacing: .06em;
+    color: var(--cyan);
+    margin-bottom: .1rem;
+  }
+  .news-list .tag {
+    display: inline-block;
+    font-size: .68rem;
+    font-family: var(--mono);
+    color: #06131a;
+    background: var(--cyan);
+    border-radius: 4px;
+    padding: 0 .5em;
+    margin-right: .4em;
+    vertical-align: .08em;
+  }
+</style>
 
 <script>
   document.documentElement.classList.add('js');
@@ -45,16 +255,31 @@
 
 <main id="top">
 
-<header class="center-hero">
-    <p class="est">Est. 2021 ・ Soochow University ・ Department of Sociology</p>
-    <h1>東吳大學社會學系<br><span class="accent">AI 社會研究中心</span></h1>
-    <p class="en-name">Research Center for AI and Society (RCAIS)</p>
-    <p class="hero-sub">當大家都在學怎麼使用 AI，社會學更在思考：AI 會如何改變人類、關係與社會？本中心成立於 2021 年，由一群關注人工智慧發展與社會創新議題的教師創立，從社會學視角研究 AI 帶來的社會、經濟、文化與倫理變遷。</p>
+  <!-- ══════════ 宇宙封面：點星球進入頁面 ══════════ -->
+  <div class="cosmos" id="cosmos">
+    <canvas id="stars"></canvas>
 
-    
-  </header>
+    <div class="title-tag">
+      <p class="est">Est. 2021 ・ Soochow Sociology ・ RCAIS</p>
+      <p>當大家都在學怎麼使用 AI，社會學更在思考：AI 會如何改變人類、關係與社會？</p>
+    </div>
 
-  <!-- ══════════ 最新資訊（機構入口） ══════════ -->
+    <div class="sun" id="sun" aria-hidden="true">
+      <div class="t">AI 社會<br>研究中心<small>RCAIS</small></div>
+    </div>
+
+    <a class="planet p-mission"    href="mission.html"    data-orbit="0.42" data-size="64"  data-speed="0.30" data-phase="0.0"><div class="body"></div><span class="label"><b>宗旨</b><small>MISSION</small></span></a>
+    <a class="planet p-people"     href="people.html"     data-orbit="0.58" data-size="84"  data-speed="0.22" data-phase="0.9"><div class="body"></div><span class="label"><b>成員</b><small>PEOPLE</small></span></a>
+    <a class="planet p-directors"  href="directors.html"  data-orbit="0.74" data-size="76"  data-speed="0.17" data-phase="1.9"><div class="body"><span class="ring"></span></div><span class="label"><b>歷屆執行長</b><small>DIRECTORS</small></span></a>
+    <a class="planet p-courses"    href="courses.html"    data-orbit="0.90" data-size="96"  data-speed="0.13" data-phase="2.8"><div class="body"></div><span class="label"><b>課程</b><small>COURSES</small></span></a>
+    <a class="planet p-activities" href="activities.html" data-orbit="1.06" data-size="72"  data-speed="0.10" data-phase="3.9"><div class="body"></div><span class="label"><b>活動</b><small>ACTIVITIES</small></span></a>
+    <a class="planet p-research"   href="research.html"   data-orbit="1.22" data-size="88"  data-speed="0.08" data-phase="4.8"><div class="body"></div><span class="label"><b>研究</b><small>RESEARCH</small></span></a>
+    <a class="planet p-global"     href="global.html"     data-orbit="1.38" data-size="80"  data-speed="0.06" data-phase="5.6"><div class="body"></div><span class="label"><b>國際視野</b><small>GLOBAL</small></span></a>
+
+    <p class="hint">拖曳星球把玩 ・ 點擊星球進入頁面 ・ 向下捲動看最新動態 ↓</p>
+  </div>
+
+  <!-- ══════════ 最新資訊 ══════════ -->
   <section class="chapter" id="news">
     <div class="wrap">
       <p class="sec-index">最新資訊</p>
@@ -106,20 +331,7 @@
     </div>
   </section>
 
-  <section class="chapter">
-    <div class="wrap">
-      <p class="sec-index">導覽</p>
-      <h2 class="sec-title">認識中心<span class="en">Explore</span></h2>
-      <div class="home-cards reveal">
-        <a href="mission.html"><div class="no">01 宗旨</div><h3>中心宗旨</h3><p>以社會學的理論與方法，研究 AI 帶來的社會、經濟、文化與倫理變遷。</p><span class="go">進入頁面 →</span></a>
-        <a href="people.html"><div class="no">02 成員</div><h3>執行長與成員</h3><p>執行長黃芳誼與張君玫、紀建良、葉崇揚、劉育成等社會系教師。</p><span class="go">進入頁面 →</span></a>
-        <a href="courses.html"><div class="no">03 課程</div><h3>AI 系列課程</h3><p>112–114 學年度七門 AI 課程：從犯罪學、賽伯格女性主義到社會福祉。</p><span class="go">進入頁面 →</span></a>
-        <a href="activities.html"><div class="no">04 活動</div><h3>年度成果與活動</h3><p>15 場系列演講、東亞社會未來實驗室、高中生 AI 夏令營與學會論壇。</p><span class="go">進入頁面 →</span></a>
-        <a href="research.html"><div class="no">05 研究</div><h3>研究成果</h3><p>三項研究計畫、六國跨國網絡、白皮書草案與學生研究亮點。</p><span class="go">進入頁面 →</span></a>
-        <a href="global.html"><div class="no">06 視野</div><h3>國際視野</h3><p>美國與台灣大學 AI 研究中心的標竿比較，以及本中心的獨特定位。</p><span class="go">進入頁面 →</span></a>
-      </div>
-    </div>
-  </section>
+  <!-- ══════════ 年度數字 ══════════ -->
   <section class="chapter">
     <div class="wrap">
       <p class="sec-index">114 學年度</p>
@@ -133,17 +345,15 @@
       </div>
     </div>
   </section>
-<section class="chapter" id="contact">
+
+  <!-- ══════════ 聯絡 ══════════ -->
+  <section class="chapter" id="contact">
     <div class="wrap">
       <p class="sec-index">聯絡</p>
       <h2 class="sec-title">聯絡我們<span class="en">Contact</span></h2>
       <p class="sec-body">東吳大學社會學系 AI 社會研究中心（臺北市士林區臨溪路 70 號）<br>
-      電話：02-2881-9471 分機 6291–6294、6302 ・ 信箱：<a href="mailto:society@scu.edu.tw" style="color:var(--red);">society@scu.edu.tw</a><br>
-      Medium：<a href="https://rcais.medium.com/" target="_blank" rel="noopener" style="color:var(--red);">rcais.medium.com</a> ・ 系網：<a href="https://scusoc.pso.scu.edu.tw/" target="_blank" rel="noopener" style="color:var(--red);">scusoc.pso.scu.edu.tw</a> ・ Instagram：<a href="https://www.instagram.com/scusociety/" target="_blank" rel="noopener" style="color:var(--red);">@scusociety</a></p>
-
-      <p class="page-cta reveal">
-        <a class="cta" href="../index.html">前往執行長個人網站 <span class="arrow">→</span></a>
-      </p>
+      電話：02-2881-9471 分機 6291–6294、6302 ・ 信箱：<a href="mailto:society@scu.edu.tw">society@scu.edu.tw</a><br>
+      Medium：<a href="https://rcais.medium.com/" target="_blank" rel="noopener">rcais.medium.com</a> ・ 系網：<a href="https://scusoc.pso.scu.edu.tw/" target="_blank" rel="noopener">scusoc.pso.scu.edu.tw</a> ・ Instagram：<a href="https://www.instagram.com/scusociety/" target="_blank" rel="noopener">@scusociety</a></p>
     </div>
   </section>
 </main>
@@ -167,5 +377,147 @@
 </footer>
 
 <script src="../assets/js/main.js"></script>
+<script>
+(function () {
+  var cosmos = document.getElementById('cosmos');
+  var sun = document.getElementById('sun');
+  var canvas = document.getElementById('stars');
+  var planets = Array.prototype.slice.call(cosmos.querySelectorAll('.planet'));
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---- 星空 ---- */
+  var ctx = canvas.getContext('2d');
+  var stars = [];
+  function makeStars() {
+    var w = cosmos.clientWidth, h = cosmos.clientHeight;
+    canvas.width = w * devicePixelRatio;
+    canvas.height = h * devicePixelRatio;
+    ctx.setTransform(devicePixelRatio, 0, 0, devicePixelRatio, 0, 0);
+    stars = [];
+    var n = Math.round(w * h / 4200);
+    for (var i = 0; i < n; i++) {
+      stars.push({
+        x: Math.random() * w, y: Math.random() * h,
+        r: Math.random() * 1.3 + .3,
+        p: Math.random() * Math.PI * 2,
+        s: Math.random() * 1.4 + .4
+      });
+    }
+  }
+  function drawStars(t) {
+    var w = cosmos.clientWidth, h = cosmos.clientHeight;
+    ctx.clearRect(0, 0, w, h);
+    for (var i = 0; i < stars.length; i++) {
+      var st = stars[i];
+      var a = reduced ? .7 : .35 + .55 * (0.5 + 0.5 * Math.sin(st.p + t * 0.001 * st.s));
+      ctx.globalAlpha = a;
+      ctx.fillStyle = '#cfe0ff';
+      ctx.beginPath();
+      ctx.arc(st.x, st.y, st.r, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+  }
+
+  /* ---- 軌道 ---- */
+  var cx, cy, unitX, unitY;
+  function layout() {
+    var w = cosmos.clientWidth, h = cosmos.clientHeight;
+    cx = w / 2; cy = h / 2;
+    unitX = Math.min(w * 0.30, 420);
+    unitY = Math.min(h * 0.30, 300);
+    sun.style.left = (cx - sun.offsetWidth / 2) + 'px';
+    sun.style.top  = (cy - sun.offsetHeight / 2) + 'px';
+    /* 軌道環 */
+    cosmos.querySelectorAll('.orbit-ring').forEach(function (r) { r.remove(); });
+    planets.forEach(function (p) {
+      var f = parseFloat(p.dataset.orbit);
+      var ring = document.createElement('div');
+      ring.className = 'orbit-ring';
+      var rx = unitX * f, ry = unitY * f;
+      ring.style.left = (cx - rx) + 'px';
+      ring.style.top = (cy - ry) + 'px';
+      ring.style.width = (rx * 2) + 'px';
+      ring.style.height = (ry * 2) + 'px';
+      cosmos.insertBefore(ring, sun);
+    });
+    makeStars();
+  }
+
+  planets.forEach(function (p) {
+    var size = parseInt(p.dataset.size, 10);
+    p.style.width = size + 'px';
+    p.style.height = size + 'px';
+    p._angle = parseFloat(p.dataset.phase);
+    p._speed = parseFloat(p.dataset.speed);
+    p._drag = null;
+  });
+
+  function place(p) {
+    var f = parseFloat(p.dataset.orbit);
+    var x = cx + Math.cos(p._angle) * unitX * f;
+    var y = cy + Math.sin(p._angle) * unitY * f;
+    p.style.left = (x - p.offsetWidth / 2) + 'px';
+    p.style.top  = (y - p.offsetHeight / 2) + 'px';
+  }
+
+  function tick(t) {
+    drawStars(t);
+    planets.forEach(function (p) {
+      if (p._drag) return;               /* 拖曳中不轉 */
+      if (!reduced && !p._hover) p._angle += p._speed * 0.008;
+      place(p);
+    });
+    requestAnimationFrame(tick);
+  }
+
+  /* ---- 拖曳與點擊 ---- */
+  planets.forEach(function (p) {
+    p.addEventListener('mouseenter', function () { p._hover = true; });
+    p.addEventListener('mouseleave', function () { p._hover = false; });
+
+    p.addEventListener('pointerdown', function (e) {
+      p.setPointerCapture(e.pointerId);
+      p._drag = { x0: e.clientX, y0: e.clientY, moved: false };
+    });
+    p.addEventListener('pointermove', function (e) {
+      if (!p._drag) return;
+      var dx = e.clientX - p._drag.x0, dy = e.clientY - p._drag.y0;
+      if (!p._drag.moved && Math.hypot(dx, dy) < 7) return;
+      p._drag.moved = true;
+      var rect = cosmos.getBoundingClientRect();
+      var x = e.clientX - rect.left, y = e.clientY - rect.top;
+      p.style.left = (x - p.offsetWidth / 2) + 'px';
+      p.style.top  = (y - p.offsetHeight / 2) + 'px';
+      /* 由新位置回推軌道角度與半徑 */
+      var f = Math.max(0.25, Math.min(1.55, Math.hypot((x - cx) / unitX, (y - cy) / unitY)));
+      p.dataset.orbit = f;
+      p._angle = Math.atan2((y - cy) / unitY, (x - cx) / unitX);
+    });
+    function release(e) {
+      if (!p._drag) return;
+      var moved = p._drag.moved;
+      p._drag = null;
+      if (moved) {
+        layout();                        /* 重畫軌道環 */
+        e.preventDefault();
+        p._suppress = true;
+        setTimeout(function () { p._suppress = false; }, 80);
+      }
+    }
+    p.addEventListener('pointerup', release);
+    p.addEventListener('pointercancel', release);
+    p.addEventListener('click', function (e) {
+      if (p._suppress) { e.preventDefault(); }
+    });
+  });
+
+  window.addEventListener('resize', layout);
+  layout();
+  planets.forEach(place);
+  drawStars(0);
+  requestAnimationFrame(tick);
+})();
+</script>
 </body>
 </html>
