@@ -1,24 +1,24 @@
 /* ============================================================
-   AI 社會研究中心 — 深空宇宙版（多頁，每頁對應星球色）
-   設計語言：深空底 · 每頁星球強調色（--red/--gold 由 body[data-planet] 覆寫）
-   （暖色版備份於 ai-center-warm.css）
+   AI 社會研究中心 — 紅黃暖色版（多頁）
+   設計語言：緋紅 · 金黃 · 暖米紙面 · 等寬資料標籤
+   （深空科技版備份於 ai-center-tech.css）
    ============================================================ */
 
 :root {
-  --paper:   #070b18;   /* 深空底 */
-  --paper2:  #0a1024;
-  --panel:   #0f1630;   /* 卡片面板 */
-  --panel2:  #141c3a;
-  --bright:  #eef2ff;   /* 標題近白 */
-  --txt:     #c9d4ef;   /* 內文 */
-  --dim:     #97a3c6;   /* 弱化 */
-  --faint:   #5d6890;
-  --red:     #4ee1e6;   /* 強調主色（各頁 data-planet 覆寫） */
-  --red-deep:#2bb3a3;
-  --gold:    #9d7bff;   /* 強調次色 */
-  --orange:  #3e7bfa;
-  --hair:    #1c2749;   /* 細線 */
-  --hair2:   #2a3768;
+  --paper:   #fdf6e7;   /* 暖米紙面 */
+  --paper2:  #f9edd2;
+  --panel:   #f7ead0;   /* 卡片面板 */
+  --panel2:  #f3dfba;
+  --bright:  #3d2417;   /* 標題深褐 */
+  --txt:     #5d3f2c;   /* 內文 */
+  --dim:     #7a573e;   /* 弱化 */
+  --faint:   #ab8558;
+  --red:     #bb2d24;   /* 主色：緋紅 */
+  --red-deep:#8f231c;
+  --gold:    #e0a01e;   /* 金黃 */
+  --orange:  #cf6a1d;
+  --hair:    #efdcba;   /* 細線 */
+  --hair2:   #e3c68f;
   --grad:    linear-gradient(90deg, var(--red), var(--gold));
 
   --sans: 'Noto Sans TC', -apple-system, 'PingFang TC', sans-serif;
@@ -32,15 +32,6 @@
   --nav-h: 64px;
 }
 
-/* ---------- 各頁對應星球色（沿用首頁星球色相） ---------- */
-body[data-planet="mission"]    { --red:#e0a01e; --red-deep:#b57d12; --gold:#f5cf6a; --orange:#cf8a1e; }  /* 琥珀岩石 */
-body[data-planet="people"]     { --red:#2bb3a3; --red-deep:#1d8b7f; --gold:#e879ab; --orange:#4ee1d0; }  /* 青綠＋粉衛星 */
-body[data-planet="directors"]  { --red:#cfa64a; --red-deep:#a5822f; --gold:#ecd27a; --orange:#b58f3a; }  /* 金色土星 */
-body[data-planet="courses"]    { --red:#3e7bfa; --red-deep:#2a5bd0; --gold:#6f9dff; --orange:#4f8bff; }  /* 藍色氣態 */
-body[data-planet="activities"] { --red:#e2622b; --red-deep:#b5481f; --gold:#ff8a4d; --orange:#c9531f; }  /* 橘紅熔岩 */
-body[data-planet="research"]   { --red:#8f6bff; --red-deep:#6a49d0; --gold:#b79cff; --orange:#7a58e6; }  /* 星雲紫 */
-body[data-planet="global"]     { --red:#3f8fd2; --red-deep:#2d6ea8; --gold:#5ed684; --orange:#4aa0dd; }  /* 藍綠地球 */
-
 *, *::before, *::after { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
@@ -49,9 +40,9 @@ body {
   margin: 0;
   background: var(--paper);
   background-image:
-    radial-gradient(880px 540px at 88% -10%, color-mix(in srgb, var(--gold) 18%, transparent), transparent 60%),
-    radial-gradient(760px 520px at -5% 10%, color-mix(in srgb, var(--red) 10%, transparent), transparent 55%),
-    radial-gradient(900px 700px at 50% 118%, color-mix(in srgb, var(--orange) 12%, transparent), transparent 60%);
+    radial-gradient(880px 540px at 88% -10%, rgba(224,160,30,.18), transparent 60%),
+    radial-gradient(760px 520px at -5% 10%, rgba(187,45,36,.10), transparent 55%),
+    radial-gradient(900px 700px at 50% 118%, rgba(207,106,29,.12), transparent 60%);
   background-attachment: fixed;
   color: var(--txt);
   font-family: var(--sans);
@@ -60,7 +51,7 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-::selection { background: color-mix(in srgb, var(--gold) 45%, transparent); color: var(--bright); }
+::selection { background: rgba(224,160,30,.45); color: var(--bright); }
 img { max-width: 100%; display: block; }
 a { color: inherit; text-decoration: none; }
 
@@ -82,7 +73,7 @@ a { color: inherit; text-decoration: none; }
   height: var(--nav-h);
   display: flex; align-items: center; justify-content: space-between;
   padding-inline: var(--edge);
-  background: rgba(7,11,24,.82);
+  background: rgba(253,246,231,.88);
   backdrop-filter: saturate(140%) blur(12px);
   -webkit-backdrop-filter: saturate(140%) blur(12px);
   border-bottom: 1px solid var(--hair);
@@ -92,7 +83,7 @@ a { color: inherit; text-decoration: none; }
 .brand { display: flex; align-items: baseline; gap: 10px; }
 .brand,
 .brand :first-child { font-weight: 800; font-size: 1.13rem; letter-spacing: .02em; }
-.brand :first-child { background: linear-gradient(90deg, var(--red), var(--gold)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.brand :first-child { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .brand .en {
   font-family: var(--mono);
   font-size: .66rem; font-weight: 400;
@@ -112,11 +103,11 @@ a { color: inherit; text-decoration: none; }
   font-family: var(--mono);
   font-size: .75rem; letter-spacing: .1em;
   color: var(--red);
-  border: 1px solid color-mix(in srgb, var(--red) 40%, transparent);
+  border: 1px solid rgba(187,45,36,.4);
   border-radius: 999px;
   padding: .3em 1em;
 }
-.navlinks a.lang:hover { background: color-mix(in srgb, var(--gold) 14%, transparent); box-shadow: 0 4px 18px -8px var(--red); }
+.navlinks a.lang:hover { background: rgba(224,160,30,.14); box-shadow: 0 4px 18px -8px var(--red); }
 
 .nav-toggle {
   display: none;
@@ -144,8 +135,8 @@ a { color: inherit; text-decoration: none; }
   content: '';
   position: absolute; inset: 0;
   background-image:
-    linear-gradient(color-mix(in srgb, var(--red) 6%, transparent) 1px, transparent 1px),
-    linear-gradient(90deg, color-mix(in srgb, var(--gold) 10%, transparent) 1px, transparent 1px);
+    linear-gradient(rgba(187,45,36,.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(224,160,30,.10) 1px, transparent 1px);
   background-size: 56px 56px;
   mask-image: radial-gradient(720px 480px at 30% 20%, #000 30%, transparent 75%);
   -webkit-mask-image: radial-gradient(720px 480px at 30% 20%, #000 30%, transparent 75%);
@@ -167,7 +158,7 @@ a { color: inherit; text-decoration: none; }
   margin: 0 0 .5rem;
 }
 .center-hero h1 .accent {
-  background: linear-gradient(90deg, var(--red), var(--gold));
+  background: var(--grad);
   -webkit-background-clip: text; background-clip: text; color: transparent;
 }
 .center-hero .en-name {
@@ -184,14 +175,14 @@ a { color: inherit; text-decoration: none; }
   font-family: var(--mono);
   font-size: .78rem;
   color: var(--red);
-  border: 1px solid color-mix(in srgb, var(--red) 35%, transparent);
+  border: 1px solid rgba(187,45,36,.35);
   border-radius: 999px;
   padding: .38em 1.05em;
   background: rgba(255,255,255,.4);
   transition: background .3s var(--ease), box-shadow .3s var(--ease), border-color .3s var(--ease);
 }
 .anchor-row a:hover {
-  background: color-mix(in srgb, var(--gold) 16%, transparent);
+  background: rgba(224,160,30,.16);
   border-color: var(--red);
   box-shadow: 0 6px 22px -10px var(--red);
 }
@@ -253,7 +244,7 @@ h3 { color: var(--bright); }
   grid-template-columns: minmax(0, 1.1fr) minmax(0, 2fr);
   gap: clamp(24px, 4vw, 56px);
   align-items: start;
-  background: linear-gradient(160deg, color-mix(in srgb, var(--gold) 16%, transparent), var(--panel) 55%);
+  background: linear-gradient(160deg, rgba(224,160,30,.16), var(--panel) 55%);
   border: 1px solid var(--hair2);
   border-radius: 16px;
   padding: clamp(24px, 3.5vw, 44px);
@@ -263,7 +254,7 @@ h3 { color: var(--bright); }
 .director::before {
   content: '';
   position: absolute; inset: -1px auto auto -1px; width: 100%; height: 3px;
-  background: linear-gradient(90deg, var(--red), var(--gold));
+  background: var(--grad);
   border-radius: 16px 16px 0 0;
 }
 .director .photo img {
@@ -271,7 +262,7 @@ h3 { color: var(--bright); }
   border-radius: 14px;
   display: block;
   border: 1px solid var(--hair2);
-  box-shadow: 0 22px 48px -22px rgba(0,0,0,.5);
+  box-shadow: 0 22px 48px -22px rgba(143,35,28,.5);
 }
 .director h3 { font-size: 1.6rem; font-weight: 800; margin: 0 0 .2rem; color: var(--bright); }
 .director .title { color: var(--faint); font-size: .88rem; font-family: var(--mono); margin: 0 0 1.1rem; }
@@ -288,13 +279,13 @@ h3 { color: var(--bright); }
   margin-top: 2rem;
 }
 .person {
-  background: var(--panel);
+  background: #fffdf6;
   border: 1px solid var(--hair);
   border-radius: 14px;
   padding: 24px 24px 22px;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 12px 30px -22px rgba(0,0,0,.35);
+  box-shadow: 0 12px 30px -22px rgba(143,35,28,.35);
 }
 .person::before {
   content: '';
@@ -324,13 +315,13 @@ h3 { color: var(--bright); }
   margin-top: 2rem;
 }
 .ccard {
-  background: var(--panel);
+  background: #fffdf6;
   border: 1px solid var(--hair);
   border-radius: 14px;
   padding: 22px 24px;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 12px 30px -24px rgba(0,0,0,.4);
+  box-shadow: 0 12px 30px -24px rgba(143,35,28,.4);
   transition: border-color .3s var(--ease), box-shadow .3s var(--ease), transform .3s var(--ease);
 }
 .ccard::before {
@@ -340,7 +331,7 @@ h3 { color: var(--bright); }
 }
 .ccard:nth-child(3n+2)::before { background: linear-gradient(90deg, var(--gold), transparent 75%); }
 .ccard:nth-child(3n)::before   { background: linear-gradient(90deg, var(--orange), transparent 75%); }
-.ccard:hover { border-color: var(--hair2); box-shadow: 0 20px 44px -22px rgba(0,0,0,.5); transform: translateY(-2px); }
+.ccard:hover { border-color: var(--hair2); box-shadow: 0 20px 44px -22px rgba(143,35,28,.5); transform: translateY(-2px); }
 .ccard .cno {
   font-family: var(--mono);
   font-size: .7rem; letter-spacing: .1em;
@@ -374,7 +365,7 @@ h3 { color: var(--bright); }
 .module-step p { font-size: .86rem; line-height: 1.85; color: var(--dim); margin: 0; }
 
 /* ---------- 表格 ---------- */
-.table-scroll { overflow-x: auto; margin-top: 1.6rem; border: 1px solid var(--hair2); border-radius: 12px; background: var(--panel); }
+.table-scroll { overflow-x: auto; margin-top: 1.6rem; border: 1px solid var(--hair2); border-radius: 12px; background: #fffdf6; }
 table.center-table {
   width: 100%;
   border-collapse: collapse;
@@ -388,9 +379,8 @@ table.center-table th {
   font-size: .78rem;
   letter-spacing: .1em;
   text-align: left;
-  color: var(--bright);
-  background: color-mix(in srgb, var(--red) 16%, var(--panel2));
-  border-bottom: 1px solid color-mix(in srgb, var(--red) 45%, var(--hair2));
+  color: #fff;
+  background: linear-gradient(90deg, var(--red), var(--red-deep));
   padding: .7em 1em;
   white-space: nowrap;
 }
@@ -400,7 +390,7 @@ table.center-table td {
   color: var(--dim);
   vertical-align: top;
 }
-table.center-table tr:nth-child(even) td { background: color-mix(in srgb, var(--gold) 7%, transparent); }
+table.center-table tr:nth-child(even) td { background: rgba(224,160,30,.07); }
 table.center-table tr:last-child td { border-bottom: 0; }
 table.center-table td.job { font-weight: 700; color: var(--bright); white-space: nowrap; }
 
@@ -412,13 +402,13 @@ table.center-table td.job { font-weight: 700; color: var(--bright); white-space:
   margin-top: 2rem;
 }
 .stat {
-  background: var(--panel);
+  background: #fffdf6;
   border: 1px solid var(--hair);
   border-radius: 14px;
   padding: 18px 20px;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 12px 30px -24px rgba(0,0,0,.4);
+  box-shadow: 0 12px 30px -24px rgba(143,35,28,.4);
 }
 .stat::before {
   content: '';
@@ -434,7 +424,7 @@ table.center-table td.job { font-weight: 700; color: var(--bright); white-space:
   font-size: 2.4rem;
   font-weight: 600;
   line-height: 1.15;
-  background: linear-gradient(90deg, var(--red), var(--gold));
+  background: var(--grad);
   -webkit-background-clip: text; background-clip: text; color: transparent;
 }
 .stat .lbl { font-size: .84rem; color: var(--dim); line-height: 1.6; margin-top: .3rem; }
@@ -450,12 +440,12 @@ table.center-table td.job { font-weight: 700; color: var(--bright); white-space:
   border-radius: 999px;
   padding: .12em .8em;
   white-space: nowrap;
-  background: color-mix(in srgb, var(--gold) 14%, transparent);
+  background: rgba(224,160,30,.14);
 }
 
 /* ---------- 實驗室特寫框 ---------- */
 .lab-box {
-  background: linear-gradient(170deg, color-mix(in srgb, var(--gold) 20%, transparent), var(--panel) 45%);
+  background: linear-gradient(170deg, rgba(224,160,30,.20), var(--panel) 45%);
   border: 1px solid var(--hair2);
   border-radius: 18px;
   padding: clamp(24px, 3.5vw, 42px);
@@ -466,7 +456,7 @@ table.center-table td.job { font-weight: 700; color: var(--bright); white-space:
 .lab-box::before {
   content: '';
   position: absolute; top: 0; left: 0; width: 100%; height: 3px;
-  background: linear-gradient(90deg, var(--red), var(--gold));
+  background: var(--grad);
 }
 .lab-box .lab-kicker {
   font-family: var(--mono);
@@ -489,7 +479,7 @@ table.center-table td.job { font-weight: 700; color: var(--bright); white-space:
   margin-top: 1.4rem;
 }
 .lab-col {
-  background: var(--panel);
+  background: #fffdf6;
   border: 1px solid var(--hair);
   border-radius: 12px;
   padding: 18px 20px;
@@ -511,7 +501,7 @@ table.center-table td.job { font-weight: 700; color: var(--bright); white-space:
   position: absolute; left: -6px; top: 12px;
   width: 9px; height: 9px; border-radius: 50%;
   background: var(--red);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--red) 20%, transparent);
+  box-shadow: 0 0 0 3px rgba(187,45,36,.2);
 }
 .activity .when {
   font-family: var(--mono);
@@ -567,9 +557,8 @@ table.center-table td.job { font-weight: 700; color: var(--bright); white-space:
   font-family: var(--mono);
   font-size: .62rem; font-weight: 700;
   letter-spacing: .08em;
-  color: var(--bright);
-  background: color-mix(in srgb, var(--red) 24%, var(--panel));
-  border: 1px solid var(--red);
+  color: #fff;
+  background: var(--grad);
   border-radius: 5px;
   padding: 2px 8px;
   margin-left: .5em;
@@ -602,7 +591,7 @@ footer {
 footer .wrap { padding-inline: 0; display: contents; }
 footer .f-name {
   font-size: .95rem; font-weight: 800;
-  background: linear-gradient(90deg, var(--red), var(--gold));
+  background: var(--grad);
   -webkit-background-clip: text; background-clip: text; color: transparent;
 }
 footer .f-links { display: flex; gap: 22px; }
@@ -674,13 +663,13 @@ footer .f-copy {
 }
 .home-cards a {
   display: block;
-  background: var(--panel);
+  background: #fffdf6;
   border: 1px solid var(--hair);
   border-radius: 14px;
   padding: 24px 26px 22px;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 14px 34px -26px rgba(0,0,0,.45);
+  box-shadow: 0 14px 34px -26px rgba(143,35,28,.45);
   transition: border-color .3s var(--ease), box-shadow .3s var(--ease), transform .3s var(--ease);
 }
 .home-cards a::before {
@@ -690,7 +679,7 @@ footer .f-copy {
 }
 .home-cards a:nth-child(3n+2)::before { background: linear-gradient(90deg, var(--gold), transparent 75%); }
 .home-cards a:nth-child(3n)::before   { background: linear-gradient(90deg, var(--orange), transparent 75%); }
-.home-cards a:hover { border-color: var(--hair2); box-shadow: 0 22px 48px -24px rgba(0,0,0,.55); transform: translateY(-3px); }
+.home-cards a:hover { border-color: var(--hair2); box-shadow: 0 22px 48px -24px rgba(143,35,28,.55); transform: translateY(-3px); }
 .home-cards .no {
   font-family: var(--mono);
   font-size: .68rem; letter-spacing: .2em;
@@ -745,11 +734,11 @@ footer .f-copy {
   margin-top: 2rem;
 }
 .news-col {
-  background: var(--panel);
+  background: #fffdf6;
   border: 1px solid var(--hair);
   border-radius: 14px;
   padding: 20px 22px 16px;
-  box-shadow: 0 12px 30px -24px rgba(0,0,0,.4);
+  box-shadow: 0 12px 30px -24px rgba(143,35,28,.4);
   display: flex;
   flex-direction: column;
 }
@@ -793,21 +782,9 @@ footer .f-copy {
   font-size: .68rem;
   font-family: var(--mono);
   color: var(--red-deep);
-  background: color-mix(in srgb, var(--gold) 16%, transparent);
+  background: rgba(224,160,30,.16);
   border-radius: 4px;
   padding: 0 .5em;
   margin-right: .4em;
   vertical-align: .08em;
-}
-
-/* ---------- 內頁頁首：對應星球色光暈 ---------- */
-.page-head { position: relative; }
-.page-head .wrap { position: relative; z-index: 1; }
-.page-head::before {
-  content: '';
-  position: absolute; inset: 0;
-  background:
-    radial-gradient(760px 360px at 12% -30%, color-mix(in srgb, var(--red) 24%, transparent), transparent 70%),
-    radial-gradient(520px 300px at 92% -10%, color-mix(in srgb, var(--gold) 18%, transparent), transparent 65%);
-  pointer-events: none;
 }
