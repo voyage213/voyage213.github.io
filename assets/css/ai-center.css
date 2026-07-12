@@ -40,6 +40,7 @@ body[data-planet="courses"]    { --red:#3e7bfa; --red-deep:#2a5bd0; --gold:#6f9d
 body[data-planet="activities"] { --red:#e2622b; --red-deep:#b5481f; --gold:#ff8a4d; --orange:#c9531f; }  /* 橘紅熔岩 */
 body[data-planet="research"]   { --red:#8f6bff; --red-deep:#6a49d0; --gold:#b79cff; --orange:#7a58e6; }  /* 星雲紫 */
 body[data-planet="global"]     { --red:#3f8fd2; --red-deep:#2d6ea8; --gold:#5ed684; --orange:#4aa0dd; }  /* 藍綠地球 */
+body[data-planet="students"]   { --red:#e0609a; --red-deep:#b23b78; --gold:#f5a8cf; --orange:#c94080; }  /* 玫紅新星 */
 
 *, *::before, *::after { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
