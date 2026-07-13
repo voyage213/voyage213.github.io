@@ -812,3 +812,8 @@ footer .f-copy {
     radial-gradient(520px 300px at 92% -10%, color-mix(in srgb, var(--gold) 18%, transparent), transparent 65%);
   pointer-events: none;
 }
+
+/* ---------- 國際視野表格：AI 中心連結 ---------- */
+.center-table td a { color: var(--red); border-bottom: 1px solid var(--hair2); }
+.center-table td a:hover { border-bottom-color: var(--red); }
+.center-table td.job a { color: inherit; border-bottom-color: var(--red); }
