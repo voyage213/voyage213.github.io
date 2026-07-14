@@ -234,10 +234,24 @@ em { font-family: var(--news); font-style: italic; }
   mix-blend-mode: multiply;
 }
 /* 沒照片時的暖色佔位 */
-.hero-photo:not(:has(img)) {
+.hero-photo:not(:has(img)):not(.has-globe) {
   background: linear-gradient(150deg, var(--sand), #ecd3b3 60%, #e3c49e);
   min-height: clamp(360px, 42vw, 500px);
 }
+
+/* 動態地球：填滿 hero 右欄，可拖曳旋轉 */
+.hero-photo.has-globe { overflow: visible; background: none; }
+.hero-photo.has-globe::after { display: none; }   /* 關掉疊色層，否則會攔截拖曳並染色 */
+.hero-photo.has-globe #globe {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  max-height: 560px;
+  margin-inline: auto;
+  cursor: grab;
+  touch-action: none;                              /* 手機拖曳旋轉不觸發捲動 */
+}
+.hero-photo.has-globe #globe:active { cursor: grabbing; }
 
 @keyframes rise {
   from { opacity: 0; transform: translateY(20px); }
