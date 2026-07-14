@@ -253,6 +253,25 @@ em { font-family: var(--news); font-style: italic; }
 }
 .hero-photo.has-globe #globe:active { cursor: grabbing; }
 
+/* 內頁標題區的水印地球：右側淡淡自轉，不干擾閱讀 */
+.page-head { position: relative; overflow: hidden; }
+.head-globe {
+  position: absolute;
+  top: 50%;
+  right: clamp(-140px, -6vw, -40px);
+  transform: translateY(-50%);
+  width: clamp(260px, 32vw, 440px);
+  aspect-ratio: 1 / 1;
+  opacity: 0.5;
+  pointer-events: none;          /* 純裝飾，不攔截選字／捲動 */
+  z-index: 0;
+}
+.head-globe #globe { display: block; width: 100%; height: 100%; }
+.page-head .wrap { position: relative; z-index: 1; }   /* 文字在地球之上 */
+@media (max-width: 760px) {
+  .head-globe { opacity: 0.28; right: clamp(-160px, -22vw, -80px); }
+}
+
 @keyframes rise {
   from { opacity: 0; transform: translateY(20px); }
   to   { opacity: 1; transform: none; }
