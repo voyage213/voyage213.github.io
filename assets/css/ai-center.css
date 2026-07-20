@@ -817,3 +817,13 @@ footer .f-copy {
 .center-table td a { color: var(--red); border-bottom: 1px solid var(--hair2); }
 .center-table td a:hover { border-bottom-color: var(--red); }
 .center-table td.job a { color: inherit; border-bottom-color: var(--red); }
+
+/* ---------- 成員卡頭像 ---------- */
+.person .avatar {
+  width: 92px; height: 92px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 14px;
+  border: 1px solid var(--hair2);
+  box-shadow: 0 10px 26px -14px rgba(0,0,0,.55);
+}
