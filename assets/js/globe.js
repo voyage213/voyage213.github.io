@@ -23,7 +23,7 @@
   ];
   var ARCS = [[0,1],[0,2],[0,3],[0,4],[0,5],[0,6],[0,7]]; // 皆從台北連出
 
-  var AUTO = 0.0020;
+  var AUTO = 0.0030;
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   var rot = 2.0, tilt = -0.38;
@@ -70,15 +70,15 @@
 
     // 球體：暖色徑向漸層製造體積
     var g = ctx.createRadialGradient(cx - R * 0.3, cy - R * 0.35, R * 0.2, cx, cy, R);
-    g.addColorStop(0, 'rgba(247,240,228,0.95)');
-    g.addColorStop(0.7, 'rgba(233,214,183,0.5)');
-    g.addColorStop(1, 'rgba(200,170,132,0.3)');
+    g.addColorStop(0, 'rgba(122,183,232,0.98)');
+    g.addColorStop(0.7, 'rgba(46,116,181,0.95)');
+    g.addColorStop(1, 'rgba(23,71,120,0.92)');
     ctx.beginPath(); ctx.arc(cx, cy, R, 0, 7); ctx.fillStyle = g; ctx.fill();
     ctx.beginPath(); ctx.arc(cx, cy, R, 0, 7);
-    ctx.strokeStyle = 'rgba(120,80,45,0.16)'; ctx.lineWidth = 1; ctx.stroke();
+    ctx.strokeStyle = 'rgba(255,255,255,0.38)'; ctx.lineWidth = 1; ctx.stroke();
 
     // 經緯網格
-    ctx.strokeStyle = 'rgba(120,80,45,0.09)'; ctx.lineWidth = 1;
+    ctx.strokeStyle = 'rgba(255,255,255,0.20)'; ctx.lineWidth = 1;
     for (var la = -60; la <= 60; la += 30) drawRing('lat', la);
     for (var lo = 0; lo < 360; lo += 30) drawRing('lon', lo);
 
@@ -86,9 +86,9 @@
     for (var i = 0; i < LAND.length; i += 2) {
       var p = project(LAND[i] / 10, LAND[i + 1] / 10);
       if (p.z <= 0) continue;
-      ctx.globalAlpha = 0.28 + p.z * 0.5;
+      ctx.globalAlpha = 0.45 + p.z * 0.5;
       ctx.beginPath(); ctx.arc(p.x, p.y, 0.9 + p.z * 1.3, 0, 7);
-      ctx.fillStyle = '#8a4f33'; ctx.fill();
+      ctx.fillStyle = '#ffffff'; ctx.fill();
     }
     ctx.globalAlpha = 1;
 
@@ -101,11 +101,11 @@
       if (m.z <= 0) continue;
       var home = HUBS[h][2];
       ctx.beginPath(); ctx.arc(m.x, m.y, home ? 9 : 6.5, 0, 7);
-      ctx.fillStyle = home ? 'rgba(217,154,43,0.22)' : 'rgba(176,71,46,0.20)'; ctx.fill();
+      ctx.fillStyle = home ? 'rgba(255,255,255,0.42)' : 'rgba(255,255,255,0.26)'; ctx.fill();
       ctx.beginPath(); ctx.arc(m.x, m.y, home ? 4 : 3, 0, 7);
-      ctx.fillStyle = home ? '#d99a2b' : '#b0472e'; ctx.fill();
+      ctx.fillStyle = '#ffffff'; ctx.fill();
       ctx.beginPath(); ctx.arc(m.x, m.y, home ? 4 : 3, 0, 7);
-      ctx.strokeStyle = 'rgba(255,250,242,0.85)'; ctx.lineWidth = 1; ctx.stroke();
+      ctx.strokeStyle = 'rgba(23,71,120,0.75)'; ctx.lineWidth = 1; ctx.stroke();
     }
   }
 
@@ -141,7 +141,7 @@
       if (p.z <= 0) { started = false; continue; }
       started ? ctx.lineTo(p.x, p.y) : (ctx.moveTo(p.x, p.y), started = true);
     }
-    ctx.strokeStyle = 'rgba(176,71,46,0.45)'; ctx.lineWidth = 1.2; ctx.stroke();
+    ctx.strokeStyle = 'rgba(255,255,255,0.62)'; ctx.lineWidth = 1.2; ctx.stroke();
   }
 
   function frame() {
