@@ -762,6 +762,24 @@ html[lang="ja"] .sec-title { letter-spacing: .02em; }
 html[lang="ja"] .sec-body,
 html[lang="ja"] .lede { letter-spacing: 0; }
 
+/* ---------- 韓文版 ----------
+   諺文用 Noto Serif/Sans KR；落到 TC 字型會缺字或字形不對。 */
+html[lang="ko"] {
+  --serif: 'Noto Serif KR', 'Noto Serif TC', serif;
+  --sans:  'Noto Sans KR', 'Noto Sans TC', 'Inter', sans-serif;
+}
+html[lang="ko"] body { line-height: 1.9; }
+/* 韓文 hero 標題偏長，字級收小避免壓到地球 */
+html[lang="ko"] .hero h1 {
+  font-size: clamp(1.85rem, 3.3vw, 2.85rem);
+  letter-spacing: 0;
+  line-height: 1.38;
+}
+html[lang="ko"] .sec-title { letter-spacing: 0; }
+/* 諺文是拼音文字，不需要方塊字的額外字距 */
+html[lang="ko"] .sec-body,
+html[lang="ko"] .lede { letter-spacing: 0; }
+
 /* ---------- 語言切換：兩顆藥丸靠攏成一組 ---------- */
 .navlinks a.lang { padding: .28em .8em; }
 /* 相鄰的兩個語言 <li> 收窄間距，讓 中｜EN｜日 讀起來像一組開關 */
