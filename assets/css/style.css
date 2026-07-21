@@ -505,6 +505,14 @@ em { font-family: var(--news); font-style: italic; }
 .pub-list a.ref { color: var(--ink); border-bottom: 1px solid var(--hair-deep); }
 .pub-list a.ref:hover { color: var(--terra); border-bottom-color: var(--terra); }
 
+/* 行內連結（如 AI 與社會研究中心）：淡底線，hover 轉陶土色 */
+a.link {
+  color: inherit;
+  border-bottom: 1px solid var(--hair-deep);
+  transition: color .25s var(--ease), border-color .25s var(--ease);
+}
+a.link:hover { color: var(--terra); border-bottom-color: var(--terra); }
+
 .badge {
   display: inline-block;
   font-family: var(--mono);
