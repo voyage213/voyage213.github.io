@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>U.S. Conservative Networks and Taiwan Stances (2026)</title>
+<style>
+  :root { color-scheme: light dark; }
+  .viz-root {
+    color-scheme: light;
+    --surface-1:#fcfcfb; --page:#f9f9f7;
+    --ink-1:#0b0b0b; --ink-2:#52514e; --ink-muted:#898781;
+    --grid:#e1e0d9; --axis:#c3c2b7; --ring:rgba(11,11,11,0.10);
+    --maga:#2a78d6; --af:#eb6834; --ev:#4a3aa7;
+    --st-pro:#0ca30c; --st-cond:#fab219; --st-anti:#d03b3b; --st-unk:#898781;
+    --chipbg:#f0efec;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) .viz-root {
+      color-scheme: dark;
+      --surface-1:#1a1a19; --page:#0d0d0d;
+      --ink-1:#ffffff; --ink-2:#c3c2b7; --ink-muted:#898781;
+      --grid:#2c2c2a; --axis:#383835; --ring:rgba(255,255,255,0.12);
+      --maga:#3987e5; --af:#d95926; --ev:#9085e9;
+      --chipbg:#262624;
+    }
+  }
+  :root[data-theme="dark"] .viz-root {
+    color-scheme: dark;
+    --surface-1:#1a1a19; --page:#0d0d0d;
+    --ink-1:#ffffff; --ink-2:#c3c2b7; --ink-muted:#898781;
+    --grid:#2c2c2a; --axis:#383835; --ring:rgba(255,255,255,0.12);
+    --maga:#3987e5; --af:#d95926; --ev:#9085e9;
+    --chipbg:#262624;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  body { background: var(--page); }
+  .viz-root {
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: var(--page); color: var(--ink-1); min-height: 100vh; padding: 16px;
+  }
+  .wrap { max-width: 1280px; margin: 0 auto; }
+  h1 { font-size: 19px; font-weight: 700; }
+  .sub { font-size: 12.5px; color: var(--ink-2); margin-top: 3px; line-height: 1.5; }
+  .panel { background: var(--surface-1); border: 1px solid var(--ring); border-radius: 10px; margin-top: 12px; }
+  .controls { display: flex; flex-wrap: wrap; gap: 14px; padding: 10px 14px; align-items: center; border-bottom: 1px solid var(--grid); }
+  .ctl-group { display: flex; flex-wrap: wrap; gap: 5px; align-items: center; }
+  .ctl-label { font-size: 11.5px; color: var(--ink-muted); margin-right: 2px; }
+  .chip {
+    font-size: 12px; padding: 3px 10px; border-radius: 999px; cursor: pointer; user-select: none;
+    border: 1px solid var(--axis); background: var(--chipbg); color: var(--ink-2);
+    display: inline-flex; align-items: center; gap: 5px;
+  }
+  .chip .sw { width: 9px; height: 9px; border-radius: 50%; display: inline-block; border: 1px solid var(--ring); }
+  .chip.off { opacity: 0.35; }
+  .chip:hover { border-color: var(--ink-muted); }
+  input[type="search"] {
+    font-size: 12.5px; padding: 4px 10px; border-radius: 7px; border: 1px solid var(--axis);
+    background: var(--surface-1); color: var(--ink-1); width: 150px;
+  }
+  .stage { position: relative; }
+  svg { display: block; width: 100%; height: 74vh; min-height: 540px; }
+  .tooltip {
+    position: absolute; pointer-events: none; opacity: 0; transition: opacity .12s;
+    background: var(--surface-1); color: var(--ink-1); border: 1px solid var(--axis);
+    border-radius: 8px; padding: 9px 12px; font-size: 12px; max-width: 300px; line-height: 1.55;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.18); z-index: 5;
+  }
+  .tooltip .tt-name { font-weight: 700; font-size: 13px; }
+  .tooltip .tt-role { color: var(--ink-2); margin-top: 1px; }
+  .tooltip .tt-note { margin-top: 5px; border-top: 1px solid var(--grid); padding-top: 5px; color: var(--ink-2); }
+  .tooltip .badge { display: inline-block; font-size: 10.5px; padding: 1px 7px; border-radius: 999px; margin: 4px 4px 0 0; color: #fff; }
+  .legend2 { display: flex; flex-wrap: wrap; gap: 12px 20px; padding: 9px 14px; border-top: 1px solid var(--grid); font-size: 11.5px; color: var(--ink-2); align-items: center; }
+  .legend2 .li { display: inline-flex; align-items: center; gap: 5px; }
+  .foot { font-size: 11px; color: var(--ink-muted); margin-top: 10px; line-height: 1.65; }
+  text.nlabel { font-size: 10px; fill: var(--ink-1); pointer-events: none; paint-order: stroke; stroke: var(--surface-1); stroke-width: 2.6px; font-weight: 600; }
+  text.hublabel { font-size: 15px; font-weight: 800; pointer-events: none; paint-order: stroke; stroke: var(--surface-1); stroke-width: 4px; }
+  .edge { stroke-opacity: 0.32; }
+  .edge.hist { stroke-dasharray: 4 4; }
+  .node { cursor: grab; }
+  .dim { opacity: 0.12; }
+</style>
+</head>
+<body>
+<div class="viz-root">
+<div class="wrap">
+  <h1>U.S. Conservative Networks and Taiwan Stances</h1>
+  <div class="sub">Node color = Taiwan stance | Edges = faction membership (MAGA / America First / Evangelical) | Shape = current role | As of July 2026. Drag nodes, hover for the evidence, click to focus one node's network.</div>
+
+  <div class="panel">
+    <div class="controls">
+      <div class="ctl-group" id="stanceChips">
+        <span class="ctl-label">Taiwan stance</span>
+        <span class="chip" data-k="pro"><span class="sw" style="background:var(--st-pro)"></span>Deterrence hawk</span>
+        <span class="chip" data-k="cond"><span class="sw" style="background:var(--st-cond)"></span>Conditional / transactional</span>
+        <span class="chip" data-k="anti"><span class="sw" style="background:var(--st-anti)"></span>Anti-intervention / anti-aid</span>
+        <span class="chip" data-k="unk"><span class="sw" style="background:var(--st-unk)"></span>Unclear / mixed</span>
+      </div>
+      <div class="ctl-group" id="catChips">
+        <span class="ctl-label">Role</span>
+        <span class="chip" data-k="sen">Senators</span>
+        <span class="chip" data-k="rep">House</span>
+        <span class="chip" data-k="exec">Executive</span>
+        <span class="chip" data-k="gov">Governors</span>
+        <span class="chip" data-k="org">Media / think tanks</span>
+        <span class="chip" data-k="rel">Religious leaders</span>
+      </div>
+      <div class="ctl-group">
+        <input type="search" id="q" placeholder="Search names…">
+      </div>
+    </div>
+
+    <div class="stage">
+      <svg id="net" viewBox="0 0 1280 860" role="img" aria-label="Network of U.S. conservative figures: three faction hubs and person nodes"></svg>
+      <div class="tooltip" id="tip"></div>
+    </div>
+
+    <div class="legend2">
+      <span class="li"><b style="color:var(--maga)">━</b> MAGA identity</span>
+      <span class="li"><b style="color:var(--af)">━</b> America First (anti-aid behavioral marker)</span>
+      <span class="li"><b style="color:var(--ev)">━</b> Evangelical (denominational tradition / self-ID)</span>
+      <span class="li" style="margin-left:8px">Shapes:</span>
+      <span class="li"><svg width="14" height="14"><circle cx="7" cy="7" r="5.5" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>Senator</span>
+      <span class="li"><svg width="14" height="14"><rect x="2" y="2" width="10" height="10" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>House member</span>
+      <span class="li"><svg width="14" height="14"><path d="M7 1 L13 7 L7 13 L1 7 Z" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>Executive</span>
+      <span class="li"><svg width="14" height="14"><path d="M7 2 L13 12 L1 12 Z" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>Governor</span>
+      <span class="li"><svg width="14" height="14"><path d="M4 2 L10 2 L13 7 L10 12 L4 12 L1 7 Z" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>Media / think tank</span>
+      <span class="li"><svg width="14" height="14"><path d="M7 1 L12.7 5.2 L10.5 12 L3.5 12 L1.3 5.2 Z" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>Religious leader</span>
+      <span class="li"><svg width="16" height="16"><path d="M8 1 L9.8 5.8 L15 6 L11 9.2 L12.4 14.2 L8 11.3 L3.6 14.2 L5 9.2 L1 6 L6.2 5.8 Z" fill="none" stroke="currentColor" stroke-width="1.3"/></svg>Interviewee</span>
+      <span class="li" style="margin-left:8px">◌ dashed outline = departed | dashed edge = historical membership</span>
+    </div>
+  </div>
+
+  <div class="foot">
+    Criteria — "Deterrence hawk": verifiable advocacy of strengthened deterrence (faster arms sales, Taiwan visits, pro-Taiwan bills). "Conditional / transactional": supportive but demands payment or burden-sharing, or recalculates the commitment via chip reshoring. "Anti-intervention / anti-aid": voted against the Indo-Pacific supplemental (2024, H.R. 8036) or for striking the $500M Taiwan aid (2025, H.Amdt. 53, failed 6–421). "Unclear": insufficient public record. Faction markers follow the minimal-verifiability principle of the project's roster documents (Pew, Faith on the Hill 2025; Ballotpedia, House Freedom Caucus; congressional roll calls). Note: a vote against a package ≠ anti-Taiwan (e.g., Mast and Rick Scott opposed bundling on fiscal grounds and remain deterrence hawks). Internal research reference; individual positions may shift with events.
+  </div>
+</div>
+</div>
+
+<script>
+const NODES = [
+  {id:"MAGA", hub:true, label:"MAGA", x:640, y:250},
+  {id:"AF", hub:true, label:"America First", x:340, y:600},
+  {id:"EV", hub:true, label:"Evangelical", x:950, y:600},
+
+  // ===== Senators =====
+  {id:"banks", n:"Jim Banks", role:"Senator, IN", cat:"sen", f:["MAGA","AF"], s:"cond", note:"Publicly self-identifies as America First; China hawkishness combined with allied burden-sharing demands"},
+  {id:"moreno", n:"Bernie Moreno", role:"Senator, OH", cat:"sen", f:["MAGA"], s:"cond", note:"Elected with Trump's endorsement; transactional vocabulary"},
+  {id:"schmitt", n:"Eric Schmitt", role:"Senator, MO", cat:"sen", f:["MAGA","AF"], s:"cond", note:"Voted against the 2024 national-security supplemental (H.R. 815)"},
+  {id:"hawley", n:"Josh Hawley", role:"Senator, MO", cat:"sen", f:["MAGA","AF","EV"], s:"pro", note:"Asia-first hawk: arm Taiwan ahead of Ukraine — the key case showing MAGA does not equal anti-Taiwan"},
+  {id:"tuberville", n:"Tommy Tuberville", role:"Senator, AL (running for governor)", cat:"sen", f:["MAGA","EV"], s:"cond", note:"Restorationist church; transactional-alliance vocabulary"},
+  {id:"mullin", n:"Markwayne Mullin", role:"Senator, OK", cat:"sen", f:["MAGA","EV"], s:"cond", note:"Pentecostal; Trump inner circle"},
+  {id:"rscott", n:"Rick Scott", role:"Senator, FL", cat:"sen", f:["MAGA","AF"], s:"pro", note:"Multiple Taiwan visits and pro-Taiwan bills; his H.R. 815 no vote was fiscal / anti-bundling"},
+  {id:"moody", n:"Ashley Moody", role:"Senator, FL", cat:"sen", f:["MAGA"], s:"unk", note:"Appointed 2025 to Rubio's seat; thin Taiwan record so far"},
+  {id:"budd", n:"Ted Budd", role:"Senator, NC", cat:"sen", f:["MAGA","AF","EV"], s:"cond", note:"Voted against H.R. 815; nondenominational evangelical"},
+  {id:"blackburn", n:"Marsha Blackburn", role:"Senator, TN (running for governor)", cat:"sen", f:["MAGA","AF"], s:"pro", note:"Repeated Taiwan visits and public support; her H.R. 815 no vote was anti-bundling"},
+  {id:"hagerty", n:"Bill Hagerty", role:"Senator, TN", cat:"sen", f:["MAGA","AF"], s:"cond", note:"Former ambassador to Japan; leading transactional-alliance voice"},
+  {id:"marshall", n:"Roger Marshall", role:"Senator, KS", cat:"sen", f:["MAGA","AF","EV"], s:"cond", note:"Voted against H.R. 815"},
+  {id:"justice", n:"Jim Justice", role:"Senator, WV", cat:"sen", f:["MAGA","EV"], s:"unk", note:"Baptist; thin Taiwan record"},
+  {id:"sheehy", n:"Tim Sheehy", role:"Senator, MT", cat:"sen", f:["MAGA"], s:"unk", note:"Elected 2024 with Trump's endorsement"},
+  {id:"rjohnson", n:"Ron Johnson", role:"Senator, WI", cat:"sen", f:["MAGA","AF"], s:"anti", note:"Pronounced anti-intervention and anti-bundling leanings"},
+  {id:"cruz", n:"Ted Cruz", role:"Senator, TX", cat:"sen", f:["MAGA","AF","EV"], s:"pro", note:"China hawk with multiple pro-Taiwan bills; his H.R. 815 no vote was anti-bundling"},
+  {id:"lankford", n:"James Lankford", role:"Senator, OK", cat:"sen", f:["EV"], s:"pro", note:"Southern Baptist minister background; consistent supporter of Indo-Pacific deterrence"},
+  {id:"wicker", n:"Roger Wicker", role:"Senator, MS (Armed Services chair)", cat:"sen", f:["EV"], s:"pro", note:"Key figure for deterrence and defense budgets (denominationally Baptist)"},
+  {id:"hydesmith", n:"Cindy Hyde-Smith", role:"Senator, MS", cat:"sen", f:["EV"], s:"unk", note:"Baptist; religious conservative"},
+  {id:"mlee", n:"Mike Lee", role:"Senator, UT", cat:"sen", f:["AF"], s:"anti", note:"Anti-intervention; voted against H.R. 815"},
+  {id:"rpaul", n:"Rand Paul", role:"Senator, KY", cat:"sen", f:["AF"], s:"anti", note:"Libertarian non-interventionist standard-bearer"},
+  {id:"lummis", n:"Cynthia Lummis", role:"Senator, WY", cat:"sen", f:["AF"], s:"unk", note:"Voted against H.R. 815 (fiscal grounds)"},
+  {id:"barrasso", n:"John Barrasso", role:"Senator, WY (leadership)", cat:"sen", f:["AF"], s:"unk", note:"No vote driven mainly by the border issue; not a typical America Firster"},
+  {id:"tscott", n:"Tim Scott", role:"Senator, SC", cat:"sen", f:["EV"], s:"pro", note:"Self-identified evangelical; China hawk"},
+  {id:"daines", n:"Steve Daines", role:"Senator, MT", cat:"sen", f:["EV"], s:"pro", note:"Multiple Taiwan visits; evangelical background"},
+
+  // ===== House =====
+  {id:"mjohnson", n:"Mike Johnson", role:"Speaker of the House, LA", cat:"rep", f:["EV"], s:"pro", note:"Southern Baptist; brought the 2024 aid packages (incl. Taiwan) to a vote"},
+  {id:"jordan", n:"Jim Jordan", role:"House, OH (Judiciary chair)", cat:"rep", f:["MAGA"], s:"unk", note:"Freedom Caucus co-founder; little Taiwan record"},
+  {id:"donalds", n:"Byron Donalds", role:"House, FL (running for governor)", cat:"rep", f:["MAGA","AF"], s:"cond", note:"Trump-endorsed for Florida governor; Freedom Caucus"},
+  {id:"stefanik", n:"Elise Stefanik", role:"House, NY (running for governor)", cat:"rep", f:["MAGA"], s:"pro", note:"China hawk; Trump inner circle"},
+  {id:"luna", n:"Anna Paulina Luna", role:"House, FL", cat:"rep", f:["MAGA","AF"], s:"anti", note:"Voted to strike the $500M Taiwan aid (2025, one of six)"},
+  {id:"massie", n:"Thomas Massie", role:"House, KY", cat:"rep", f:["AF"], s:"anti", note:"Voted to strike Taiwan aid; consistent non-interventionist"},
+  {id:"brecheen", n:"Josh Brecheen", role:"House, OK", cat:"rep", f:["MAGA","AF","EV"], s:"anti", note:"Voted to strike Taiwan aid; Freedom Caucus; self-identified evangelical"},
+  {id:"burlison", n:"Eric Burlison", role:"House, MO", cat:"rep", f:["MAGA","AF","EV"], s:"anti", note:"Voted to strike Taiwan aid; Freedom Caucus"},
+  {id:"comer", n:"James Comer", role:"House, KY (Oversight chair)", cat:"rep", f:["AF","EV"], s:"anti", note:"Voted to strike Taiwan aid; Baptist"},
+  {id:"mtg", n:"Marjorie T. Greene", role:"Former House member, GA (resigned Jan 2026)", cat:"rep", f:["MAGA","AF"], s:"anti", departed:true, note:"Sponsor of the strike-Taiwan-aid amendment; resigned after breaking with Trump"},
+  {id:"roy", n:"Chip Roy", role:"House, TX (running for state AG)", cat:"rep", f:["MAGA","AF","EV"], s:"cond", note:"China hawk yet against aid packages; Baptist"},
+  {id:"boebert", n:"Lauren Boebert", role:"House, CO", cat:"rep", f:["MAGA","AF","EV"], s:"cond", note:"Voted against H.R. 8036; nondenominational evangelical"},
+  {id:"clyde", n:"Andrew Clyde", role:"House, GA", cat:"rep", f:["AF","EV"], s:"cond", note:"Voted against H.R. 8036; Baptist"},
+  {id:"mmiller", n:"Mary Miller", role:"House, IL", cat:"rep", f:["MAGA","AF","EV"], s:"cond", note:"Emblematic of the religious right–MAGA overlap; Freedom Caucus"},
+  {id:"ogles", n:"Andy Ogles", role:"House, TN", cat:"rep", f:["MAGA","AF","EV"], s:"cond", note:"Freedom Caucus; self-identified evangelical"},
+  {id:"self", n:"Keith Self", role:"House, TX", cat:"rep", f:["MAGA","AF","EV"], s:"cond", note:"Freedom Caucus; voted against H.R. 8036"},
+  {id:"steube", n:"Greg Steube", role:"House, FL", cat:"rep", f:["MAGA","AF","EV"], s:"cond", note:"Freedom Caucus; voted against H.R. 8036"},
+  {id:"mast", n:"Brian Mast", role:"House, FL (Foreign Affairs chair)", cat:"rep", f:["AF"], s:"pro", note:"Champions faster arms sales to Taiwan; his H.R. 8036 no was anti-bundling — the key case that a no vote ≠ anti-Taiwan"},
+  {id:"mrogers", n:"Mike Rogers", role:"House, AL (Armed Services chair)", cat:"rep", f:["EV"], s:"pro", note:"Key figure for NDAA and deterrence resourcing (denominationally Baptist)"},
+  {id:"mharris", n:"Mark Harris", role:"House, NC", cat:"rep", f:["EV"], s:"unk", note:"Former Southern Baptist senior pastor"},
+  {id:"nehls", n:"Troy Nehls", role:"House, TX", cat:"rep", f:["MAGA","AF"], s:"cond", note:"Public MAGA self-identification; voted against H.R. 8036"},
+  {id:"rjackson", n:"Ronny Jackson", role:"House, TX", cat:"rep", f:["MAGA","EV"], s:"cond", note:"Trump inner circle; Restorationist church"},
+  {id:"gill", n:"Brandon Gill", role:"House, TX", cat:"rep", f:["MAGA","AF"], s:"cond", note:"MAGA new generation; Freedom Caucus"},
+  {id:"higgins", n:"Clay Higgins", role:"House, LA", cat:"rep", f:["MAGA","AF"], s:"cond", note:"Freedom Caucus"},
+  {id:"gosar", n:"Paul Gosar", role:"House, AZ", cat:"rep", f:["MAGA","AF"], s:"anti", note:"Anti-intervention; voted against H.R. 8036"},
+  {id:"crane", n:"Eli Crane", role:"House, AZ", cat:"rep", f:["MAGA","AF"], s:"anti", note:"Anti-intervention; voted against H.R. 8036"},
+  {id:"biggs", n:"Andy Biggs", role:"House, AZ (running for governor)", cat:"rep", f:["MAGA","AF"], s:"anti", note:"Voted against H.R. 8036; Freedom Caucus"},
+  {id:"burchett", n:"Tim Burchett", role:"House, TN", cat:"rep", f:["AF"], s:"anti", note:"Voted against all three foreign-aid supplementals (incl. Indo-Pacific)"},
+
+  // ===== Executive =====
+  {id:"trump", n:"Donald Trump", role:"President", cat:"exec", f:["MAGA"], s:"cond", note:"Source of the \"Taiwan took our chip business / should pay for protection\" discourse; transactional deterrence"},
+  {id:"vance", n:"J.D. Vance", role:"Vice President", cat:"exec", f:["MAGA","AF"], s:"cond", note:"Highest-ranking America First foreign-policy voice; cast an anti-aid Senate vote"},
+  {id:"rubio", n:"Marco Rubio", role:"Secretary of State & acting NSA", cat:"exec", f:["AF"], s:"pro", note:"Former Senate China hawk; his H.R. 815 no vote was anti-bundling"},
+  {id:"hegseth", n:"Pete Hegseth", role:"Secretary of Defense", cat:"exec", f:["MAGA","EV"], s:"unk", note:"The cabinet's evangelical–MAGA overlap case; little public Taiwan discourse"},
+  {id:"colby", n:"Elbridge Colby", role:"Under Secretary of Defense for Policy", cat:"exec", f:["AF"], s:"cond", note:"Author of The Strategy of Denial: prioritize the Strait but demand Taiwan sharply raise defense spending — the core theorist of conditional deterrence"},
+  {id:"vought", n:"Russell Vought", role:"OMB Director", cat:"exec", f:["MAGA","EV"], s:"anti", note:"Christian-nationalist coloration; his think tank leans toward foreign-policy restraint"},
+  {id:"gabbard", n:"Tulsi Gabbard", role:"Director of National Intelligence", cat:"exec", f:["MAGA"], s:"anti", note:"Anti-intervention line inside the intelligence community"},
+  {id:"waltz", n:"Mike Waltz", role:"UN Ambassador", cat:"exec", f:["MAGA"], s:"pro", note:"China hawk (former National Security Adviser)"},
+  {id:"lutnick", n:"Howard Lutnick", role:"Secretary of Commerce", cat:"exec", f:["MAGA"], s:"cond", note:"Oversees chip reshoring and export controls — the executive node of the \"de-dependence\" narrative"},
+  {id:"navarro", n:"Peter Navarro", role:"White House Trade Adviser", cat:"exec", f:["MAGA"], s:"cond", note:"Economic nationalism; co-producer of the \"Taiwan took our chips\" narrative"},
+  {id:"sacks", n:"David Sacks", role:"AI & Crypto Czar", cat:"exec", f:["MAGA"], s:"unk", note:"Driving force of the AI Action Plan — U.S.–Taiwan AI counterpart"},
+  {id:"smiller", n:"Stephen Miller", role:"White House Deputy Chief of Staff", cat:"exec", f:["MAGA"], s:"unk", note:"Chief America First policy architect (mainly domestic)"},
+  {id:"pwhite", n:"Paula White", role:"Director, White House Faith Office", cat:"exec", f:["MAGA","EV"], s:"unk", note:"Trump's spiritual adviser; Pentecostal; Florida-based"},
+
+  // ===== Governors =====
+  {id:"desantis", n:"Ron DeSantis", role:"Governor of Florida", cat:"gov", f:["MAGA"], s:"unk", note:"Competitive-cooperative with Trump; builder of Florida's conservative machine"},
+  {id:"sanders", n:"Sarah H. Sanders", role:"Governor of Arkansas", cat:"gov", f:["MAGA","EV"], s:"unk", note:"Dual evangelical–MAGA representative"},
+  {id:"landry", n:"Jeff Landry", role:"Governor of Louisiana", cat:"gov", f:["MAGA"], s:"unk", note:"Has endorsed Donalds"},
+  {id:"braun", n:"Mike Braun", role:"Governor of Indiana", cat:"gov", f:["MAGA","AF"], s:"unk", note:"Cast a Senate vote against H.R. 815"},
+
+  // ===== Media / think tanks / grassroots =====
+  {id:"tucker", n:"Tucker Carlson", role:"Media figure", cat:"org", f:["MAGA"], s:"anti", note:"Largest amplifier of anti-intervention narratives; has publicly questioned fighting for Taiwan"},
+  {id:"bannon", n:"Steve Bannon", role:"War Room host", cat:"org", f:["MAGA"], s:"cond", note:"China hawk yet anti-establishment-interventionist — a two-sided case"},
+  {id:"loomer", n:"Laura Loomer", role:"Online influencer", cat:"org", f:["MAGA"], s:"anti", note:"Demonstrated influence on personnel decisions; anti-intervention leanings"},
+  {id:"posobiec", n:"Jack Posobiec", role:"Online influencer", cat:"org", f:["MAGA"], s:"cond", note:"Has visited Taiwan; comparatively friendly"},
+  {id:"hannity", n:"Sean Hannity", role:"Fox host", cat:"org", f:["MAGA"], s:"pro", note:"China hawk; interface for mainstreaming MAGA"},
+  {id:"heritage", n:"Heritage (Kevin Roberts)", role:"Heritage Foundation", cat:"org", f:["MAGA"], s:"pro", note:"Advocates faster arms sales, co-production, and Taiwanese self-help (porcupine strategy)"},
+  {id:"heritageaction", n:"Heritage Action", role:"Grassroots mobilization", cat:"org", f:["MAGA","AF"], s:"cond", note:"Key-vote opposition to bundled foreign aid; credits PDA for arming Taiwan"},
+  {id:"afpi", n:"AFPI", role:"America First Policy Institute", cat:"org", f:["MAGA","AF"], s:"cond", note:"\"Pro-ally realism\" — the relatively Taiwan-friendly node in the MAGA orbit"},
+  {id:"cra", n:"Center for Renewing America", role:"Think tank (founded by Vought)", cat:"org", f:["MAGA","EV"], s:"anti", note:"Converts Christian nationalism into policy; restraint-leaning"},
+  {id:"claremont", n:"Claremont Institute", role:"Think tank", cat:"org", f:["MAGA"], s:"anti", note:"MAGA's intellectual stronghold; publishes restraint-leaning foreign policy"},
+  {id:"tpusa", n:"TPUSA (Erika Kirk)", role:"Youth grassroots", cat:"org", f:["MAGA","EV"], s:"anti", note:"Led by Erika Kirk since Charlie Kirk's assassination (Sept 2025); anti-intervention leanings"},
+  {id:"m4l", n:"Moms for Liberty", role:"Grassroots (Florida-born)", cat:"org", f:["MAGA","EV"], s:"unk", note:"Education culture-war organization; observable during Florida fieldwork"},
+
+  // ===== Religious leaders =====
+  {id:"reed", n:"Ralph Reed", role:"Faith & Freedom Coalition", cat:"rel", f:["EV","MAGA"], s:"unk", note:"National hub of evangelical voter mobilization"},
+  {id:"perkins", n:"Tony Perkins", role:"Family Research Council", cat:"rel", f:["EV"], s:"pro", note:"Links Taiwan's democracy to anti-CCP persecution narratives — producer of the Taiwan-friendly moral frame"},
+  {id:"graham", n:"Franklin Graham", role:"Evangelist", cat:"rel", f:["EV","MAGA"], s:"unk", note:"Steadfast Trump ally among evangelical leaders"},
+  {id:"jeffress", n:"Robert Jeffress", role:"Senior pastor, First Baptist Dallas", cat:"rel", f:["EV","MAGA"], s:"unk", note:"Emblematic of pulpit politicization"},
+  {id:"mohler", n:"Al Mohler", role:"President, Southern Baptist Theological Seminary", cat:"rel", f:["EV"], s:"unk", note:"Trajectory from Trump critic to supporter"},
+
+  // ===== Interview target =====
+  {id:"yoho", n:"Ted Yoho ★", role:"Former House member, FL", cat:"key", f:["AFh"], s:"pro", note:"Sponsor of the Taiwan Invasion Prevention Act (strategic clarity); 116th-Congress Freedom Caucus member (historical, dashed edge). This project's interviewee."}
+];
+
+const STANCE = { pro:{label:"Deterrence hawk", v:"--st-pro"}, cond:{label:"Conditional / transactional", v:"--st-cond"}, anti:{label:"Anti-intervention / anti-aid", v:"--st-anti"}, unk:{label:"Unclear / mixed", v:"--st-unk"} };
+const FACTION = { MAGA:{label:"MAGA", v:"--maga"}, AF:{label:"America First", v:"--af"}, EV:{label:"Evangelical", v:"--ev"}, AFh:{label:"America First (historical)", v:"--af", hist:true} };
+const CATLABEL = { sen:"Senator", rep:"House member", exec:"Executive branch", gov:"Governor", org:"Media / think tank / grassroots", rel:"Religious leader", key:"Interviewee" };
+
+const svg = document.getElementById('net');
+const NS = "http://www.w3.org/2000/svg";
+const W = 1280, H = 860;
+
+const hubs = NODES.filter(d => d.hub);
+const people = NODES.filter(d => !d.hub);
+hubs.forEach(h => { h.fx = h.x; h.fy = h.y; });
+people.forEach((d, i) => {
+  const anchors = d.f.map(f => f === "AFh" ? "AF" : f).map(f => hubs.find(h => h.id === f));
+  const ax = anchors.reduce((s, a) => s + a.x, 0) / anchors.length;
+  const ay = anchors.reduce((s, a) => s + a.y, 0) / anchors.length;
+  d.x = ax + Math.cos(i * 2.4) * (90 + (i % 7) * 22);
+  d.y = ay + Math.sin(i * 2.4) * (90 + (i % 5) * 26);
+  d.vx = 0; d.vy = 0;
+});
+
+const links = [];
+people.forEach(d => d.f.forEach(f => links.push({ src: d, tgt: hubs.find(h => h.id === (f === "AFh" ? "AF" : f)), fac: f })));
+
+const gEdges = document.createElementNS(NS, 'g');
+const gNodes = document.createElementNS(NS, 'g');
+const gLabels = document.createElementNS(NS, 'g');
+svg.append(gEdges, gNodes, gLabels);
+
+links.forEach(l => {
+  const ln = document.createElementNS(NS, 'line');
+  ln.setAttribute('class', 'edge' + (FACTION[l.fac].hist ? ' hist' : ''));
+  ln.setAttribute('stroke', `var(${FACTION[l.fac].v})`);
+  ln.setAttribute('stroke-width', '1.4');
+  l.el = ln; gEdges.appendChild(ln);
+});
+
+function shapePath(cat, r) {
+  if (cat === 'exec') return `M0 ${-r} L${r} 0 L0 ${r} L${-r} 0 Z`;
+  if (cat === 'gov') return `M0 ${-r} L${r * 1.05} ${r * 0.8} L${-r * 1.05} ${r * 0.8} Z`;
+  if (cat === 'org') { const a = r * 0.5, b = r * 0.87; return `M${-a} ${-b} L${a} ${-b} L${r} 0 L${a} ${b} L${-a} ${b} L${-r} 0 Z`; }
+  if (cat === 'rel') { let p = ''; for (let k = 0; k < 5; k++) { const t = -Math.PI / 2 + k * 2 * Math.PI / 5; p += (k ? 'L' : 'M') + (Math.cos(t) * r).toFixed(2) + ' ' + (Math.sin(t) * r).toFixed(2) + ' '; } return p + 'Z'; }
+  if (cat === 'key') { let p = ''; for (let k = 0; k < 10; k++) { const t = -Math.PI / 2 + k * Math.PI / 5; const rr = k % 2 ? r * 0.45 : r * 1.15; p += (k ? 'L' : 'M') + (Math.cos(t) * rr).toFixed(2) + ' ' + (Math.sin(t) * rr).toFixed(2) + ' '; } return p + 'Z'; }
+  return null;
+}
+
+people.forEach(d => {
+  const g = document.createElementNS(NS, 'g');
+  g.setAttribute('class', 'node');
+  const r = d.cat === 'exec' && d.id === 'trump' ? 13 : (d.cat === 'key' ? 12 : 9);
+  d.r = r;
+  let el;
+  if (d.cat === 'sen') { el = document.createElementNS(NS, 'circle'); el.setAttribute('r', r); }
+  else if (d.cat === 'rep') { el = document.createElementNS(NS, 'rect'); el.setAttribute('x', -r * 0.9); el.setAttribute('y', -r * 0.9); el.setAttribute('width', r * 1.8); el.setAttribute('height', r * 1.8); el.setAttribute('rx', r * 0.35); }
+  else { el = document.createElementNS(NS, 'path'); el.setAttribute('d', shapePath(d.cat, r)); }
+  el.setAttribute('fill', `var(${STANCE[d.s].v})`);
+  el.setAttribute('stroke', d.departed ? `var(--ink-muted)` : `var(--ring)`);
+  el.setAttribute('stroke-width', d.departed ? '2' : '1.2');
+  if (d.departed) el.setAttribute('stroke-dasharray', '3 2.5');
+  g.appendChild(el);
+  d.el = g; gNodes.appendChild(g);
+
+  const t = document.createElementNS(NS, 'text');
+  t.setAttribute('class', 'nlabel');
+  t.setAttribute('text-anchor', 'middle');
+  t.textContent = d.n;
+  d.lab = t; gLabels.appendChild(t);
+});
+
+hubs.forEach(h => {
+  const g = document.createElementNS(NS, 'g');
+  const c = document.createElementNS(NS, 'circle');
+  c.setAttribute('r', 30);
+  const key = h.id === 'MAGA' ? '--maga' : h.id === 'AF' ? '--af' : '--ev';
+  c.setAttribute('fill', `var(${key})`);
+  c.setAttribute('fill-opacity', '0.14');
+  c.setAttribute('stroke', `var(${key})`);
+  c.setAttribute('stroke-width', '2');
+  g.appendChild(c);
+  h.el = g; gNodes.appendChild(g);
+  const t = document.createElementNS(NS, 'text');
+  t.setAttribute('class', 'hublabel');
+  t.setAttribute('text-anchor', 'middle');
+  t.setAttribute('dy', '5');
+  t.setAttribute('fill', `var(${key})`);
+  t.textContent = h.label;
+  h.lab = t; gLabels.appendChild(t);
+});
+
+// ------- simulation -------
+let alpha = 1;
+function tick() {
+  const all = NODES;
+  for (let i = 0; i < all.length; i++) {
+    for (let j = i + 1; j < all.length; j++) {
+      const a = all[i], b = all[j];
+      let dx = b.x - a.x, dy = b.y - a.y;
+      let d2 = dx * dx + dy * dy || 1;
+      if (d2 > 260 * 260) continue;
+      const d = Math.sqrt(d2);
+      const rep = (a.hub || b.hub ? 4200 : 2600) / d2;
+      const fx = dx / d * rep, fy = dy / d * rep;
+      if (!a.hub) { a.vx -= fx; a.vy -= fy; }
+      if (!b.hub) { b.vx += fx; b.vy += fy; }
+    }
+  }
+  links.forEach(l => {
+    const dx = l.tgt.x - l.src.x, dy = l.tgt.y - l.src.y;
+    const d = Math.sqrt(dx * dx + dy * dy) || 1;
+    const rest = 205;
+    const k = 0.010;
+    const f = k * (d - rest);
+    l.src.vx += dx / d * f; l.src.vy += dy / d * f;
+  });
+  people.forEach(d => {
+    d.vx += (W / 2 - d.x) * 0.0007;
+    d.vy += (H / 2 - d.y) * 0.0007;
+    d.vx *= 0.86; d.vy *= 0.86;
+    if (!d.pin) { d.x += d.vx * alpha; d.y += d.vy * alpha; }
+    d.x = Math.max(40, Math.min(W - 40, d.x));
+    d.y = Math.max(34, Math.min(H - 26, d.y));
+  });
+  alpha = Math.max(0.25, alpha * 0.998);
+  render();
+  requestAnimationFrame(tick);
+}
+
+function render() {
+  links.forEach(l => {
+    l.el.setAttribute('x1', l.src.x); l.el.setAttribute('y1', l.src.y);
+    l.el.setAttribute('x2', l.tgt.x); l.el.setAttribute('y2', l.tgt.y);
+  });
+  people.forEach(d => {
+    d.el.setAttribute('transform', `translate(${d.x},${d.y})`);
+    d.lab.setAttribute('x', d.x); d.lab.setAttribute('y', d.y - d.r - 4);
+  });
+  hubs.forEach(h => {
+    h.el.setAttribute('transform', `translate(${h.x},${h.y})`);
+    h.lab.setAttribute('x', h.x); h.lab.setAttribute('y', h.y);
+  });
+}
+
+// ------- interaction -------
+const tip = document.getElementById('tip');
+const stage = document.querySelector('.stage');
+let focusNode = null;
+
+function pt(evt) {
+  const r = svg.getBoundingClientRect();
+  return { x: (evt.clientX - r.left) * W / r.width, y: (evt.clientY - r.top) * H / r.height };
+}
+
+let dragN = null;
+svg.addEventListener('pointerdown', e => {
+  const p = pt(e);
+  dragN = people.concat(hubs).find(d => (d.x - p.x) ** 2 + (d.y - p.y) ** 2 < (d.hub ? 32 : 15) ** 2);
+  if (dragN) { dragN.pin = true; svg.setPointerCapture(e.pointerId); }
+});
+svg.addEventListener('pointermove', e => {
+  const p = pt(e);
+  if (dragN) {
+    dragN.x = p.x; dragN.y = p.y;
+    if (dragN.hub) { dragN.fx = p.x; dragN.fy = p.y; }
+    alpha = 1;
+    return;
+  }
+  const n = people.find(d => (d.x - p.x) ** 2 + (d.y - p.y) ** 2 < 16 ** 2);
+  if (n) {
+    const facs = n.f.map(f => `<span class="badge" style="background:var(${FACTION[f].v})">${FACTION[f].label}</span>`).join('');
+    tip.innerHTML = `<div class="tt-name">${n.n}${n.departed ? ' (departed)' : ''}</div>
+      <div class="tt-role">${n.role} | ${CATLABEL[n.cat]}</div>
+      <div>${facs}<span class="badge" style="background:var(${STANCE[n.s].v})">${STANCE[n.s].label}</span></div>
+      <div class="tt-note">${n.note}</div>`;
+    const r = stage.getBoundingClientRect(), sr = svg.getBoundingClientRect();
+    let lx = sr.left - r.left + n.x * sr.width / W + 16;
+    let ly = sr.top - r.top + n.y * sr.height / H - 10;
+    if (lx > r.width - 310) lx -= 330;
+    tip.style.left = lx + 'px'; tip.style.top = ly + 'px';
+    tip.style.opacity = 1;
+  } else tip.style.opacity = 0;
+});
+svg.addEventListener('pointerup', e => { if (dragN) { dragN.pin = false; dragN = null; } });
+svg.addEventListener('click', e => {
+  const p = pt(e);
+  const n = people.find(d => (d.x - p.x) ** 2 + (d.y - p.y) ** 2 < 16 ** 2);
+  focusNode = (n && focusNode !== n) ? n : null;
+  applyVisibility();
+});
+
+const state = { stance: new Set(Object.keys(STANCE)), cat: new Set(['sen','rep','exec','gov','org','rel','key']), q: '' };
+document.querySelectorAll('#stanceChips .chip').forEach(ch => ch.addEventListener('click', () => {
+  const k = ch.dataset.k;
+  if (state.stance.has(k) && state.stance.size === 1) { Object.keys(STANCE).forEach(s => state.stance.add(s)); }
+  else if (state.stance.has(k)) state.stance.delete(k); else state.stance.add(k);
+  syncChips(); applyVisibility();
+}));
+document.querySelectorAll('#catChips .chip').forEach(ch => ch.addEventListener('click', () => {
+  const k = ch.dataset.k;
+  const full = ['sen','rep','exec','gov','org','rel','key'];
+  if (state.cat.has(k) && state.cat.size <= 2) { full.forEach(s => state.cat.add(s)); }
+  else if (state.cat.has(k)) { state.cat.delete(k); if (k === 'rep') state.cat.delete('key'); }
+  else { state.cat.add(k); }
+  syncChips(); applyVisibility();
+}));
+document.getElementById('q').addEventListener('input', e => { state.q = e.target.value.trim().toLowerCase(); applyVisibility(); });
+
+function syncChips() {
+  document.querySelectorAll('#stanceChips .chip').forEach(ch => ch.classList.toggle('off', !state.stance.has(ch.dataset.k)));
+  document.querySelectorAll('#catChips .chip').forEach(ch => ch.classList.toggle('off', !state.cat.has(ch.dataset.k)));
+}
+
+function visible(d) {
+  if (!state.stance.has(d.s)) return false;
+  if (!state.cat.has(d.cat) && !(d.cat === 'key' && state.cat.has('rep'))) return false;
+  if (state.q && !(d.n.toLowerCase().includes(state.q) || d.role.toLowerCase().includes(state.q))) return false;
+  return true;
+}
+
+function applyVisibility() {
+  people.forEach(d => {
+    let on = visible(d);
+    if (focusNode) on = on && (d === focusNode);
+    const cls = on ? '' : 'dim';
+    d.el.setAttribute('class', 'node ' + cls);
+    d.lab.setAttribute('class', 'nlabel ' + cls);
+  });
+  links.forEach(l => {
+    let on = visible(l.src);
+    if (focusNode) on = on && l.src === focusNode;
+    l.el.setAttribute('class', 'edge' + (FACTION[l.fac].hist ? ' hist' : '') + (on ? '' : ' dim'));
+  });
+}
+
+syncChips();
+tick();
+</script>
+</body>
+</html>

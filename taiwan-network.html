@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>美國保守派網絡與對台態度圖（2026）</title>
+<style>
+  :root { color-scheme: light dark; }
+  .viz-root {
+    color-scheme: light;
+    --surface-1:#fcfcfb; --page:#f9f9f7;
+    --ink-1:#0b0b0b; --ink-2:#52514e; --ink-muted:#898781;
+    --grid:#e1e0d9; --axis:#c3c2b7; --ring:rgba(11,11,11,0.10);
+    --maga:#2a78d6; --af:#eb6834; --ev:#4a3aa7;
+    --st-pro:#0ca30c; --st-cond:#fab219; --st-anti:#d03b3b; --st-unk:#898781;
+    --chipbg:#f0efec;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) .viz-root {
+      color-scheme: dark;
+      --surface-1:#1a1a19; --page:#0d0d0d;
+      --ink-1:#ffffff; --ink-2:#c3c2b7; --ink-muted:#898781;
+      --grid:#2c2c2a; --axis:#383835; --ring:rgba(255,255,255,0.12);
+      --maga:#3987e5; --af:#d95926; --ev:#9085e9;
+      --chipbg:#262624;
+    }
+  }
+  :root[data-theme="dark"] .viz-root {
+    color-scheme: dark;
+    --surface-1:#1a1a19; --page:#0d0d0d;
+    --ink-1:#ffffff; --ink-2:#c3c2b7; --ink-muted:#898781;
+    --grid:#2c2c2a; --axis:#383835; --ring:rgba(255,255,255,0.12);
+    --maga:#3987e5; --af:#d95926; --ev:#9085e9;
+    --chipbg:#262624;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  body { background: var(--page); }
+  .viz-root {
+    font-family: system-ui, -apple-system, "Segoe UI", "PingFang TC", "Microsoft JhengHei", sans-serif;
+    background: var(--page); color: var(--ink-1); min-height: 100vh; padding: 16px;
+  }
+  .wrap { max-width: 1280px; margin: 0 auto; }
+  h1 { font-size: 19px; font-weight: 700; }
+  .sub { font-size: 12.5px; color: var(--ink-2); margin-top: 3px; line-height: 1.5; }
+  .panel { background: var(--surface-1); border: 1px solid var(--ring); border-radius: 10px; margin-top: 12px; }
+  .controls { display: flex; flex-wrap: wrap; gap: 14px; padding: 10px 14px; align-items: center; border-bottom: 1px solid var(--grid); }
+  .ctl-group { display: flex; flex-wrap: wrap; gap: 5px; align-items: center; }
+  .ctl-label { font-size: 11.5px; color: var(--ink-muted); margin-right: 2px; }
+  .chip {
+    font-size: 12px; padding: 3px 10px; border-radius: 999px; cursor: pointer; user-select: none;
+    border: 1px solid var(--axis); background: var(--chipbg); color: var(--ink-2);
+    display: inline-flex; align-items: center; gap: 5px;
+  }
+  .chip .sw { width: 9px; height: 9px; border-radius: 50%; display: inline-block; border: 1px solid var(--ring); }
+  .chip.off { opacity: 0.35; }
+  .chip:hover { border-color: var(--ink-muted); }
+  input[type="search"] {
+    font-size: 12.5px; padding: 4px 10px; border-radius: 7px; border: 1px solid var(--axis);
+    background: var(--surface-1); color: var(--ink-1); width: 150px;
+  }
+  .stage { position: relative; }
+  svg { display: block; width: 100%; height: 74vh; min-height: 540px; }
+  .tooltip {
+    position: absolute; pointer-events: none; opacity: 0; transition: opacity .12s;
+    background: var(--surface-1); color: var(--ink-1); border: 1px solid var(--axis);
+    border-radius: 8px; padding: 9px 12px; font-size: 12px; max-width: 300px; line-height: 1.55;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.18); z-index: 5;
+  }
+  .tooltip .tt-name { font-weight: 700; font-size: 13px; }
+  .tooltip .tt-role { color: var(--ink-2); margin-top: 1px; }
+  .tooltip .tt-note { margin-top: 5px; border-top: 1px solid var(--grid); padding-top: 5px; color: var(--ink-2); }
+  .tooltip .badge { display: inline-block; font-size: 10.5px; padding: 1px 7px; border-radius: 999px; margin: 4px 4px 0 0; color: #fff; }
+  .legend2 { display: flex; flex-wrap: wrap; gap: 12px 20px; padding: 9px 14px; border-top: 1px solid var(--grid); font-size: 11.5px; color: var(--ink-2); align-items: center; }
+  .legend2 .li { display: inline-flex; align-items: center; gap: 5px; }
+  .foot { font-size: 11px; color: var(--ink-muted); margin-top: 10px; line-height: 1.65; }
+  text.nlabel { font-size: 10px; fill: var(--ink-1); pointer-events: none; paint-order: stroke; stroke: var(--surface-1); stroke-width: 2.6px; font-weight: 600; }
+  text.hublabel { font-size: 15px; font-weight: 800; pointer-events: none; paint-order: stroke; stroke: var(--surface-1); stroke-width: 4px; }
+  .edge { stroke-opacity: 0.32; }
+  .edge.hist { stroke-dasharray: 4 4; }
+  .node { cursor: grab; }
+  .dim { opacity: 0.12; }
+</style>
+</head>
+<body>
+<div class="viz-root">
+<div class="wrap">
+  <h1>美國保守派網絡與對台態度圖</h1>
+  <div class="sub">節點顏色＝對台態度｜連線＝派系歸屬（MAGA／America First／福音派）｜形狀＝現任身分｜現況：2026 年 7 月。拖曳節點、滑鼠懸停看依據、點擊聚焦鄰接網絡。</div>
+
+  <div class="panel">
+    <div class="controls">
+      <div class="ctl-group" id="stanceChips">
+        <span class="ctl-label">對台態度</span>
+        <span class="chip" data-k="pro"><span class="sw" style="background:var(--st-pro)"></span>嚇阻型挺台</span>
+        <span class="chip" data-k="cond"><span class="sw" style="background:var(--st-cond)"></span>條件式／交易式</span>
+        <span class="chip" data-k="anti"><span class="sw" style="background:var(--st-anti)"></span>反介入／反援助</span>
+        <span class="chip" data-k="unk"><span class="sw" style="background:var(--st-unk)"></span>未明／混合</span>
+      </div>
+      <div class="ctl-group" id="catChips">
+        <span class="ctl-label">身分</span>
+        <span class="chip" data-k="sen">參議員</span>
+        <span class="chip" data-k="rep">眾議員</span>
+        <span class="chip" data-k="exec">行政部門</span>
+        <span class="chip" data-k="gov">州長</span>
+        <span class="chip" data-k="org">媒體／智庫／草根</span>
+        <span class="chip" data-k="rel">宗教領袖</span>
+      </div>
+      <div class="ctl-group">
+        <input type="search" id="q" placeholder="搜尋姓名…">
+      </div>
+    </div>
+
+    <div class="stage">
+      <svg id="net" viewBox="0 0 1280 860" role="img" aria-label="美國保守派人物網絡圖：三個派系樞紐與人物節點"></svg>
+      <div class="tooltip" id="tip"></div>
+    </div>
+
+    <div class="legend2">
+      <span class="li"><b style="color:var(--maga)">━</b> MAGA 認同</span>
+      <span class="li"><b style="color:var(--af)">━</b> America First（反援助行為標記）</span>
+      <span class="li"><b style="color:var(--ev)">━</b> 福音派（宗派傳統／自我認同）</span>
+      <span class="li" style="margin-left:8px">形狀：</span>
+      <span class="li"><svg width="14" height="14"><circle cx="7" cy="7" r="5.5" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>參議員</span>
+      <span class="li"><svg width="14" height="14"><rect x="2" y="2" width="10" height="10" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>眾議員</span>
+      <span class="li"><svg width="14" height="14"><path d="M7 1 L13 7 L7 13 L1 7 Z" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>行政部門</span>
+      <span class="li"><svg width="14" height="14"><path d="M7 2 L13 12 L1 12 Z" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>州長</span>
+      <span class="li"><svg width="14" height="14"><path d="M4 2 L10 2 L13 7 L10 12 L4 12 L1 7 Z" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>媒體／智庫</span>
+      <span class="li"><svg width="14" height="14"><path d="M7 1 L12.7 5.2 L10.5 12 L3.5 12 L1.3 5.2 Z" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>宗教領袖</span>
+      <span class="li"><svg width="16" height="16"><path d="M8 1 L9.8 5.8 L15 6 L11 9.2 L12.4 14.2 L8 11.3 L3.6 14.2 L5 9.2 L1 6 L6.2 5.8 Z" fill="none" stroke="currentColor" stroke-width="1.3"/></svg>訪談對象</span>
+      <span class="li" style="margin-left:8px">◌ 虛線外框＝已離任｜虛線連線＝歷史歸屬</span>
+    </div>
+  </div>
+
+  <div class="foot">
+    判準：「嚇阻型挺台」＝可驗證的強化嚇阻主張（軍售加速、訪台、挺台法案）；「條件式／交易式」＝支持但要求付費、分攤或以供應鏈回流重新計算承諾；「反介入／反援助」＝反對印太援助包裹（2024 H.R.8036）或贊成刪除對台軍援（2025 H.Amdt.53，6–421）；「未明」＝無足夠公開紀錄。派系標記沿用本研究名單文件之最小可辨識原則（Pew Faith on the Hill 2025；Ballotpedia 自由黨團；國會表決紀錄）。注意：反對包裹≠反台（例：Mast、Rick Scott 的反對票屬反綁案／財政理由，仍歸嚇阻型挺台）。本圖為研究內部參考，個別立場可能隨事件變動。
+  </div>
+</div>
+</div>
+
+<script>
+const NODES = [
+  // hubs
+  {id:"MAGA", hub:true, label:"MAGA", x:640, y:250},
+  {id:"AF", hub:true, label:"America First", x:340, y:600},
+  {id:"EV", hub:true, label:"福音派", x:950, y:600},
+
+  // ===== Senators =====
+  {id:"banks", n:"Jim Banks", role:"參議員 IN", cat:"sen", f:["MAGA","AF"], s:"cond", note:"公開 America First 定位；反中鷹派＋盟友分攤並存"},
+  {id:"moreno", n:"Bernie Moreno", role:"參議員 OH", cat:"sen", f:["MAGA"], s:"cond", note:"川普背書當選；交易式語彙"},
+  {id:"schmitt", n:"Eric Schmitt", role:"參議員 MO", cat:"sen", f:["MAGA","AF"], s:"cond", note:"反對 2024 國安補充撥款（H.R.815）"},
+  {id:"hawley", n:"Josh Hawley", role:"參議員 MO", cat:"sen", f:["MAGA","AF","EV"], s:"pro", note:"亞洲優先鷹派：主張優先武裝台灣而非烏克蘭——MAGA≠反台的關鍵例證"},
+  {id:"tuberville", n:"Tommy Tuberville", role:"參議員 AL（競選州長）", cat:"sen", f:["MAGA","EV"], s:"cond", note:"復原運動教會；交易式同盟語彙"},
+  {id:"mullin", n:"Markwayne Mullin", role:"參議員 OK", cat:"sen", f:["MAGA","EV"], s:"cond", note:"五旬節派；川普核心圈"},
+  {id:"rscott", n:"Rick Scott", role:"參議員 FL", cat:"sen", f:["MAGA","AF"], s:"pro", note:"多次訪台、提出挺台法案；反對 H.R.815 屬財政／綁案理由"},
+  {id:"moody", n:"Ashley Moody", role:"參議員 FL", cat:"sen", f:["MAGA"], s:"unk", note:"2025 接替 Rubio；對台公開紀錄尚少"},
+  {id:"budd", n:"Ted Budd", role:"參議員 NC", cat:"sen", f:["MAGA","AF","EV"], s:"cond", note:"反對 H.R.815；無宗派福音教會"},
+  {id:"blackburn", n:"Marsha Blackburn", role:"參議員 TN（競選州長）", cat:"sen", f:["MAGA","AF"], s:"pro", note:"多次訪台、公開挺台；反對 H.R.815 屬綁案理由"},
+  {id:"hagerty", n:"Bill Hagerty", role:"參議員 TN", cat:"sen", f:["MAGA","AF"], s:"cond", note:"前駐日大使；交易式同盟語彙代表"},
+  {id:"marshall", n:"Roger Marshall", role:"參議員 KS", cat:"sen", f:["MAGA","AF","EV"], s:"cond", note:"反對 H.R.815"},
+  {id:"justice", n:"Jim Justice", role:"參議員 WV", cat:"sen", f:["MAGA","EV"], s:"unk", note:"浸信會；對台紀錄少"},
+  {id:"sheehy", n:"Tim Sheehy", role:"參議員 MT", cat:"sen", f:["MAGA"], s:"unk", note:"2024 川普背書當選"},
+  {id:"rjohnson", n:"Ron Johnson", role:"參議員 WI", cat:"sen", f:["MAGA","AF"], s:"anti", note:"反介入、反綁案傾向明顯"},
+  {id:"cruz", n:"Ted Cruz", role:"參議員 TX", cat:"sen", f:["MAGA","AF","EV"], s:"pro", note:"對中鷹派、多項挺台法案；反對 H.R.815 屬綁案理由"},
+  {id:"lankford", n:"James Lankford", role:"參議員 OK", cat:"sen", f:["EV"], s:"pro", note:"南方浸信會牧師出身；穩定支持印太嚇阻"},
+  {id:"wicker", n:"Roger Wicker", role:"參議員 MS（軍委會主席）", cat:"sen", f:["EV"], s:"pro", note:"強化嚇阻與國防預算要角（宗派歸類浸信會）"},
+  {id:"hydesmith", n:"Cindy Hyde-Smith", role:"參議員 MS", cat:"sen", f:["EV"], s:"unk", note:"浸信會；宗教保守派"},
+  {id:"mlee", n:"Mike Lee", role:"參議員 UT", cat:"sen", f:["AF"], s:"anti", note:"反介入；反對 H.R.815"},
+  {id:"rpaul", n:"Rand Paul", role:"參議員 KY", cat:"sen", f:["AF"], s:"anti", note:"自由意志派反介入代表"},
+  {id:"lummis", n:"Cynthia Lummis", role:"參議員 WY", cat:"sen", f:["AF"], s:"unk", note:"反對 H.R.815（財政理由）"},
+  {id:"barrasso", n:"John Barrasso", role:"參議員 WY（黨團領導）", cat:"sen", f:["AF"], s:"unk", note:"反對票主因邊境議題，非典型 America First"},
+  {id:"tscott", n:"Tim Scott", role:"參議員 SC", cat:"sen", f:["EV"], s:"pro", note:"福音派自我認同；對中鷹派"},
+  {id:"daines", n:"Steve Daines", role:"參議員 MT", cat:"sen", f:["EV"], s:"pro", note:"多次訪台；福音派背景"},
+
+  // ===== House =====
+  {id:"mjohnson", n:"Mike Johnson", role:"眾議院議長 LA", cat:"rep", f:["EV"], s:"pro", note:"南方浸信會；2024 推動含台灣的援助包裹表決"},
+  {id:"jordan", n:"Jim Jordan", role:"眾議員 OH（司法主席）", cat:"rep", f:["MAGA"], s:"unk", note:"自由黨團創始成員；對台着墨少"},
+  {id:"donalds", n:"Byron Donalds", role:"眾議員 FL（競選州長）", cat:"rep", f:["MAGA","AF"], s:"cond", note:"川普背書競選佛州州長；自由黨團"},
+  {id:"stefanik", n:"Elise Stefanik", role:"眾議員 NY（競選州長）", cat:"rep", f:["MAGA"], s:"pro", note:"對中鷹派；川普核心圈"},
+  {id:"luna", n:"Anna Paulina Luna", role:"眾議員 FL", cat:"rep", f:["MAGA","AF"], s:"anti", note:"贊成刪除對台 5 億美元軍援（2025，六人之一）"},
+  {id:"massie", n:"Thomas Massie", role:"眾議員 KY", cat:"rep", f:["AF"], s:"anti", note:"贊成刪台軍援；一貫反介入"},
+  {id:"brecheen", n:"Josh Brecheen", role:"眾議員 OK", cat:"rep", f:["MAGA","AF","EV"], s:"anti", note:"贊成刪台軍援；自由黨團；福音派自我認同"},
+  {id:"burlison", n:"Eric Burlison", role:"眾議員 MO", cat:"rep", f:["MAGA","AF","EV"], s:"anti", note:"贊成刪台軍援；自由黨團"},
+  {id:"comer", n:"James Comer", role:"眾議員 KY（監督主席）", cat:"rep", f:["AF","EV"], s:"anti", note:"贊成刪台軍援；浸信會"},
+  {id:"mtg", n:"Marjorie T. Greene", role:"前眾議員 GA（2026/1 辭職）", cat:"rep", f:["MAGA","AF"], s:"anti", departed:true, note:"刪台軍援修正案提案人；與川普決裂後辭職"},
+  {id:"roy", n:"Chip Roy", role:"眾議員 TX（競選州檢察長）", cat:"rep", f:["MAGA","AF","EV"], s:"cond", note:"對中鷹派但反援助包裹；浸信會"},
+  {id:"boebert", n:"Lauren Boebert", role:"眾議員 CO", cat:"rep", f:["MAGA","AF","EV"], s:"cond", note:"反對 H.R.8036；無宗派福音教會"},
+  {id:"clyde", n:"Andrew Clyde", role:"眾議員 GA", cat:"rep", f:["AF","EV"], s:"cond", note:"反對 H.R.8036；浸信會"},
+  {id:"mmiller", n:"Mary Miller", role:"眾議員 IL", cat:"rep", f:["MAGA","AF","EV"], s:"cond", note:"宗教右派×MAGA 交疊代表；自由黨團"},
+  {id:"ogles", n:"Andy Ogles", role:"眾議員 TN", cat:"rep", f:["MAGA","AF","EV"], s:"cond", note:"自由黨團；福音派自我認同"},
+  {id:"self", n:"Keith Self", role:"眾議員 TX", cat:"rep", f:["MAGA","AF","EV"], s:"cond", note:"自由黨團；反對 H.R.8036"},
+  {id:"steube", n:"Greg Steube", role:"眾議員 FL", cat:"rep", f:["MAGA","AF","EV"], s:"cond", note:"自由黨團；反對 H.R.8036"},
+  {id:"mast", n:"Brian Mast", role:"眾議員 FL（外委會主席）", cat:"rep", f:["AF"], s:"pro", note:"主張加速對台軍售；反對 H.R.8036 屬反綁案——「反對票≠反台」關鍵例證"},
+  {id:"mrogers", n:"Mike Rogers", role:"眾議員 AL（軍委會主席）", cat:"rep", f:["EV"], s:"pro", note:"NDAA 與嚇阻資源配置要角（宗派歸類浸信會）"},
+  {id:"mharris", n:"Mark Harris", role:"眾議員 NC", cat:"rep", f:["EV"], s:"unk", note:"前南方浸信會主任牧師"},
+  {id:"nehls", n:"Troy Nehls", role:"眾議員 TX", cat:"rep", f:["MAGA","AF"], s:"cond", note:"公開 MAGA 自我標識；反對 H.R.8036"},
+  {id:"rjackson", n:"Ronny Jackson", role:"眾議員 TX", cat:"rep", f:["MAGA","EV"], s:"cond", note:"川普核心圈；復原運動教會"},
+  {id:"gill", n:"Brandon Gill", role:"眾議員 TX", cat:"rep", f:["MAGA","AF"], s:"cond", note:"MAGA 新世代；自由黨團"},
+  {id:"higgins", n:"Clay Higgins", role:"眾議員 LA", cat:"rep", f:["MAGA","AF"], s:"cond", note:"自由黨團"},
+  {id:"gosar", n:"Paul Gosar", role:"眾議員 AZ", cat:"rep", f:["MAGA","AF"], s:"anti", note:"反介入；反對 H.R.8036"},
+  {id:"crane", n:"Eli Crane", role:"眾議員 AZ", cat:"rep", f:["MAGA","AF"], s:"anti", note:"反介入；反對 H.R.8036"},
+  {id:"biggs", n:"Andy Biggs", role:"眾議員 AZ（競選州長）", cat:"rep", f:["MAGA","AF"], s:"anti", note:"反對 H.R.8036；自由黨團"},
+  {id:"burchett", n:"Tim Burchett", role:"眾議員 TN", cat:"rep", f:["AF"], s:"anti", note:"反對三項外援補充法案（含印太）"},
+
+  // ===== Executive =====
+  {id:"trump", n:"Donald Trump", role:"總統", cat:"exec", f:["MAGA"], s:"cond", note:"「台灣搶走晶片生意／應付保護費」論述源頭；交易式嚇阻"},
+  {id:"vance", n:"J.D. Vance", role:"副總統", cat:"exec", f:["MAGA","AF"], s:"cond", note:"America First 外交最高代表；原參院反援助票"},
+  {id:"rubio", n:"Marco Rubio", role:"國務卿兼代理國安顧問", cat:"exec", f:["AF"], s:"pro", note:"原參院對中鷹派；反對 H.R.815 屬綁案理由"},
+  {id:"hegseth", n:"Pete Hegseth", role:"國防部長", cat:"exec", f:["MAGA","EV"], s:"unk", note:"福音派×MAGA 內閣交疊代表；對台公開論述少"},
+  {id:"colby", n:"Elbridge Colby", role:"國防部政策次長", cat:"exec", f:["AF"], s:"cond", note:"《拒止戰略》作者：優先台海但要求台灣大增國防支出——條件式嚇阻理論核心"},
+  {id:"vought", n:"Russell Vought", role:"OMB 主任", cat:"exec", f:["MAGA","EV"], s:"anti", note:"基督教民族主義色彩；其智庫傾向克制派外交"},
+  {id:"gabbard", n:"Tulsi Gabbard", role:"國家情報總監", cat:"exec", f:["MAGA"], s:"anti", note:"反介入路線"},
+  {id:"waltz", n:"Mike Waltz", role:"駐聯合國大使", cat:"exec", f:["MAGA"], s:"pro", note:"對中鷹派（原國安顧問）"},
+  {id:"lutnick", n:"Howard Lutnick", role:"商務部長", cat:"exec", f:["MAGA"], s:"cond", note:"晶片回流與出口管制主管——「去依賴」敘事的行政節點"},
+  {id:"navarro", n:"Peter Navarro", role:"白宮貿易顧問", cat:"exec", f:["MAGA"], s:"cond", note:"經濟民族主義；台灣晶片「搶走產業」敘事共同生產者"},
+  {id:"sacks", n:"David Sacks", role:"AI 與加密貨幣特使", cat:"exec", f:["MAGA"], s:"unk", note:"AI Action Plan 推手——台美 AI 合作對口"},
+  {id:"smiller", n:"Stephen Miller", role:"白宮副幕僚長", cat:"exec", f:["MAGA"], s:"unk", note:"America First 政策總設計（主責內政）"},
+  {id:"pwhite", n:"Paula White", role:"白宮信仰辦公室主任", cat:"exec", f:["MAGA","EV"], s:"unk", note:"川普屬靈導師；五旬節派；佛州基地"},
+
+  // ===== Governors =====
+  {id:"desantis", n:"Ron DeSantis", role:"佛州州長", cat:"gov", f:["MAGA"], s:"unk", note:"與川普競合；佛州保守派動員機器建造者"},
+  {id:"sanders", n:"Sarah H. Sanders", role:"阿肯色州長", cat:"gov", f:["MAGA","EV"], s:"unk", note:"福音派×MAGA 雙重代表"},
+  {id:"landry", n:"Jeff Landry", role:"路易斯安那州長", cat:"gov", f:["MAGA"], s:"unk", note:"已背書 Donalds"},
+  {id:"braun", n:"Mike Braun", role:"印第安納州長", cat:"gov", f:["MAGA","AF"], s:"unk", note:"原參院反 H.R.815 票"},
+
+  // ===== Media / think tanks / grassroots =====
+  {id:"tucker", n:"Tucker Carlson", role:"媒體人", cat:"org", f:["MAGA"], s:"anti", note:"反介入敘事最大擴散節點；公開質疑為台而戰"},
+  {id:"bannon", n:"Steve Bannon", role:"War Room 主持人", cat:"org", f:["MAGA"], s:"cond", note:"對中鷹派＋反建制干預主義的兩面性個案"},
+  {id:"loomer", n:"Laura Loomer", role:"網路影響者", cat:"org", f:["MAGA"], s:"anti", note:"對人事任命有實際影響；反介入傾向"},
+  {id:"posobiec", n:"Jack Posobiec", role:"網路影響者", cat:"org", f:["MAGA"], s:"cond", note:"曾訪台；相對友台"},
+  {id:"hannity", n:"Sean Hannity", role:"Fox 主持人", cat:"org", f:["MAGA"], s:"pro", note:"對中鷹派；MAGA 主流化介面"},
+  {id:"heritage", n:"Heritage（Kevin Roberts）", role:"傳統基金會", cat:"org", f:["MAGA"], s:"pro", note:"主張加速對台軍售、共同生產＋台灣自助（豪豬戰略）"},
+  {id:"heritageaction", n:"Heritage Action", role:"草根動員組織", cat:"org", f:["MAGA","AF"], s:"cond", note:"對綁案外援發 key vote 反對；肯定 PDA 武裝台灣"},
+  {id:"afpi", n:"AFPI", role:"America First 政策研究所", cat:"org", f:["MAGA","AF"], s:"cond", note:"「親盟友的現實主義」——MAGA 圈內較友台節點"},
+  {id:"cra", n:"Center for Renewing America", role:"智庫（Vought 創辦）", cat:"org", f:["MAGA","EV"], s:"anti", note:"基督教民族主義政策化；外交克制傾向"},
+  {id:"claremont", n:"Claremont Institute", role:"智庫", cat:"org", f:["MAGA"], s:"anti", note:"MAGA 知識化重鎮；多發克制派對外論述"},
+  {id:"tpusa", n:"TPUSA（Erika Kirk）", role:"青年草根組織", cat:"org", f:["MAGA","EV"], s:"anti", note:"Charlie Kirk 遇刺後由 Erika Kirk 領導；反介入傾向"},
+  {id:"m4l", n:"Moms for Liberty", role:"草根組織（佛州起家）", cat:"org", f:["MAGA","EV"], s:"unk", note:"教育文化戰；佛州田野可觀察"},
+
+  // ===== Religious leaders =====
+  {id:"reed", n:"Ralph Reed", role:"Faith & Freedom Coalition", cat:"rel", f:["EV","MAGA"], s:"unk", note:"福音派選民動員全國樞紐"},
+  {id:"perkins", n:"Tony Perkins", role:"Family Research Council", cat:"rel", f:["EV"], s:"pro", note:"以反中共迫害敘事連結台灣民主自由——友台道德框架生產者"},
+  {id:"graham", n:"Franklin Graham", role:"佈道家", cat:"rel", f:["EV","MAGA"], s:"unk", note:"川普堅定盟友"},
+  {id:"jeffress", n:"Robert Jeffress", role:"達拉斯第一浸信會主任牧師", cat:"rel", f:["EV","MAGA"], s:"unk", note:"講壇政治化代表"},
+  {id:"mohler", n:"Al Mohler", role:"南方浸信會神學院院長", cat:"rel", f:["EV"], s:"unk", note:"批評→支持川普的軌跡個案"},
+
+  // ===== Interview target =====
+  {id:"yoho", n:"Ted Yoho ★", role:"前眾議員 FL", cat:"key", f:["AFh"], s:"pro", note:"台灣侵略防止法提案人（策略清晰）；第 116 屆自由黨團成員（歷史歸屬，虛線）"}
+];
+
+const STANCE = { pro:{label:"嚇阻型挺台", v:"--st-pro"}, cond:{label:"條件式／交易式", v:"--st-cond"}, anti:{label:"反介入／反援助", v:"--st-anti"}, unk:{label:"未明／混合", v:"--st-unk"} };
+const FACTION = { MAGA:{label:"MAGA", v:"--maga"}, AF:{label:"America First", v:"--af"}, EV:{label:"福音派", v:"--ev"}, AFh:{label:"America First（歷史）", v:"--af", hist:true} };
+const CATLABEL = { sen:"參議員", rep:"眾議員", exec:"行政部門", gov:"州長", org:"媒體／智庫／草根", rel:"宗教領袖", key:"訪談對象" };
+
+const svg = document.getElementById('net');
+const NS = "http://www.w3.org/2000/svg";
+const W = 1280, H = 860;
+const css = k => getComputedStyle(document.querySelector('.viz-root')).getPropertyValue(k).trim();
+
+const hubs = NODES.filter(d => d.hub);
+const people = NODES.filter(d => !d.hub);
+hubs.forEach(h => { h.fx = h.x; h.fy = h.y; });
+people.forEach((d, i) => {
+  const anchors = d.f.map(f => f === "AFh" ? "AF" : f).map(f => hubs.find(h => h.id === f));
+  const ax = anchors.reduce((s, a) => s + a.x, 0) / anchors.length;
+  const ay = anchors.reduce((s, a) => s + a.y, 0) / anchors.length;
+  d.x = ax + Math.cos(i * 2.4) * (90 + (i % 7) * 22);
+  d.y = ay + Math.sin(i * 2.4) * (90 + (i % 5) * 26);
+  d.vx = 0; d.vy = 0;
+});
+
+const links = [];
+people.forEach(d => d.f.forEach(f => links.push({ src: d, tgt: hubs.find(h => h.id === (f === "AFh" ? "AF" : f)), fac: f })));
+
+const gEdges = document.createElementNS(NS, 'g');
+const gNodes = document.createElementNS(NS, 'g');
+const gLabels = document.createElementNS(NS, 'g');
+svg.append(gEdges, gNodes, gLabels);
+
+links.forEach(l => {
+  const ln = document.createElementNS(NS, 'line');
+  ln.setAttribute('class', 'edge' + (FACTION[l.fac].hist ? ' hist' : ''));
+  ln.setAttribute('stroke', `var(${FACTION[l.fac].v})`);
+  ln.setAttribute('stroke-width', '1.4');
+  l.el = ln; gEdges.appendChild(ln);
+});
+
+function shapePath(cat, r) {
+  if (cat === 'exec') return `M0 ${-r} L${r} 0 L0 ${r} L${-r} 0 Z`;
+  if (cat === 'gov') return `M0 ${-r} L${r * 1.05} ${r * 0.8} L${-r * 1.05} ${r * 0.8} Z`;
+  if (cat === 'org') { const a = r * 0.5, b = r * 0.87; return `M${-a} ${-b} L${a} ${-b} L${r} 0 L${a} ${b} L${-a} ${b} L${-r} 0 Z`; }
+  if (cat === 'rel') { let p = ''; for (let k = 0; k < 5; k++) { const t = -Math.PI / 2 + k * 2 * Math.PI / 5; p += (k ? 'L' : 'M') + (Math.cos(t) * r).toFixed(2) + ' ' + (Math.sin(t) * r).toFixed(2) + ' '; } return p + 'Z'; }
+  if (cat === 'key') { let p = ''; for (let k = 0; k < 10; k++) { const t = -Math.PI / 2 + k * Math.PI / 5; const rr = k % 2 ? r * 0.45 : r * 1.15; p += (k ? 'L' : 'M') + (Math.cos(t) * rr).toFixed(2) + ' ' + (Math.sin(t) * rr).toFixed(2) + ' '; } return p + 'Z'; }
+  return null;
+}
+
+people.forEach(d => {
+  const g = document.createElementNS(NS, 'g');
+  g.setAttribute('class', 'node');
+  const r = d.cat === 'exec' && d.id === 'trump' ? 13 : (d.cat === 'key' ? 12 : 9);
+  d.r = r;
+  let el;
+  if (d.cat === 'sen') { el = document.createElementNS(NS, 'circle'); el.setAttribute('r', r); }
+  else if (d.cat === 'rep') { el = document.createElementNS(NS, 'rect'); el.setAttribute('x', -r * 0.9); el.setAttribute('y', -r * 0.9); el.setAttribute('width', r * 1.8); el.setAttribute('height', r * 1.8); el.setAttribute('rx', r * 0.35); }
+  else { el = document.createElementNS(NS, 'path'); el.setAttribute('d', shapePath(d.cat, r)); }
+  el.setAttribute('fill', `var(${STANCE[d.s].v})`);
+  el.setAttribute('stroke', d.departed ? `var(--ink-muted)` : `var(--ring)`);
+  el.setAttribute('stroke-width', d.departed ? '2' : '1.2');
+  if (d.departed) el.setAttribute('stroke-dasharray', '3 2.5');
+  g.appendChild(el);
+  d.el = g; gNodes.appendChild(g);
+
+  const t = document.createElementNS(NS, 'text');
+  t.setAttribute('class', 'nlabel');
+  t.setAttribute('text-anchor', 'middle');
+  t.textContent = d.n;
+  d.lab = t; gLabels.appendChild(t);
+});
+
+hubs.forEach(h => {
+  const g = document.createElementNS(NS, 'g');
+  const c = document.createElementNS(NS, 'circle');
+  c.setAttribute('r', 30);
+  const key = h.id === 'MAGA' ? '--maga' : h.id === 'AF' ? '--af' : '--ev';
+  c.setAttribute('fill', `var(${key})`);
+  c.setAttribute('fill-opacity', '0.14');
+  c.setAttribute('stroke', `var(${key})`);
+  c.setAttribute('stroke-width', '2');
+  g.appendChild(c);
+  h.el = g; gNodes.appendChild(g);
+  const t = document.createElementNS(NS, 'text');
+  t.setAttribute('class', 'hublabel');
+  t.setAttribute('text-anchor', 'middle');
+  t.setAttribute('dy', '5');
+  t.setAttribute('fill', `var(${key})`);
+  t.textContent = h.label;
+  h.lab = t; gLabels.appendChild(t);
+});
+
+// ------- simulation -------
+let alpha = 1;
+function tick() {
+  const all = NODES;
+  // repulsion
+  for (let i = 0; i < all.length; i++) {
+    for (let j = i + 1; j < all.length; j++) {
+      const a = all[i], b = all[j];
+      let dx = b.x - a.x, dy = b.y - a.y;
+      let d2 = dx * dx + dy * dy || 1;
+      if (d2 > 260 * 260) continue;
+      const d = Math.sqrt(d2);
+      const rep = (a.hub || b.hub ? 4200 : 2600) / d2;
+      const fx = dx / d * rep, fy = dy / d * rep;
+      if (!a.hub) { a.vx -= fx; a.vy -= fy; }
+      if (!b.hub) { b.vx += fx; b.vy += fy; }
+    }
+  }
+  // springs
+  links.forEach(l => {
+    const dx = l.tgt.x - l.src.x, dy = l.tgt.y - l.src.y;
+    const d = Math.sqrt(dx * dx + dy * dy) || 1;
+    const rest = 205;
+    const k = 0.010;
+    const f = k * (d - rest);
+    l.src.vx += dx / d * f; l.src.vy += dy / d * f;
+  });
+  // gravity + integrate
+  people.forEach(d => {
+    d.vx += (W / 2 - d.x) * 0.0007;
+    d.vy += (H / 2 - d.y) * 0.0007;
+    d.vx *= 0.86; d.vy *= 0.86;
+    if (!d.pin) { d.x += d.vx * alpha; d.y += d.vy * alpha; }
+    d.x = Math.max(40, Math.min(W - 40, d.x));
+    d.y = Math.max(34, Math.min(H - 26, d.y));
+  });
+  alpha = Math.max(0.25, alpha * 0.998);
+  render();
+  requestAnimationFrame(tick);
+}
+
+function render() {
+  links.forEach(l => {
+    l.el.setAttribute('x1', l.src.x); l.el.setAttribute('y1', l.src.y);
+    l.el.setAttribute('x2', l.tgt.x); l.el.setAttribute('y2', l.tgt.y);
+  });
+  people.forEach(d => {
+    d.el.setAttribute('transform', `translate(${d.x},${d.y})`);
+    d.lab.setAttribute('x', d.x); d.lab.setAttribute('y', d.y - d.r - 4);
+  });
+  hubs.forEach(h => {
+    h.el.setAttribute('transform', `translate(${h.x},${h.y})`);
+    h.lab.setAttribute('x', h.x); h.lab.setAttribute('y', h.y);
+  });
+}
+
+// ------- interaction -------
+const tip = document.getElementById('tip');
+const stage = document.querySelector('.stage');
+let focusNode = null;
+
+function pt(evt) {
+  const r = svg.getBoundingClientRect();
+  return { x: (evt.clientX - r.left) * W / r.width, y: (evt.clientY - r.top) * H / r.height };
+}
+
+let dragN = null;
+svg.addEventListener('pointerdown', e => {
+  const p = pt(e);
+  dragN = people.concat(hubs).find(d => (d.x - p.x) ** 2 + (d.y - p.y) ** 2 < (d.hub ? 32 : 15) ** 2);
+  if (dragN) { dragN.pin = true; svg.setPointerCapture(e.pointerId); }
+});
+svg.addEventListener('pointermove', e => {
+  const p = pt(e);
+  if (dragN) {
+    dragN.x = p.x; dragN.y = p.y;
+    if (dragN.hub) { dragN.fx = p.x; dragN.fy = p.y; }
+    alpha = 1;
+    return;
+  }
+  const n = people.find(d => (d.x - p.x) ** 2 + (d.y - p.y) ** 2 < 16 ** 2);
+  if (n) {
+    const facs = n.f.map(f => `<span class="badge" style="background:var(${FACTION[f].v})">${FACTION[f].label}</span>`).join('');
+    tip.innerHTML = `<div class="tt-name">${n.n}${n.departed ? '（已離任）' : ''}</div>
+      <div class="tt-role">${n.role}｜${CATLABEL[n.cat]}</div>
+      <div>${facs}<span class="badge" style="background:var(${STANCE[n.s].v})">${STANCE[n.s].label}</span></div>
+      <div class="tt-note">${n.note}</div>`;
+    const r = stage.getBoundingClientRect(), sr = svg.getBoundingClientRect();
+    let lx = sr.left - r.left + n.x * sr.width / W + 16;
+    let ly = sr.top - r.top + n.y * sr.height / H - 10;
+    if (lx > r.width - 310) lx -= 330;
+    tip.style.left = lx + 'px'; tip.style.top = ly + 'px';
+    tip.style.opacity = 1;
+  } else tip.style.opacity = 0;
+});
+svg.addEventListener('pointerup', e => { if (dragN) { dragN.pin = false; dragN = null; } });
+svg.addEventListener('click', e => {
+  const p = pt(e);
+  const n = people.find(d => (d.x - p.x) ** 2 + (d.y - p.y) ** 2 < 16 ** 2);
+  focusNode = (n && focusNode !== n) ? n : null;
+  applyVisibility();
+});
+
+// filters
+const state = { stance: new Set(Object.keys(STANCE)), cat: new Set(['sen','rep','exec','gov','org','rel','key']), q: '' };
+document.querySelectorAll('#stanceChips .chip').forEach(ch => ch.addEventListener('click', () => {
+  const k = ch.dataset.k;
+  if (state.stance.has(k) && state.stance.size === 1) { Object.keys(STANCE).forEach(s => state.stance.add(s)); }
+  else if (state.stance.has(k)) state.stance.delete(k); else state.stance.add(k);
+  syncChips(); applyVisibility();
+}));
+document.querySelectorAll('#catChips .chip').forEach(ch => ch.addEventListener('click', () => {
+  const k = ch.dataset.k;
+  const full = ['sen','rep','exec','gov','org','rel','key'];
+  if (state.cat.has(k) && state.cat.size <= 2) { full.forEach(s => state.cat.add(s)); }
+  else if (state.cat.has(k)) { state.cat.delete(k); if (k === 'rep') state.cat.delete('key'); }
+  else { state.cat.add(k); }
+  syncChips(); applyVisibility();
+}));
+document.getElementById('q').addEventListener('input', e => { state.q = e.target.value.trim().toLowerCase(); applyVisibility(); });
+
+function syncChips() {
+  document.querySelectorAll('#stanceChips .chip').forEach(ch => ch.classList.toggle('off', !state.stance.has(ch.dataset.k)));
+  document.querySelectorAll('#catChips .chip').forEach(ch => ch.classList.toggle('off', !state.cat.has(ch.dataset.k)));
+}
+
+function visible(d) {
+  if (!state.stance.has(d.s)) return false;
+  if (!state.cat.has(d.cat) && !(d.cat === 'key' && state.cat.has('rep'))) return false;
+  if (state.q && !(d.n.toLowerCase().includes(state.q) || d.role.toLowerCase().includes(state.q))) return false;
+  return true;
+}
+
+function applyVisibility() {
+  people.forEach(d => {
+    let on = visible(d);
+    if (focusNode) on = on && (d === focusNode);
+    const cls = on ? '' : 'dim';
+    d.el.setAttribute('class', 'node ' + cls);
+    d.lab.setAttribute('class', 'nlabel ' + cls);
+  });
+  links.forEach(l => {
+    let on = visible(l.src);
+    if (focusNode) on = on && l.src === focusNode;
+    l.el.setAttribute('class', 'edge' + (FACTION[l.fac].hist ? ' hist' : '') + (on ? '' : ' dim'));
+  });
+}
+
+syncChips();
+tick();
+</script>
+</body>
+</html>
