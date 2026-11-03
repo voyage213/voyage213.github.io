@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI Agents and Applications ・ AI Courses ・ RCAIS</title>
+<meta name="description" content="AI Agents and Applications (Spring 2027; Fang-Yi Huang, Chung-Yang Yeh): course description and 18-week schedule.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;800&family=IBM+Plex+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="../../assets/css/ai-center.css">
+
+<script>
+  document.documentElement.classList.add('js');
+  setTimeout(function () {
+    if (!document.documentElement.classList.contains('reveal-ready')) {
+      document.documentElement.classList.remove('js');
+    }
+  }, 2000);
+</script>
+</head>
+<body data-planet="courses">
+
+<div class="veil" aria-hidden="true"></div>
+
+<nav id="nav">
+  <a class="brand" href="index.html"><span>RCAIS</span><span class="en">AI &amp; Society · SCU</span></a>
+
+  <button class="nav-toggle" id="navToggle" aria-label="Menu" aria-expanded="false" aria-controls="navlinks">
+    <span></span><span></span><span></span>
+  </button>
+
+  <ul class="navlinks" id="navlinks">
+    <li><a href="mission.html">Mission</a></li>
+    <li><a href="people.html">People</a></li>
+    <li><a href="directors.html">Directors</a></li>
+    <li><a href="courses.html" class="is-current">Courses</a></li>
+    <li><a href="activities.html">Activities</a></li>
+    <li><a href="research.html">Research</a></li>
+    <li><a href="students.html">Students</a></li>
+    <li><a href="global.html">Global</a></li>
+    <li><a href="../course-ai-agents.html" class="lang">中文</a></li>
+    <li><a href="../ja/course-ai-agents.html" class="lang">日本語</a></li>
+    <li><a href="../ko/course-ai-agents.html" class="lang">한국어</a></li>
+  </ul>
+</nav>
+
+<main id="top">
+  <header class="page-head">
+    <div class="wrap">
+      <a class="back-link" href="courses.html">← Back to AI Courses</a>
+      <h1>AI Agents and Applications<span class="en">人工智慧代理人與應用</span></h1>
+      <p class="lede">Instructors: Fang-Yi Huang and Chung-Yang Yeh. Spring 2027, elective for third-year Sociology students, 3 credits, up to 60 students. No prerequisites or programming background required.</p>
+    </div>
+  </header>
+
+  <section class="chapter" id="course">
+    <div class="wrap">
+
+      <div class="pub-group reveal" style="margin-top:2.4rem;">
+        <h3>Course Description<span class="en">課程簡介</span></h3>
+        <p class="sec-body">This course introduces the theory, tools and applications of AI agents from a sociological perspective, with no programming background assumed. The theory covers large language models, prompt and context engineering, the ReAct agent architecture, RAG, MCP, multi-agent systems, evaluation methods, information security and governance. The hands-on part compares AI agent tools (Claude Code, OpenAI Codex, Gemini CLI, Cursor, GitHub Copilot, Lovable, Bolt.new, v0, Replit Agent, n8n and others) and uses vibe coding to build websites, apps and research agents. The social science part explores social simulation with generative agents, qualitative coding with LLMs, and the effects of AI on work, inequality and accountability. Assessment includes biweekly assignments, a midterm, a final exam and a final project (theoretical analysis plus a working product). The tool list will be updated to reflect the versions and free plans available when the course runs.</p>
+      </div>
+
+      <div class="pub-group reveal">
+        <h3>Weekly Schedule<span class="en">各週重點</span></h3>
+        <ol class="pub-list">
+          <li>
+            <span class="yr">W01</span>
+            <p><strong>Introduction: from chatbots to AI agents</strong><br>Key terms: AI Agent, Agentic AI, Rational Agent, PEAS, Autonomy, Human-in-the-Loop, Sociotechnical System<br>Hands-on: Set up the course tools and run an AI agent through a multi-step task.</p>
+          </li>
+          <li>
+            <span class="yr">W02</span>
+            <p><strong>How large language models work</strong><br>Key terms: LLM, Foundation Model, Transformer, Attention, Token, Context Window, Embedding, Temperature, Hallucination<br>Hands-on: Compare outputs across models and temperatures using the same prompt. <span class="venue">Assignment 1: model output comparison and hallucination check</span></p>
+          </li>
+          <li>
+            <span class="yr">W03</span>
+            <p><strong>Prompt engineering and context engineering</strong><br>Key terms: System Prompt, Few-Shot, Chain-of-Thought, Structured Output (JSON), Prompt Engineering, Context Engineering<br>Hands-on: Write reusable system prompts and output formats. <span class="venue">Final project groups formed</span></p>
+          </li>
+          <li>
+            <span class="yr">W04</span>
+            <p><strong>Core architecture of AI agents</strong><br>Key terms: ReAct, Agent Loop, Tool Calling, Planning, Memory, Reflection, Orchestration<br>Hands-on: Build a first agent in n8n that can call external tools. <span class="venue">Assignment 2: tool-using agent in n8n</span></p>
+          </li>
+          <li>
+            <span class="yr">W05</span>
+            <p><strong>Knowledge retrieval and tool protocols</strong><br>Key terms: RAG, Vector Database, Chunking, Semantic Search, MCP, Agent Skills, A2A<br>Hands-on: Build a RAG question-answering agent from social policy documents and connect an MCP server.</p>
+          </li>
+          <li>
+            <span class="yr">W06</span>
+            <p><strong>Survey and comparison of AI agent tools</strong><br>Key terms: Terminal agents (Claude Code, OpenAI Codex, Gemini CLI); IDE agents (Cursor, GitHub Copilot, Windsurf, Google Antigravity); cloud autonomous agents (Devin); app builders (Lovable, Bolt.new, v0, Replit Agent); workflows and frameworks (n8n, Dify, LangGraph, CrewAI, AutoGen)<br>Hands-on: In groups, try different tools on the same task and record cost, speed and quality. <span class="venue">Assignment 3: AI agent tool review</span></p>
+          </li>
+          <li>
+            <span class="yr">W07</span>
+            <p><strong>Vibe coding: theory and methods</strong><br>Key terms: Vibe Coding, Agentic Coding, Spec-Driven Development, PRD, AGENTS.md / CLAUDE.md, Git, Version Control, Code Review, Technical Debt<br>Hands-on: Write a requirements spec, have a coding agent produce a first version, and manage changes with Git.</p>
+          </li>
+          <li>
+            <span class="yr">W08</span>
+            <p><strong>AI agent applications (1): building websites</strong><br>Key terms: Frontend, HTML / CSS / JavaScript, React, Responsive Design, Supabase, Deployment (Vercel, GitHub Pages), API Key, Environment Variables<br>Hands-on: Use vibe coding to complete and publicly deploy a website on a social issue. <span class="venue">Assignment 4: social issue website goes live</span></p>
+          </li>
+          <li>
+            <span class="yr">W09</span>
+            <p><strong>Midterm exam</strong> <span class="venue">Covers weeks 1–8 (key terms, essays and reading hands-on work)</span></p>
+          </li>
+          <li>
+            <span class="yr">W10</span>
+            <p><strong>AI agent applications (2): building apps</strong><br>Key terms: PWA, React Native, Expo, Backend, REST API, Authentication, UX, Accessibility<br>Hands-on: Use tools such as Replit Agent or Lovable to build a phone-ready app prototype and run user tests. <span class="venue">Assignment 5: mobile app prototype; final project proposal due</span></p>
+          </li>
+          <li>
+            <span class="yr">W11</span>
+            <p><strong>Multi-agent systems</strong><br>Key terms: Multi-Agent Systems, Orchestrator-Worker, Role Assignment, Handoff, Shared State, Emergent Behavior, LangGraph, CrewAI<br>Hands-on: Design a three-role collaborating agent using division-of-labor concepts from organizational sociology.</p>
+          </li>
+          <li>
+            <span class="yr">W12</span>
+            <p><strong>Agent evaluation and observability</strong><br>Key terms: Evals, Benchmark, SWE-bench, Golden Dataset, Trajectory, Observability, Guardrails, Validity and Reliability<br>Hands-on: Build an evaluation dataset for your own agent and calculate performance metrics. <span class="venue">Assignment 6: agent evaluation report</span></p>
+          </li>
+          <li>
+            <span class="yr">W13</span>
+            <p><strong>Generative agents and social simulation</strong><br>Key terms: Generative Agents, Agent-Based Modeling, Silicon Sampling, Algorithmic Fidelity, Synthetic Respondents, External Validity, WEIRD Bias<br>Hands-on: Simulate a Taiwanese public opinion item and compare it with real survey results.</p>
+          </li>
+          <li>
+            <span class="yr">W14</span>
+            <p><strong>AI agents as social research assistants</strong><br>Key terms: Computational Social Science, Research Workflow Automation, Codebook to Promptbook, LLM Annotation, Cohen's Kappa, Research Ethics<br>Hands-on: Use an agent to code interview or news texts and compare its agreement with human coding. <span class="venue">Assignment 7: LLM coding vs. human coding</span></p>
+          </li>
+          <li>
+            <span class="yr">W15</span>
+            <p><strong>AI agents, work and social inequality</strong><br>Key terms: Task-Based Approach, Automation vs. Augmentation, Deskilling, Productivity Paradox, Digital Divide, Algorithmic Management<br>Hands-on: Analyze the tasks of one occupation in Taiwan and assess which could be replaced or augmented by agents.</p>
+          </li>
+          <li>
+            <span class="yr">W16</span>
+            <p><strong>Security, ethics and governance</strong><br>Key terms: Prompt Injection, Least Privilege, Sandbox, Data Leakage, Red Teaming, Moral Crumple Zone, Accountability, Taiwan's AI Basic Act, EU AI Act<br>Hands-on: Red-team your final project and check personal data and permissions. <span class="venue">Assignment 8: project security and ethics check</span></p>
+          </li>
+          <li>
+            <span class="yr">W17</span>
+            <p><strong>Final project presentations (Demo Day)</strong><br>Key terms: Proof of Concept, MVP, Peer Review<br>Hands-on: Each group demonstrates its agent, website or app live and explains its sociological basis and evaluation results. <span class="venue">Final project presentation</span></p>
+          </li>
+          <li>
+            <span class="yr">W18</span>
+            <p><strong>Final exam</strong> <span class="venue">Covers weeks 10–16; final project report and product links due</span></p>
+          </li>
+        </ol>
+      </div>
+
+      <p class="note-line">Back to <a href="courses.html">AI Courses</a>. Tools and scheduling are subject to the announcement when the course runs.</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span class="f-name">RCAIS ・ AI &amp; Society</span>
+
+    <div class="f-links">
+      <a href="mission.html">Mission</a>
+      <a href="people.html">People</a>
+      <a href="directors.html">Directors</a>
+      <a href="courses.html">Courses</a>
+      <a href="activities.html">Activities</a>
+      <a href="research.html">Research</a>
+      <a href="students.html">Students</a>
+      <a href="global.html">Global</a>
+    </div>
+
+    <p class="f-copy">© 2026 Research Center for AI and Society, Department of Sociology, Soochow University ・ society@scu.edu.tw ・ +886-2-2881-9471 ext. 6291–6294</p>
+  </div>
+</footer>
+
+<script src="../../assets/js/main.js"></script>
+</body>
+</html>

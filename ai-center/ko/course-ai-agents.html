@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI 에이전트와 응용 ・ AI 교과목 ・ AI 사회연구센터</title>
+<meta name="description" content="AI 에이전트와 응용(2027 봄, 黃芳誼·葉崇揚): 교과목 소개와 18주 핵심.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;800&family=IBM+Plex+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="../../assets/css/ai-center.css">
+
+<script>
+  document.documentElement.classList.add('js');
+  setTimeout(function () {
+    if (!document.documentElement.classList.contains('reveal-ready')) {
+      document.documentElement.classList.remove('js');
+    }
+  }, 2000);
+</script>
+</head>
+<body data-planet="courses">
+
+<div class="veil" aria-hidden="true"></div>
+
+<nav id="nav">
+  <a class="brand" href="index.html"><span>AI사회연구센터</span><span class="en">RCAIS · 둥우대학교 사회학과</span></a>
+
+  <button class="nav-toggle" id="navToggle" aria-label="메뉴" aria-expanded="false" aria-controls="navlinks">
+    <span></span><span></span><span></span>
+  </button>
+
+  <ul class="navlinks" id="navlinks">
+    <li><a href="mission.html">미션</a></li>
+    <li><a href="people.html">구성원</a></li>
+    <li><a href="directors.html">역대 센터장</a></li>
+    <li><a href="courses.html" class="is-current">교과목</a></li>
+    <li><a href="activities.html">활동</a></li>
+    <li><a href="research.html">연구</a></li>
+    <li><a href="students.html">학생 연구</a></li>
+    <li><a href="global.html">국제 비교</a></li>
+    <li><a href="../course-ai-agents.html" class="lang">中文</a></li>
+    <li><a href="../en/course-ai-agents.html" class="lang">EN</a></li>
+    <li><a href="../ja/course-ai-agents.html" class="lang">日本語</a></li>
+  </ul>
+</nav>
+
+<main id="top">
+  <header class="page-head">
+    <div class="wrap">
+      <a class="back-link" href="courses.html">← AI 교과목으로</a>
+      <h1>AI 에이전트와 응용<span class="en">AI Agents and Applications</span></h1>
+      <p class="lede">담당 교수: 黃芳誼, 葉崇揚. 2027년 봄학기, 사회학과 3학년 선택 과목, 3학점, 정원 60명. 선수 과목이 없으며 프로그래밍 기초가 필요하지 않습니다.</p>
+    </div>
+  </header>
+
+  <section class="chapter" id="course">
+    <div class="wrap">
+
+      <div class="pub-group reveal" style="margin-top:2.4rem;">
+        <h3>교과목 소개<span class="en">Course Description</span></h3>
+        <p class="sec-body">이 과목은 사회학적 관점에서 AI 에이전트의 이론, 도구, 응용을 다루며 프로그래밍 기초를 전제하지 않습니다. 이론 부분은 대규모 언어 모델, 프롬프트·컨텍스트 엔지니어링, ReAct 에이전트 구조, RAG, MCP, 멀티 에이전트 시스템, 평가 방법, 정보 보안과 거버넌스를 포함합니다. 실습 부분은 다양한 AI 에이전트 도구(Claude Code, OpenAI Codex, Gemini CLI, Cursor, GitHub Copilot, Lovable, Bolt.new, v0, Replit Agent, n8n 등)를 비교하고 Vibe Coding으로 웹사이트, 앱, 연구 에이전트를 제작합니다. 사회과학 응용 부분은 생성 에이전트 사회 시뮬레이션, LLM 질적 코딩, AI가 노동, 불평등, 책임성에 미치는 영향을 탐구합니다. 평가는 격주 과제, 중간고사, 기말고사, 기말 프로젝트(이론 분석과 실제 결과물)로 이루어집니다. 도구 목록은 개설 시점의 버전과 무료 요금제에 따라 갱신됩니다.</p>
+      </div>
+
+      <div class="pub-group reveal">
+        <h3>주차별 핵심<span class="en">Weekly Schedule</span></h3>
+        <ol class="pub-list">
+          <li>
+            <span class="yr">W01</span>
+            <p><strong>도입: 챗봇에서 AI 에이전트로</strong><br>핵심 용어: AI Agent, Agentic AI, Rational Agent, PEAS, Autonomy, Human-in-the-Loop, Sociotechnical System<br>실습: 수업 도구 환경을 구축하고 AI 에이전트로 여러 단계의 과제를 수행한다.</p>
+          </li>
+          <li>
+            <span class="yr">W02</span>
+            <p><strong>대규모 언어 모델의 원리</strong><br>핵심 용어: LLM, Foundation Model, Transformer, Attention, Token, Context Window, Embedding, Temperature, Hallucination<br>실습: 같은 프롬프트로 모델과 온도에 따른 출력 차이를 비교한다. <span class="venue">과제 1: 모델 출력 비교와 할루시네이션 검증</span></p>
+          </li>
+          <li>
+            <span class="yr">W03</span>
+            <p><strong>프롬프트 엔지니어링과 컨텍스트 엔지니어링</strong><br>핵심 용어: System Prompt, Few-Shot, Chain-of-Thought, Structured Output (JSON), Prompt Engineering, Context Engineering<br>실습: 재사용 가능한 시스템 프롬프트와 출력 형식을 작성한다. <span class="venue">기말 프로젝트 조 편성</span></p>
+          </li>
+          <li>
+            <span class="yr">W04</span>
+            <p><strong>AI 에이전트의 핵심 구조</strong><br>핵심 용어: ReAct, Agent Loop, Tool Calling, Planning, Memory, Reflection, Orchestration<br>실습: n8n으로 외부 도구를 호출할 수 있는 첫 에이전트를 구축한다. <span class="venue">과제 2: n8n 도구형 에이전트</span></p>
+          </li>
+          <li>
+            <span class="yr">W05</span>
+            <p><strong>지식 검색과 도구 프로토콜</strong><br>핵심 용어: RAG, Vector Database, Chunking, Semantic Search, MCP, Agent Skills, A2A<br>실습: 사회정책 문서로 RAG 질의응답 에이전트를 만들고 MCP 서버를 연결한다.</p>
+          </li>
+          <li>
+            <span class="yr">W06</span>
+            <p><strong>AI 에이전트 도구 개관과 비교</strong><br>핵심 용어: Terminal agents (Claude Code, OpenAI Codex, Gemini CLI); IDE agents (Cursor, GitHub Copilot, Windsurf, Google Antigravity); cloud autonomous agents (Devin); app builders (Lovable, Bolt.new, v0, Replit Agent); workflows and frameworks (n8n, Dify, LangGraph, CrewAI, AutoGen)<br>실습: 조별로 같은 과제를 서로 다른 도구로 시도하고 비용, 속도, 품질을 기록한다. <span class="venue">과제 3: AI 에이전트 도구 평가 보고서</span></p>
+          </li>
+          <li>
+            <span class="yr">W07</span>
+            <p><strong>Vibe Coding의 이론과 방법</strong><br>핵심 용어: Vibe Coding, Agentic Coding, Spec-Driven Development, PRD, AGENTS.md / CLAUDE.md, Git, Version Control, Code Review, Technical Debt<br>실습: 요구사항 명세를 작성해 코딩 에이전트로 첫 버전을 만들고 Git으로 수정을 관리한다.</p>
+          </li>
+          <li>
+            <span class="yr">W08</span>
+            <p><strong>AI 에이전트 응용 (1): 웹사이트 제작</strong><br>핵심 용어: Frontend, HTML / CSS / JavaScript, React, Responsive Design, Supabase, Deployment (Vercel, GitHub Pages), API Key, Environment Variables<br>실습: Vibe Coding으로 사회 문제 정보 웹사이트를 완성해 공개 배포한다. <span class="venue">과제 4: 사회 문제 웹사이트 공개</span></p>
+          </li>
+          <li>
+            <span class="yr">W09</span>
+            <p><strong>중간고사</strong> <span class="venue">범위: 1~8주 (전문 용어, 논술, 실습 판독)</span></p>
+          </li>
+          <li>
+            <span class="yr">W10</span>
+            <p><strong>AI 에이전트 응용 (2): 앱 제작</strong><br>핵심 용어: PWA, React Native, Expo, Backend, REST API, Authentication, UX, Accessibility<br>실습: Replit Agent나 Lovable 등의 도구로 휴대폰에서 작동하는 앱 시제품을 만들고 사용자 테스트를 진행한다. <span class="venue">과제 5: 모바일 앱 시제품; 기말 프로젝트 기획서 제출</span></p>
+          </li>
+          <li>
+            <span class="yr">W11</span>
+            <p><strong>멀티 에이전트 시스템</strong><br>핵심 용어: Multi-Agent Systems, Orchestrator-Worker, Role Assignment, Handoff, Shared State, Emergent Behavior, LangGraph, CrewAI<br>실습: 조직사회학의 분업 개념을 활용해 세 가지 역할이 협업하는 에이전트를 설계한다.</p>
+          </li>
+          <li>
+            <span class="yr">W12</span>
+            <p><strong>에이전트 평가와 관측 가능성</strong><br>핵심 용어: Evals, Benchmark, SWE-bench, Golden Dataset, Trajectory, Observability, Guardrails, Validity and Reliability<br>실습: 자신의 에이전트를 위한 평가 데이터셋을 만들고 성능 지표를 계산한다. <span class="venue">과제 6: 에이전트 평가 보고서</span></p>
+          </li>
+          <li>
+            <span class="yr">W13</span>
+            <p><strong>생성 에이전트와 사회 시뮬레이션</strong><br>핵심 용어: Generative Agents, Agent-Based Modeling, Silicon Sampling, Algorithmic Fidelity, Synthetic Respondents, External Validity, WEIRD Bias<br>실습: 대만의 여론 조사 문항을 시뮬레이션하고 실제 조사 결과와 비교한다.</p>
+          </li>
+          <li>
+            <span class="yr">W14</span>
+            <p><strong>사회 연구 조수로서의 AI 에이전트</strong><br>핵심 용어: Computational Social Science, Research Workflow Automation, Codebook to Promptbook, LLM Annotation, Cohen's Kappa, Research Ethics<br>실습: 에이전트로 인터뷰나 뉴스 텍스트를 코딩하고 사람의 코딩과 일치도를 비교한다. <span class="venue">과제 7: LLM 코딩과 사람 코딩 비교</span></p>
+          </li>
+          <li>
+            <span class="yr">W15</span>
+            <p><strong>AI 에이전트, 노동, 사회 불평등</strong><br>핵심 용어: Task-Based Approach, Automation vs. Augmentation, Deskilling, Productivity Paradox, Digital Divide, Algorithmic Management<br>실습: 대만의 한 직업의 과업을 분석해 에이전트가 대체하거나 증강할 수 있는 부분을 평가한다.</p>
+          </li>
+          <li>
+            <span class="yr">W16</span>
+            <p><strong>보안, 윤리, 거버넌스</strong><br>핵심 용어: Prompt Injection, Least Privilege, Sandbox, Data Leakage, Red Teaming, Moral Crumple Zone, Accountability, Taiwan's AI Basic Act, EU AI Act<br>실습: 기말 프로젝트에 레드팀 점검을 실시하고 개인정보와 권한을 확인한다. <span class="venue">과제 8: 프로젝트 보안·윤리 점검</span></p>
+          </li>
+          <li>
+            <span class="yr">W17</span>
+            <p><strong>기말 프로젝트 발표 (Demo Day)</strong><br>핵심 용어: Proof of Concept, MVP, Peer Review<br>실습: 각 조가 에이전트, 웹사이트 또는 앱을 시연하고 사회학적 근거와 평가 결과를 설명한다. <span class="venue">기말 프로젝트 발표</span></p>
+          </li>
+          <li>
+            <span class="yr">W18</span>
+            <p><strong>기말고사</strong> <span class="venue">범위: 10~16주; 기말 프로젝트 보고서와 작품 링크 제출</span></p>
+          </li>
+        </ol>
+      </div>
+
+      <p class="note-line"><a href="courses.html">AI 교과목</a> 목록으로 돌아가기. 도구와 일정은 개설 시 공지를 따릅니다.</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span class="f-name">AI사회연구센터 ・ RCAIS</span>
+
+    <div class="f-links">
+      <a href="mission.html">미션</a>
+      <a href="people.html">구성원</a>
+      <a href="directors.html">역대 센터장</a>
+      <a href="courses.html">교과목</a>
+      <a href="activities.html">활동</a>
+      <a href="research.html">연구</a>
+      <a href="students.html">학생 연구</a>
+      <a href="global.html">국제 비교</a>
+    </div>
+
+    <p class="f-copy">© 2026 Research Center for AI and Society, 둥우대학교 사회학과 ・ society@scu.edu.tw ・ +886-2-2881-9471 내선 6291–6294</p>
+  </div>
+</footer>
+
+<script src="../../assets/js/main.js"></script>
+</body>
+</html>

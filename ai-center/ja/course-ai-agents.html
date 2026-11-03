@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AIエージェントとその応用 ・ AI講義 ・ AI社会研究センター</title>
+<meta name="description" content="AIエージェントとその応用（2027春、黃芳誼・葉崇揚）：科目概要と18週の要点。">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;800&family=IBM+Plex+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="../../assets/css/ai-center.css">
+
+<script>
+  document.documentElement.classList.add('js');
+  setTimeout(function () {
+    if (!document.documentElement.classList.contains('reveal-ready')) {
+      document.documentElement.classList.remove('js');
+    }
+  }, 2000);
+</script>
+</head>
+<body data-planet="courses">
+
+<div class="veil" aria-hidden="true"></div>
+
+<nav id="nav">
+  <a class="brand" href="index.html"><span>AI社会研究センター</span><span class="en">RCAIS · 東呉大学社会学部</span></a>
+
+  <button class="nav-toggle" id="navToggle" aria-label="メニュー" aria-expanded="false" aria-controls="navlinks">
+    <span></span><span></span><span></span>
+  </button>
+
+  <ul class="navlinks" id="navlinks">
+    <li><a href="mission.html">ミッション</a></li>
+    <li><a href="people.html">メンバー</a></li>
+    <li><a href="directors.html">歴代センター長</a></li>
+    <li><a href="courses.html" class="is-current">開講科目</a></li>
+    <li><a href="activities.html">活動</a></li>
+    <li><a href="research.html">研究</a></li>
+    <li><a href="students.html">学生研究</a></li>
+    <li><a href="global.html">国際比較</a></li>
+    <li><a href="../course-ai-agents.html" class="lang">中文</a></li>
+    <li><a href="../en/course-ai-agents.html" class="lang">EN</a></li>
+    <li><a href="../ko/course-ai-agents.html" class="lang">한국어</a></li>
+  </ul>
+</nav>
+
+<main id="top">
+  <header class="page-head">
+    <div class="wrap">
+      <a class="back-link" href="courses.html">← AI講義へ戻る</a>
+      <h1>AIエージェントとその応用<span class="en">AI Agents and Applications</span></h1>
+      <p class="lede">担当教員：黃芳誼、葉崇揚。2027年春学期、社会学部3年次の選択科目、3単位、定員60名。履修条件なし、プログラミングの基礎は不要です。</p>
+    </div>
+  </header>
+
+  <section class="chapter" id="course">
+    <div class="wrap">
+
+      <div class="pub-group reveal" style="margin-top:2.4rem;">
+        <h3>科目概要<span class="en">Course Description</span></h3>
+        <p class="sec-body">本科目は、社会学の視点からAIエージェントの理論、ツール、応用を学びます。プログラミングの基礎は前提としません。理論面では大規模言語モデル、プロンプト・コンテキストエンジニアリング、ReActエージェントアーキテクチャ、RAG、MCP、マルチエージェントシステム、評価方法、情報セキュリティとガバナンスを扱います。実践面では各種AIエージェントツール（Claude Code、OpenAI Codex、Gemini CLI、Cursor、GitHub Copilot、Lovable、Bolt.new、v0、Replit Agent、n8nなど）を比較し、Vibe Codingでウェブサイト、アプリ、研究エージェントを制作します。社会科学への応用では、生成エージェントによる社会シミュレーション、LLMによる質的コーディング、AIが仕事、不平等、説明責任に与える影響を検討します。評価は隔週の課題、中間試験、期末試験、期末プロジェクト（理論分析と実装成果）で行います。ツール一覧は開講時のバージョンと無料プランに応じて更新します。</p>
+      </div>
+
+      <div class="pub-group reveal">
+        <h3>各週の要点<span class="en">Weekly Schedule</span></h3>
+        <ol class="pub-list">
+          <li>
+            <span class="yr">W01</span>
+            <p><strong>導入：チャットボットからAIエージェントへ</strong><br>キーワード：AI Agent, Agentic AI, Rational Agent, PEAS, Autonomy, Human-in-the-Loop, Sociotechnical System<br>実習：授業用ツール環境を整え、AIエージェントに複数ステップのタスクを実行させる。</p>
+          </li>
+          <li>
+            <span class="yr">W02</span>
+            <p><strong>大規模言語モデルの原理</strong><br>キーワード：LLM, Foundation Model, Transformer, Attention, Token, Context Window, Embedding, Temperature, Hallucination<br>実習：同じプロンプトで、モデルと温度による出力の違いを比較する。 <span class="venue">課題1：モデル出力の比較とハルシネーションの検証</span></p>
+          </li>
+          <li>
+            <span class="yr">W03</span>
+            <p><strong>プロンプトエンジニアリングとコンテキストエンジニアリング</strong><br>キーワード：System Prompt, Few-Shot, Chain-of-Thought, Structured Output (JSON), Prompt Engineering, Context Engineering<br>実習：再利用できるシステムプロンプトと出力形式を作成する。 <span class="venue">期末プロジェクトのグループ分け</span></p>
+          </li>
+          <li>
+            <span class="yr">W04</span>
+            <p><strong>AIエージェントの基本アーキテクチャ</strong><br>キーワード：ReAct, Agent Loop, Tool Calling, Planning, Memory, Reflection, Orchestration<br>実習：n8nで外部ツールを呼び出せる最初のエージェントを構築する。 <span class="venue">課題2：n8nによるツール型エージェント</span></p>
+          </li>
+          <li>
+            <span class="yr">W05</span>
+            <p><strong>知識検索とツールプロトコル</strong><br>キーワード：RAG, Vector Database, Chunking, Semantic Search, MCP, Agent Skills, A2A<br>実習：社会政策文書からRAG質問応答エージェントを構築し、MCPサーバーに接続する。</p>
+          </li>
+          <li>
+            <span class="yr">W06</span>
+            <p><strong>AIエージェントツールの概観と比較</strong><br>キーワード：Terminal agents (Claude Code, OpenAI Codex, Gemini CLI); IDE agents (Cursor, GitHub Copilot, Windsurf, Google Antigravity); cloud autonomous agents (Devin); app builders (Lovable, Bolt.new, v0, Replit Agent); workflows and frameworks (n8n, Dify, LangGraph, CrewAI, AutoGen)<br>実習：グループで同じタスクを異なるツールで試し、コスト・速度・品質を記録する。 <span class="venue">課題3：AIエージェントツール評価レポート</span></p>
+          </li>
+          <li>
+            <span class="yr">W07</span>
+            <p><strong>Vibe Codingの理論と方法</strong><br>キーワード：Vibe Coding, Agentic Coding, Spec-Driven Development, PRD, AGENTS.md / CLAUDE.md, Git, Version Control, Code Review, Technical Debt<br>実習：要件仕様を書き、コーディングエージェントに初版を作らせ、Gitで修正を管理する。</p>
+          </li>
+          <li>
+            <span class="yr">W08</span>
+            <p><strong>AIエージェントの応用（1）：ウェブサイト制作</strong><br>キーワード：Frontend, HTML / CSS / JavaScript, React, Responsive Design, Supabase, Deployment (Vercel, GitHub Pages), API Key, Environment Variables<br>実習：Vibe Codingで社会課題の情報サイトを完成させ、公開する。 <span class="venue">課題4：社会課題ウェブサイトの公開</span></p>
+          </li>
+          <li>
+            <span class="yr">W09</span>
+            <p><strong>中間試験</strong> <span class="venue">範囲：第1〜8週（専門用語、論述、実装の読解）</span></p>
+          </li>
+          <li>
+            <span class="yr">W10</span>
+            <p><strong>AIエージェントの応用（2）：アプリ制作</strong><br>キーワード：PWA, React Native, Expo, Backend, REST API, Authentication, UX, Accessibility<br>実習：Replit AgentやLovableなどでスマートフォンで動くアプリの試作品を作り、ユーザーテストを行う。 <span class="venue">課題5：モバイルアプリ試作；期末プロジェクト企画書の提出</span></p>
+          </li>
+          <li>
+            <span class="yr">W11</span>
+            <p><strong>マルチエージェントシステム</strong><br>キーワード：Multi-Agent Systems, Orchestrator-Worker, Role Assignment, Handoff, Shared State, Emergent Behavior, LangGraph, CrewAI<br>実習：組織社会学の分業の概念を用いて、3つの役割が協働するエージェントを設計する。</p>
+          </li>
+          <li>
+            <span class="yr">W12</span>
+            <p><strong>エージェントの評価と可観測性</strong><br>キーワード：Evals, Benchmark, SWE-bench, Golden Dataset, Trajectory, Observability, Guardrails, Validity and Reliability<br>実習：自分のエージェントの評価データセットを作り、性能指標を算出する。 <span class="venue">課題6：エージェント評価レポート</span></p>
+          </li>
+          <li>
+            <span class="yr">W13</span>
+            <p><strong>生成エージェントと社会シミュレーション</strong><br>キーワード：Generative Agents, Agent-Based Modeling, Silicon Sampling, Algorithmic Fidelity, Synthetic Respondents, External Validity, WEIRD Bias<br>実習：台湾の世論調査項目をシミュレーションし、実際の調査結果と比較する。</p>
+          </li>
+          <li>
+            <span class="yr">W14</span>
+            <p><strong>社会調査アシスタントとしてのAIエージェント</strong><br>キーワード：Computational Social Science, Research Workflow Automation, Codebook to Promptbook, LLM Annotation, Cohen's Kappa, Research Ethics<br>実習：エージェントでインタビューやニュースのテキストをコーディングし、人手のコーディングとの一致度を比較する。 <span class="venue">課題7：LLMコーディングと人手コーディングの比較</span></p>
+          </li>
+          <li>
+            <span class="yr">W15</span>
+            <p><strong>AIエージェント、仕事、社会的不平等</strong><br>キーワード：Task-Based Approach, Automation vs. Augmentation, Deskilling, Productivity Paradox, Digital Divide, Algorithmic Management<br>実習：台湾のある職業のタスクを分析し、エージェントに代替・増強されうる部分を評価する。</p>
+          </li>
+          <li>
+            <span class="yr">W16</span>
+            <p><strong>安全、倫理、ガバナンス</strong><br>キーワード：Prompt Injection, Least Privilege, Sandbox, Data Leakage, Red Teaming, Moral Crumple Zone, Accountability, Taiwan's AI Basic Act, EU AI Act<br>実習：期末プロジェクトにレッドチーミングを行い、個人情報と権限を点検する。 <span class="venue">課題8：プロジェクトの安全・倫理チェック</span></p>
+          </li>
+          <li>
+            <span class="yr">W17</span>
+            <p><strong>期末プロジェクト成果発表（Demo Day）</strong><br>キーワード：Proof of Concept, MVP, Peer Review<br>実習：各グループがエージェント、ウェブサイト、アプリを実演し、社会学的根拠と評価結果を説明する。 <span class="venue">期末プロジェクト発表</span></p>
+          </li>
+          <li>
+            <span class="yr">W18</span>
+            <p><strong>期末試験</strong> <span class="venue">範囲：第10〜16週；期末プロジェクトの報告書と作品リンクの提出</span></p>
+          </li>
+        </ol>
+      </div>
+
+      <p class="note-line"><a href="courses.html">AI講義</a>の一覧へ戻る。ツールと日程は開講時の案内に従います。</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span class="f-name">AI社会研究センター ・ RCAIS</span>
+
+    <div class="f-links">
+      <a href="mission.html">ミッション</a>
+      <a href="people.html">メンバー</a>
+      <a href="directors.html">歴代センター長</a>
+      <a href="courses.html">開講科目</a>
+      <a href="activities.html">活動</a>
+      <a href="research.html">研究</a>
+      <a href="students.html">学生研究</a>
+      <a href="global.html">国際比較</a>
+    </div>
+
+    <p class="f-copy">© 2026 Research Center for AI and Society, 東呉大学社会学部 ・ society@scu.edu.tw ・ +886-2-2881-9471 内線 6291–6294</p>
+  </div>
+</footer>
+
+<script src="../../assets/js/main.js"></script>
+</body>
+</html>

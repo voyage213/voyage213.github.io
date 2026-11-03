@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>人工智慧代理人與應用 ・ AI 系列課程 ・ AI 社會研究中心</title>
+<meta name="description" content="人工智慧代理人與應用（115-2，黃芳誼、葉崇揚）：課程簡介與十八週重點。">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;800&family=IBM+Plex+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="../assets/css/ai-center.css">
+
+<script>
+  document.documentElement.classList.add('js');
+  setTimeout(function () {
+    if (!document.documentElement.classList.contains('reveal-ready')) {
+      document.documentElement.classList.remove('js');
+    }
+  }, 2000);
+</script>
+</head>
+<body data-planet="courses">
+
+<div class="veil" aria-hidden="true"></div>
+
+<nav id="nav">
+  <a class="brand" href="index.html"><span>AI 社會研究中心</span><span class="en">RCAIS · SCU Sociology</span></a>
+
+  <button class="nav-toggle" id="navToggle" aria-label="選單" aria-expanded="false" aria-controls="navlinks">
+    <span></span><span></span><span></span>
+  </button>
+
+  <ul class="navlinks" id="navlinks">
+    <li><a href="mission.html">宗旨</a></li>
+    <li><a href="people.html">成員</a></li>
+    <li><a href="directors.html">歷屆執行長</a></li>
+    <li><a href="courses.html" class="is-current">課程</a></li>
+    <li><a href="activities.html">活動</a></li>
+    <li><a href="research.html">研究</a></li>
+    <li><a href="students.html">學生研究</a></li>
+    <li><a href="global.html">國際視野</a></li>
+    <li><a href="en/course-ai-agents.html" class="lang">EN</a></li>
+    <li><a href="ja/course-ai-agents.html" class="lang">日本語</a></li>
+    <li><a href="ko/course-ai-agents.html" class="lang">한국어</a></li>
+  </ul>
+</nav>
+
+<main id="top">
+  <header class="page-head">
+    <div class="wrap">
+      <a class="back-link" href="courses.html">← 回 AI 系列課程</a>
+      <h1>人工智慧代理人與應用<span class="en">AI Agents and Applications</span></h1>
+      <p class="lede">授課教師：黃芳誼、葉崇揚。115 學年度第 2 學期，社三AB 選修，3 學分，人數上限 60 人，無先修限制，不需程式設計基礎。</p>
+    </div>
+  </header>
+
+  <section class="chapter" id="course">
+    <div class="wrap">
+
+      <div class="pub-group reveal" style="margin-top:2.4rem;">
+        <h3>課程簡介<span class="en">Course Description</span></h3>
+        <p class="sec-body">本課程從社會學視角介紹人工智慧代理人（AI Agent）的理論、工具與應用，不預設程式基礎。理論部分涵蓋大型語言模型、提示與情境工程、ReAct代理架構、RAG、MCP、多代理人系統、評估方法、資訊安全與治理；實作部分比較各類AI代理人工具（Claude Code、OpenAI Codex、Gemini CLI、Cursor、GitHub Copilot、Lovable、Bolt.new、v0、Replit Agent、n8n等），並以 Vibe Coding 製作網頁、APP 與研究代理人。社會科學應用部分探討生成式代理人社會模擬、LLM質性編碼，以及AI對工作、不平等與問責的影響。評量包含每兩週一次作業、期中考、期末考及期末專題（理論分析加實作成果）。工具清單將依開課當時之版本與免費方案更新。</p>
+      </div>
+
+      <div class="pub-group reveal">
+        <h3>各週重點<span class="en">Weekly Schedule</span></h3>
+        <ol class="pub-list">
+          <li>
+            <span class="yr">W01</span>
+            <p><strong>導論：從聊天機器人到AI代理人</strong><br>專有名詞：AI代理人（AI Agent）、代理式AI（Agentic AI）、理性代理人（Rational Agent）、PEAS、自主性（Autonomy）、人在迴路（Human-in-the-Loop）、社會技術系統（Sociotechnical System）<br>實作：建立課程工具環境，操作一個AI代理人完成多步驟任務。</p>
+          </li>
+          <li>
+            <span class="yr">W02</span>
+            <p><strong>大型語言模型原理</strong><br>專有名詞：大型語言模型（LLM）、基礎模型（Foundation Model）、Transformer、注意力機制（Attention）、Token、上下文視窗（Context Window）、嵌入（Embedding）、溫度（Temperature）、幻覺（Hallucination）<br>實作：以相同提示比較不同模型與溫度的輸出差異。 <span class="venue">作業一：模型輸出比較與幻覺查核</span></p>
+          </li>
+          <li>
+            <span class="yr">W03</span>
+            <p><strong>提示工程與情境工程</strong><br>專有名詞：系統提示（System Prompt）、少樣本提示（Few-Shot）、思維鏈（Chain-of-Thought）、結構化輸出（JSON）、提示工程（Prompt Engineering）、情境工程（Context Engineering）<br>實作：撰寫可重複使用的系統提示與輸出格式。 <span class="venue">期末專題分組</span></p>
+          </li>
+          <li>
+            <span class="yr">W04</span>
+            <p><strong>AI代理人核心架構</strong><br>專有名詞：ReAct、感知-思考-行動迴圈（Agent Loop）、工具呼叫（Tool Calling）、規劃（Planning）、記憶（Memory）、反思（Reflection）、編排（Orchestration）<br>實作：以 n8n 建立第一個可呼叫外部工具的代理人。 <span class="venue">作業二：n8n 工具型代理人</span></p>
+          </li>
+          <li>
+            <span class="yr">W05</span>
+            <p><strong>知識檢索與工具協定</strong><br>專有名詞：檢索增強生成（RAG）、向量資料庫（Vector Database）、切塊（Chunking）、語意搜尋（Semantic Search）、模型上下文協定（MCP）、代理人技能（Agent Skills）、代理人對代理人協定（A2A）<br>實作：以社會政策文件建立RAG問答代理人，並串接一個MCP伺服器。</p>
+          </li>
+          <li>
+            <span class="yr">W06</span>
+            <p><strong>AI代理人工具全覽與比較</strong><br>專有名詞：終端機代理人（Claude Code、OpenAI Codex、Gemini CLI）；IDE代理人（Cursor、GitHub Copilot、Windsurf、Google Antigravity）；雲端自主代理人（Devin）；應用程式生成器（Lovable、Bolt.new、v0、Replit Agent）；流程與框架（n8n、Dify、LangGraph、CrewAI、AutoGen）<br>實作：分組以同一任務試用不同工具，記錄成本、速度與品質。 <span class="venue">作業三：AI代理人工具評比報告</span></p>
+          </li>
+          <li>
+            <span class="yr">W07</span>
+            <p><strong>Vibe Coding 理論與方法</strong><br>專有名詞：Vibe Coding、代理式編程（Agentic Coding）、規格驅動開發（Spec-Driven Development）、需求文件（PRD）、AGENTS.md／CLAUDE.md、Git、版本控制（Version Control）、程式碼審查（Code Review）、技術債（Technical Debt）<br>實作：撰寫需求規格，交由 coding agent 產出第一版程式，再以 Git 管理修改。</p>
+          </li>
+          <li>
+            <span class="yr">W08</span>
+            <p><strong>AI代理人應用（一）：網頁製作</strong><br>專有名詞：前端（Frontend）、HTML／CSS／JavaScript、React、響應式設計（Responsive Design）、資料庫（Supabase）、部署（Deployment：Vercel、GitHub Pages）、API金鑰（API Key）、環境變數<br>實作：以 Vibe Coding 完成並公開部署一個社會議題資訊網頁。 <span class="venue">作業四：社會議題網頁上線</span></p>
+          </li>
+          <li>
+            <span class="yr">W09</span>
+            <p><strong>期中考</strong> <span class="venue">範圍：第1至8週（專有名詞、申論與實作判讀）</span></p>
+          </li>
+          <li>
+            <span class="yr">W10</span>
+            <p><strong>AI代理人應用（二）：APP製作</strong><br>專有名詞：漸進式網頁應用（PWA）、React Native、Expo、後端（Backend）、REST API、身分驗證（Authentication）、使用者體驗（UX）、無障礙設計（Accessibility）<br>實作：以 Replit Agent 或 Lovable 等工具製作可在手機操作的APP原型，並進行使用者測試。 <span class="venue">作業五：行動APP原型；繳交期末專題企劃書</span></p>
+          </li>
+          <li>
+            <span class="yr">W11</span>
+            <p><strong>多代理人系統</strong><br>專有名詞：多代理人系統（Multi-Agent Systems）、協調者-工作者模式（Orchestrator-Worker）、角色分工（Role Assignment）、任務交接（Handoff）、共享狀態（Shared State）、湧現行為（Emergent Behavior）、LangGraph、CrewAI<br>實作：以組織社會學的分工概念設計三個角色的協作代理人。</p>
+          </li>
+          <li>
+            <span class="yr">W12</span>
+            <p><strong>代理人評估與可觀測性</strong><br>專有名詞：評測（Evals）、基準測試（Benchmark）、SWE-bench、黃金資料集（Golden Dataset）、執行軌跡（Trajectory）、可觀測性（Observability）、防護機制（Guardrails）、效度與信度<br>實作：為自己的代理人建立評測資料集並計算表現指標。 <span class="venue">作業六：代理人評估報告</span></p>
+          </li>
+          <li>
+            <span class="yr">W13</span>
+            <p><strong>生成式代理人與社會模擬</strong><br>專有名詞：生成式代理人（Generative Agents）、代理人基模型（Agent-Based Modeling）、矽基抽樣（Silicon Sampling）、演算法保真度（Algorithmic Fidelity）、合成受訪者（Synthetic Respondents）、外部效度、WEIRD偏誤<br>實作：模擬一項臺灣社會意見題目，並與實際調查結果比較。</p>
+          </li>
+          <li>
+            <span class="yr">W14</span>
+            <p><strong>AI代理人作為社會研究助理</strong><br>專有名詞：計算社會科學（Computational Social Science）、研究流程自動化、編碼簿到提示手冊（Codebook to Promptbook）、LLM標註（LLM Annotation）、編碼者間信度（Cohen's Kappa）、研究倫理（Research Ethics）<br>實作：以代理人編碼訪談或新聞文本，與人工編碼比較一致性。 <span class="venue">作業七：LLM編碼與人工編碼比較</span></p>
+          </li>
+          <li>
+            <span class="yr">W15</span>
+            <p><strong>AI代理人、工作與社會不平等</strong><br>專有名詞：任務取向分析（Task-Based Approach）、自動化與增強（Automation vs. Augmentation）、去技能化（Deskilling）、生產力悖論（Productivity Paradox）、數位落差（Digital Divide）、演算法管理（Algorithmic Management）<br>實作：分析一項臺灣職業的任務，評估可被代理人取代或增強的部分。</p>
+          </li>
+          <li>
+            <span class="yr">W16</span>
+            <p><strong>安全、倫理與治理</strong><br>專有名詞：提示注入（Prompt Injection）、最小權限原則（Least Privilege）、沙箱（Sandbox）、資料外洩、紅隊演練（Red Teaming）、道德緩衝區（Moral Crumple Zone）、問責（Accountability）、《人工智慧基本法》、歐盟AI法（EU AI Act）<br>實作：對期末專題進行紅隊演練與個資、權限檢核。 <span class="venue">作業八：專題安全與倫理檢核</span></p>
+          </li>
+          <li>
+            <span class="yr">W17</span>
+            <p><strong>期末專題成果發表（Demo Day）</strong><br>專有名詞：概念驗證（Proof of Concept）、最小可行產品（MVP）、同儕互評（Peer Review）<br>實作：各組現場展示代理人、網頁或APP，說明社會學理論依據與評估結果。 <span class="venue">期末專題上台報告</span></p>
+          </li>
+          <li>
+            <span class="yr">W18</span>
+            <p><strong>期末考</strong> <span class="venue">範圍：第10至16週；繳交期末專題書面報告與作品連結</span></p>
+          </li>
+        </ol>
+      </div>
+
+      <p class="note-line"><a href="courses.html">AI 系列課程</a>總覽。工具清單與週次安排以開課時公告為準。</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span class="f-name">AI 社會研究中心 ・ RCAIS</span>
+
+    <div class="f-links">
+      <a href="mission.html">宗旨</a>
+      <a href="people.html">成員</a>
+      <a href="directors.html">歷屆執行長</a>
+      <a href="courses.html">課程</a>
+      <a href="activities.html">活動</a>
+      <a href="research.html">研究</a>
+      <a href="students.html">學生研究</a>
+      <a href="global.html">國際視野</a>
+    </div>
+
+    <p class="f-copy">© 2026 Research Center for AI and Society. 東吳大學社會學系 ・ society@scu.edu.tw ・ 02-2881-9471 分機 6291–6294</p>
+  </div>
+</footer>
+
+<script src="../assets/js/main.js"></script>
+</body>
+</html>
