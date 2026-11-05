@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026年中間選挙の民主党新人議員：派閥と台湾関連の記録</title>
+<meta name="description" content="2026年中間選挙で当選した民主党議員53人の派閥推薦と、検証可能な台湾・中国関連の記録を示すインタラクティブなネットワーク図。">
+<style>
+  /* Layout: same working surface as the conservative network chart, so the two can be read side by side. */
+  :root {
+    --surface:#fcfcfb; --page:#f9f9f7; --ink-1:#0b0b0b; --ink-2:#52514e; --ink-muted:#6f6d68;
+    --grid:#e1e0d9; --axis:#c3c2b7; --ring:rgba(11,11,11,.14); --chip:#f0efec;
+    --fD:#c2357f; --fP:#eb6834; --fN:#2a78d6; --fB:#4a3aa7; --fV:#0f8a6a; --fE:#898781;
+    --pro:#0ca30c; --china:#fab219; --restraint:#d03b3b; --unk:#b4b2aa;
+    --tw:#0b0b0b;
+    --sans:system-ui,-apple-system,"Hiragino Sans","Yu Gothic","Meiryo","Segoe UI","PingFang TC","Microsoft JhengHei",sans-serif;
+  }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+    --surface:#1a1a19; --page:#0d0d0d; --ink-1:#fff; --ink-2:#c3c2b7; --ink-muted:#a3a198;
+    --grid:#2c2c2a; --axis:#46463f; --ring:rgba(255,255,255,.16); --chip:#262624;
+    --fD:#e0589f; --fP:#d9622c; --fN:#4f9fee; --fB:#7a55d6; --fV:#1f9d7c; --fE:#a3a198;
+    --unk:#5f5e59; --tw:#fff; color-scheme:dark;
+  } }
+  :root[data-theme="dark"] {
+    --surface:#1a1a19; --page:#0d0d0d; --ink-1:#fff; --ink-2:#c3c2b7; --ink-muted:#a3a198;
+    --grid:#2c2c2a; --axis:#46463f; --ring:rgba(255,255,255,.16); --chip:#262624;
+    --fD:#e0589f; --fP:#d9622c; --fN:#4f9fee; --fB:#7a55d6; --fV:#1f9d7c; --fE:#a3a198;
+    --unk:#5f5e59; --tw:#fff; color-scheme:dark;
+  }
+  * { box-sizing:border-box; }
+  body { background:var(--page); color:var(--ink-1); font-family:var(--sans); }
+  .wrap { max-width:1280px; margin:0 auto; padding-block:16px 28px;
+    padding-left:max(16px,env(safe-area-inset-left,0px)); padding-right:max(16px,env(safe-area-inset-right,0px)); }
+  h1 { font-size:20px; margin:0; text-wrap:balance; }
+  h2 { font-size:15px; margin:0 0 8px; }
+  .sub { font-size:13px; color:var(--ink-2); margin:4px 0 0; line-height:1.6; max-width:78ch; }
+  .tiles { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:8px; margin-top:12px; }
+  .tile { background:var(--surface); border:1px solid var(--ring); border-radius:8px; padding:9px 12px; min-width:0; }
+  .tile b { font-size:22px; font-variant-numeric:tabular-nums; display:block; }
+  .tile span { font-size:12px; color:var(--ink-2); display:flex; gap:6px; align-items:center; line-height:1.4; }
+  .sw { width:10px; height:10px; border-radius:50%; flex:none; border:1px solid var(--ring); display:inline-block; }
+  .panel { background:var(--surface); border:1px solid var(--ring); border-radius:10px; margin-top:12px; }
+  .controls { display:flex; flex-wrap:wrap; gap:10px 16px; padding:10px 14px; align-items:center; border-bottom:1px solid var(--grid); }
+  .grp { display:flex; flex-wrap:wrap; gap:5px; align-items:center; }
+  .lbl { font-size:12px; color:var(--ink-muted); margin-right:2px; }
+  .chip { font:inherit; font-size:12px; padding:3px 10px; border-radius:999px; cursor:pointer; border:1px solid var(--axis);
+    background:var(--chip); color:var(--ink-2); display:inline-flex; align-items:center; gap:5px; }
+  .chip[aria-pressed="false"] { opacity:.4; }
+  .chip:hover { border-color:var(--ink-muted); }
+  :focus-visible { outline:2px solid var(--fN); outline-offset:2px; }
+  input[type=search] { font:inherit; font-size:13px; padding:4px 10px; border-radius:7px; border:1px solid var(--axis);
+    background:var(--surface); color:var(--ink-1); width:180px; }
+  .stage { position:relative; overflow-x:auto; }
+  svg#net { display:block; width:100%; min-width:900px; height:auto; touch-action:pan-x pan-y; }
+  .tip { position:absolute; pointer-events:none; opacity:0; transition:opacity .12s; background:var(--surface); color:var(--ink-1);
+    border:1px solid var(--axis); border-radius:8px; padding:9px 12px; font-size:12.5px; width:300px; max-width:80vw; line-height:1.55;
+    box-shadow:0 4px 18px rgba(0,0,0,.18); z-index:5; }
+  .tip b { font-size:13.5px; } .tip .r { color:var(--ink-2); }
+  .tip .tags { display:flex; flex-wrap:wrap; gap:4px; margin-top:5px; }
+  .tag { font-size:11px; padding:1px 7px; border-radius:999px; border:1px solid var(--axis); color:var(--ink-2); display:inline-flex; gap:4px; align-items:center; white-space:nowrap; }
+  .tip .n { margin-top:6px; border-top:1px solid var(--grid); padding-top:6px; color:var(--ink-2); }
+  .legend { display:flex; flex-wrap:wrap; gap:8px 18px; padding:9px 14px; border-top:1px solid var(--grid); font-size:12px; color:var(--ink-2); align-items:center; }
+  .legend span { display:inline-flex; align-items:center; gap:5px; }
+  .lb { width:18px; height:0; border-top:2px solid; display:inline-block; }
+  text.nl { font-size:10.5px; fill:var(--ink-1); pointer-events:none; paint-order:stroke; stroke:var(--surface); stroke-width:2.6px; font-weight:600; }
+  text.hl { font-size:14px; font-weight:800; fill:var(--ink-1); pointer-events:none; paint-order:stroke; stroke:var(--surface); stroke-width:4px; }
+  text.hc { font-size:11px; fill:var(--ink-2); pointer-events:none; paint-order:stroke; stroke:var(--surface); stroke-width:3px; font-variant-numeric:tabular-nums; }
+  .edge { stroke-opacity:.38; stroke-width:1.4; } .edge.hist { stroke-dasharray:4 4; }
+  .node { cursor:grab; } .dim { opacity:.1; }
+  section.card { padding:12px 14px; }
+  .scroll { overflow-x:auto; }
+  table { border-collapse:collapse; width:100%; font-size:12.5px; }
+  th { text-align:left; color:var(--ink-muted); font-weight:600; border-bottom:1px solid var(--axis); padding:5px 8px; white-space:nowrap; }
+  td { border-bottom:1px solid var(--grid); padding:6px 8px; vertical-align:top; line-height:1.5; }
+  td.num, th.num { text-align:right; font-variant-numeric:tabular-nums; }
+  #list td:nth-child(1) { white-space:nowrap; font-weight:600; }
+  #list td:nth-child(2), #list td:nth-child(3) { min-width:100px; }
+  #list td:nth-child(5) { min-width:300px; color:var(--ink-2); }
+  a { color:var(--fN); }
+  .foot { font-size:12px; color:var(--ink-2); margin-top:12px; line-height:1.7; max-width:92ch; }
+  .foot p { margin:0 0 6px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>2026年中間選挙の民主党新人議員：派閥と台湾関連の記録</h1>
+  <p class="sub">ノードの色＝検証可能な台湾・中国関連の記録｜線＝派閥の推薦｜形＝上院議員または下院議員｜2026年11月4日時点。ノードはドラッグ可能。ホバーまたはタップで根拠を表示し、もう一度タップすると解除。</p>
+  <div class="tiles" id="tiles"></div>
+
+  <div class="panel">
+    <div class="controls">
+      <div class="grp" id="sChips"><span class="lbl">記録</span></div>
+      <div class="grp" id="fChips"><span class="lbl">派閥</span></div>
+      <div class="grp" id="cChips"><span class="lbl">議院</span></div>
+      <input type="search" id="q" placeholder="氏名または州で検索" aria-label="氏名または州で検索">
+    </div>
+    <div class="stage" id="stage">
+      <svg id="net" viewBox="0 0 1280 900" role="img" aria-label="民主党新人議員のネットワーク図：6つの派閥ハブと53人のノード。全データは下の表を参照"></svg>
+      <div class="tip" id="tip"></div>
+    </div>
+    <div class="legend" id="legend"></div>
+  </div>
+
+  <div class="panel"><section class="card">
+    <h2>派閥別の記録の分布</h2>
+    <div class="scroll"><table id="cross"></table></div>
+    <p class="sub">複数の推薦を受けた議員は各派閥で重複して数えるため、各行の合計は53人を超える。</p>
+  </section></div>
+
+  <div class="panel"><section class="card">
+    <h2>議員と根拠</h2>
+    <div class="scroll"><table id="list"></table></div>
+  </section></div>
+
+  <div class="foot">
+    <p><b>判定基準。</b>「台湾関連の記録あり」＝台湾に関する法案、投票、公開文書、議員連盟の役職を確認できること。2026年現在の立場を示すものではない。「対中姿勢あり、台湾に言及なし」＝中国との貿易や安全保障に関する言動はあるが、台湾に言及していない。「軍事的抑制、台湾に言及なし」＝軍事支出の削減、撤兵、武器禁輸を主張するが台湾に言及しておらず、対台湾武器売却への反対を意味しない。「記録見当たらず」＝1人につき1～2回程度の検索で見つからなかったということで、立場がないことを意味しない。</p>
+    <p><b>派閥。</b>PAC の推薦リストとメディアの記述から分類した。選挙時の支持を示すもので、当選後の議員連盟への加入を示すものではない。新任上院議員については Welcome、New Dem、ブルードッグ PAC の推薦資料は見当たらなかった。「派閥表示なし」には主流派の推薦を受けた候補と、派閥資料が見つからなかった候補を含む。</p>
+    <p><b>範囲。</b>上院議員13人には未確定の2人を含む。下院議員40人は各派閥の代表的な抽出で、新人議員の全名簿ではない。当選情報の一部は選挙当日の開票ページによるもので、根拠の一部は検索要約または単一の情報源のみで確認している。引用前に原文を確認されたい。中国語版からの翻訳。</p>
+  </div>
+</div>
+
+<script>
+const NODES = [{"id": "JamesTalarico", "n": "James Talarico", "role": "上院議員 TX", "cat": "sen", "f": ["E"], "s": "unk", "note": "テキサス州を奪還。Foreign Policy for America が推薦。中国関連の資料は、党派色の強い単一媒体が報じた2025年の州議会での投票のみで、台湾に関する発言は見当たらない。", "url": "https://www.fpactionnetwork.org/james-talarico-2026-endorsement-statement", "pending": false, "tw": false, "back": false}, {"id": "AdamHamilton", "n": "Adam Hamilton", "role": "上院議員 KS", "cat": "sen", "f": ["E"], "s": "unk", "note": "牧師で、超党派の橋渡しを掲げて出馬。トランプ関税の終了とイラン戦争からの撤退を主張。台湾・中国に関する発言は見当たらない。", "url": "https://kansasreflector.com/2026/04/30/kansas-pastor-enters-u-s-senate-race-as-democrat-wants-to-give-roger-marshall-an-early-retirement/", "pending": false, "tw": false, "back": false}, {"id": "JoshTurek", "n": "Josh Turek", "role": "上院議員 IA", "cat": "sen", "f": ["V", "E"], "s": "unk", "note": "VoteVets が最大の外部資金提供者。宣戦権は議会に属すると主張。中国への言及は大豆と関税に限られる。", "url": "https://legis1.com/news/votevets-spending-democratic-candidates", "pending": false, "tw": false, "back": false}, {"id": "SherrodBrown", "n": "Sherrod Brown", "role": "上院議員 OH", "cat": "sen", "f": ["P"], "s": "pro", "note": "議会台湾連線の共同創設者（2002年）。CECC の委員長を歴任。2014年にひまわり学生運動について AIT に書簡を送付。2026年の台湾に関する発言は見当たらない。上院に復帰。", "url": "https://www.taipeitimes.com/News/taiwan/archives/2014/04/06/2003587405", "pending": false, "tw": false, "back": true}, {"id": "TroyJackson", "n": "Troy Jackson", "role": "上院議員 ME", "cat": "sen", "f": ["P"], "s": "unk", "note": "労働者ポピュリストで Our Revolution が推薦。イラン戦争の予算停止と州レベルのデータセンター停止措置を主張。台湾・中国に関する発言は見当たらない。", "url": "https://justthenews.com/politics-policy/elections/sanders-tied-organization-our-revolution-endorses-troy-jackson-maine", "pending": false, "tw": false, "back": false}, {"id": "RoyCooper", "n": "Roy Cooper", "role": "上院議員 NC", "cat": "sen", "f": ["E"], "s": "china", "note": "知事在任中の2023年に州政府端末での TikTok と WeChat の使用を禁止。本人の台湾に関する発言は見当たらない。", "url": "https://www.wfae.org/politics/2023-01-12/cooper-signs-executive-order-to-ban-tiktok-wechat-on-state-devices", "pending": false, "tw": false, "back": false}, {"id": "AnnieAndrews", "n": "Annie Andrews", "role": "上院議員 SC", "cat": "sen", "f": ["E"], "s": "unk", "note": "対立候補の家族の対中ビジネスと、台湾をめぐる答弁の失敗を攻撃。選挙戦の応酬として扱い、政策上の立場とはみなさない。", "url": "https://emilyslist.org/news/emilys-list-endorses-dr-annie-andrews-in-south-carolinas-u-s-senate-race/", "pending": false, "tw": false, "back": false}, {"id": "AbdulEl-Sayed", "n": "Abdul El-Sayed", "role": "上院議員 MI", "cat": "sen", "f": ["P"], "s": "china", "note": "政策綱領は中国との競争を掲げつつ、「必ずしも」軍事衝突には向かわないとする。中国製電気自動車への課税を支持。台湾に関する発言は見当たらない。", "url": "https://www.thestar.com.my/aseanplus/aseanplus-news/2026/10/31/in-michigan-senate-race-trumps-softer-china-tone-gives-candidates-room-to-look-elsewhere", "pending": false, "tw": false, "back": false}, {"id": "PeggyFlanagan", "n": "Peggy Flanagan", "role": "上院議員 MN", "cat": "sen", "f": ["P"], "s": "china", "note": "選挙文書で中国の不公正貿易と知的財産の窃取を批判（二次的な集約サイトによる）。台湾に関する発言は見当たらない。", "url": "https://ontheissues.org/International/Peggy_Flanagan_Free_Trade.htm", "pending": false, "tw": false, "back": false}, {"id": "ChrisPappas", "n": "Chris Pappas", "role": "上院議員 NH", "cat": "sen", "f": ["E"], "s": "pro", "note": "新任上院議員の中で台湾関連の記録が最も強い。台湾代表処法案、Taiwan Peace Through Strength Act の共同提案、PROTECT Taiwan Act への賛成票（2026年）。メディアは穏健派と評する。", "url": "https://pappas.house.gov/media/press-releases/pappas-bacon-introduce-bipartisan-legislation-to-rename-taiwan-s-de-facto-diplomatic-outpost", "pending": false, "tw": false, "back": false}, {"id": "JulianaStratton", "n": "Juliana Stratton", "role": "上院議員 IL", "cat": "sen", "f": ["E"], "s": "unk", "note": "Pritzker が支援。Schumer を院内総務として支持しないと表明。台湾・中国に関する発言は見当たらない。", "url": "https://capitolnewsillinois.com/news/stratton-aims-to-bring-pritzker-administration-policies-to-national-stage/", "pending": false, "tw": false, "back": false}, {"id": "MaryPeltola", "n": "Mary Peltola", "role": "上院議員 AK", "cat": "sen", "f": ["Bh", "E"], "s": "china", "note": "元ブルードッグ。2024年のインド太平洋支援法案と TikTok 法案に賛成。台湾に特化した記録は見当たらない。アラスカ州の順位選択投票の集計は11月18日まで。", "url": "https://clerk.house.gov/evs/2024/roll146", "pending": true, "tw": false, "back": false}, {"id": "ScottColom", "n": "Scott Colom", "role": "上院議員 MS", "cat": "sen", "f": ["E"], "s": "unk", "note": "州 AFL-CIO と Black Caucus PAC が推薦。台湾・中国に関する発言は見当たらない。", "url": "https://scottcolom.com/mississippi-afl-cio-endorses-scott-colom-for-u-s-senate/", "pending": true, "tw": false, "back": false}, {"id": "MelatKiros", "n": "Melat Kiros", "role": "下院議員 CO-1", "cat": "rep", "f": ["D", "P"], "s": "unk", "note": "NPR が挙げた DSA 推薦の当選者5人の1人。Z世代初の女性下院議員。台湾・中国に関する発言は見当たらない。", "url": "https://www.kpbs.org/news/politics/2026/11/03/5-dsa-candidates-are-elected-to-the-house-in-a-historic-night-for-their-movement", "pending": false, "tw": false, "back": false}, {"id": "ClaireValdez", "n": "Claire Valdez", "role": "下院議員 NY-7", "cat": "rep", "f": ["D"], "s": "restraint", "note": "議会の承認なく海外に展開する部隊の撤収決議を支持すると質問票に回答。台湾への言及なし。", "url": "https://jimowles.org/news/candidate-answers-to-joldc-claire-valdez-for-us-congress-ny-07-2026", "pending": false, "tw": false, "back": false}, {"id": "DarializaAvilaChevalier", "n": "Darializa Avila Chevalier", "role": "下院議員 NY-13", "cat": "rep", "f": ["D"], "s": "restraint", "note": "単一の情報源：海外の戦費を国内に振り向けるべきと主張。台湾への言及なし。", "url": "https://branch.vote/races/2026-new-york-general-election-ny-state-us-representative-ny-congressional-13/candidates/darializa-avila-chevalier", "pending": false, "tw": false, "back": false}, {"id": "ChrisRabb", "n": "Chris Rabb", "role": "下院議員 PA-3", "cat": "rep", "f": ["D", "P"], "s": "restraint", "note": "軍産複合体の即時解体と、議会による大統領の戦争権限の抑制を主張（The Nation の論評による引用）。台湾への言及なし。", "url": "https://www.thenation.com/article/politics/chris-rabb-primary-philadelphia-congress/", "pending": false, "tw": false, "back": false}, {"id": "DonavanMcKinney", "n": "Donavan McKinney", "role": "下院議員 MI-13", "cat": "rep", "f": ["D", "P"], "s": "unk", "note": "DSA、Justice Democrats、CPC PAC が推薦。台湾・中国に関する発言は見当たらない。", "url": "https://www.kpbs.org/news/politics/2026/11/03/5-dsa-candidates-are-elected-to-the-house-in-a-historic-night-for-their-movement", "pending": false, "tw": false, "back": false}, {"id": "AdamHamawy", "n": "Adam Hamawy", "role": "下院議員 NJ-12", "cat": "rep", "f": ["D", "P"], "s": "restraint", "note": "イスラエルへの全面的な武器禁輸を主張。CBS は民主社会主義者と呼ぶが、NPR の DSA リストには含まれない。台湾への言及なし。", "url": "https://www.timesofisrael.com/former-gaza-surgeon-and-staunch-israel-critic-wins-nj-democratic-us-house-primary/", "pending": false, "tw": false, "back": false}, {"id": "BradLander", "n": "Brad Lander", "role": "下院議員 NY-10", "cat": "rep", "f": ["P"], "s": "unk", "note": "Mamdani、Warren、Sanders が支援。Working Families Party の候補。台湾・中国に関する発言は見当たらない。", "url": "https://abc7ny.com/post/nyc-comptroller-brad-lander-launches-run-congress-zohran-mamdani-elizabeth-warren-bernie-sanders-endorsements/18271390/", "pending": false, "tw": false, "back": false}, {"id": "DanielBiss", "n": "Daniel Biss", "role": "下院議員 IL-9", "cat": "rep", "f": ["P"], "s": "unk", "note": "富裕層課税と巨大テック企業の分割を主張。派閥はメディアと政策的立場から判定しており、議員連盟への所属は未確認。", "url": "https://jstreet.org/news-roundups/news-roundup-for-march-18-2026/", "pending": false, "tw": false, "back": false}, {"id": "MicahLasher", "n": "Micah Lasher", "role": "下院議員 NY-12", "cat": "rep", "f": ["P"], "s": "unk", "note": "CPC PAC が推薦。台湾・中国に関する発言は見当たらない。", "url": "https://weareprogressives.org/press-releases/", "pending": false, "tw": false, "back": false}, {"id": "BrianPoindexter", "n": "Brian Poindexter", "role": "下院議員 OH-7", "cat": "rep", "f": ["P"], "s": "unk", "note": "労組所属の鉄骨工。投票ガイドには CPC PAC、UAW、AFL-CIO の名がある。台湾・中国に関する発言は見当たらない。", "url": "https://bluevoterguide.org/district/OH/Ohio_District_7/46746/777", "pending": false, "tw": false, "back": false}, {"id": "KatyPadillaStout", "n": "Katy Padilla Stout", "role": "下院議員 TX-23", "cat": "rep", "f": ["P"], "s": "unk", "note": "CPC PAC が推薦。台湾・中国に関する発言は見当たらない。", "url": "https://weareprogressives.org/press-releases/", "pending": false, "tw": false, "back": false}, {"id": "BobBrooks", "n": "Bob Brooks", "role": "下院議員 PA-7", "cat": "rep", "f": ["P", "B"], "s": "unk", "note": "消防士組合の指導者。CPC PAC と Blue Dog PAC の双方が支援する、派閥横断の事例。", "url": "https://weareprogressives.org/congressional-progressive-caucus-pac-congratulates-pa-07-democratic-nominee-bob-brooks/", "pending": false, "tw": false, "back": false}, {"id": "MannyRutinel", "n": "Manny Rutinel", "role": "下院議員 CO-8", "cat": "rep", "f": ["N"], "s": "unk", "note": "New Dem の推薦。台湾・中国に関する発言は見当たらない。", "url": "http://newdemactionfund.com/press-releases/2026/2/23/7-new-dem-endorsed-candidates-named-to-first-dccc-red-to-blue-list-of-2026-midterms", "pending": false, "tw": false, "back": false}, {"id": "JamieAger", "n": "Jamie Ager", "role": "下院議員 NC-11", "cat": "rep", "f": ["B", "N"], "s": "unk", "note": "農業者。ブルードッグ、New Dem、Welcome の3者が支援。台湾・中国に関する発言は見当たらない。", "url": "https://bluedogdems.com/", "pending": false, "tw": false, "back": false}, {"id": "BobbyPulido", "n": "Bobby Pulido", "role": "下院議員 TX-15", "cat": "rep", "f": ["B", "N"], "s": "unk", "note": "ブルードッグと New Dem が推薦。台湾・中国に関する発言は見当たらない。", "url": "https://bluedogdems.com/?p=1261", "pending": false, "tw": false, "back": false}, {"id": "RebeccaCooke", "n": "Rebecca Cooke", "role": "下院議員 WI-3", "cat": "rep", "f": ["B", "N"], "s": "unk", "note": "ブルードッグ、New Dem、Welcome が推薦。広告でデータセンターの停止措置を主張。中国への言及は大豆に限られる。", "url": "https://bluedogdems.com/", "pending": false, "tw": false, "back": false}, {"id": "MitchellBerman", "n": "Mitchell Berman", "role": "下院議員 WI-1", "cat": "rep", "f": ["B", "N"], "s": "unk", "note": "救急看護師。ブルードッグと New Dem が推薦。台湾・中国に関する発言は見当たらない。", "url": "https://bluedogdems.com/", "pending": false, "tw": false, "back": false}, {"id": "ZachDembo", "n": "Zach Dembo", "role": "下院議員 KY-6", "cat": "rep", "f": ["B", "N", "V"], "s": "unk", "note": "元海軍法務官。ブルードッグ、New Dem、VoteVets が推薦。台湾・中国に関する発言は見当たらない。", "url": "https://bluedogdems.com/", "pending": false, "tw": false, "back": false}, {"id": "JoAnnaMendoza", "n": "JoAnna Mendoza", "role": "下院議員 AZ-6", "cat": "rep", "f": ["B", "N", "V"], "s": "unk", "note": "退役海兵隊員。3者が推薦。台湾・中国に関する発言は見当たらない。", "url": "https://bluedogdems.com/", "pending": true, "tw": false, "back": false}, {"id": "NancyLacore", "n": "Nancy Lacore", "role": "下院議員 SC-1", "cat": "rep", "f": ["B", "N", "V"], "s": "unk", "note": "退役海軍中将。3者が推薦。台湾・中国に関する発言は見当たらない。", "url": "https://bluedogdems.com/", "pending": true, "tw": false, "back": false}, {"id": "FredWellman", "n": "Fred Wellman", "role": "下院議員 MO-2", "cat": "rep", "f": ["N", "V"], "s": "unk", "note": "退役陸軍将校。イラン戦争に反対し、議会による関税権限の回復を主張。台湾・中国に関する発言は見当たらない。", "url": "https://www.newdemactionfund.com/news/new-dems-endorse-five-more-candidates-in-key-red-to-blue-seats", "pending": false, "tw": false, "back": false}, {"id": "JDFord", "n": "J.D. Ford", "role": "下院議員 IN-5", "cat": "rep", "f": ["N"], "s": "unk", "note": "New Dem の推薦。台湾・中国に関する発言は見当たらない。", "url": "https://www.newdemactionfund.com/news/new-dems-endorse-five-more-candidates-in-key-red-to-blue-seats", "pending": false, "tw": false, "back": false}, {"id": "LindsayJames", "n": "Lindsay James", "role": "下院議員 IA-2", "cat": "rep", "f": ["N"], "s": "unk", "note": "New Dem の推薦。台湾・中国に関する発言は見当たらない。", "url": "http://newdemactionfund.com/press-releases/2026/2/23/7-new-dem-endorsed-candidates-named-to-first-dccc-red-to-blue-list-of-2026-midterms", "pending": false, "tw": false, "back": false}, {"id": "PiaDandiya", "n": "Pia Dandiya", "role": "下院議員 FL-22", "cat": "rep", "f": ["N"], "s": "unk", "note": "インド系米国人。New Dem の推薦。台湾・中国に関する発言は見当たらない。", "url": "http://newdemactionfund.com/press-releases/2026/2/23/7-new-dem-endorsed-candidates-named-to-first-dccc-red-to-blue-list-of-2026-midterms", "pending": false, "tw": false, "back": false}, {"id": "MelissaBean", "n": "Melissa Bean", "role": "下院議員 IL-8", "cat": "rep", "f": ["N"], "s": "unk", "note": "下院に復帰。New Dem の推薦。台湾・中国に関する発言は見当たらない。", "url": "http://newdemactionfund.com/press-releases/2026/2/23/7-new-dem-endorsed-candidates-named-to-first-dccc-red-to-blue-list-of-2026-midterms", "pending": false, "tw": false, "back": true}, {"id": "RebeccaBennett", "n": "Rebecca Bennett", "role": "下院議員 NJ-7", "cat": "rep", "f": ["N", "V"], "s": "unk", "note": "海軍パイロット。イラン戦争の終結と大統領の関税権限の制限を主張。台湾・中国に関する発言は見当たらない。", "url": "http://newdemactionfund.com/press-releases/2026/2/23/7-new-dem-endorsed-candidates-named-to-first-dccc-red-to-blue-list-of-2026-midterms", "pending": false, "tw": false, "back": false}, {"id": "JanelleStelson", "n": "Janelle Stelson", "role": "下院議員 PA-10", "cat": "rep", "f": ["N", "B"], "s": "unk", "note": "New Dem と Welcome が推薦。台湾・中国に関する発言は見当たらない。", "url": "http://newdemactionfund.com/press-releases/2026/2/23/7-new-dem-endorsed-candidates-named-to-first-dccc-red-to-blue-list-of-2026-midterms", "pending": false, "tw": false, "back": false}, {"id": "PaigeCognetti", "n": "Paige Cognetti", "role": "下院議員 PA-8", "cat": "rep", "f": ["N"], "s": "unk", "note": "広告で、巨大テック企業は自ら電気代を負担すべきで減税も不要と主張。台湾・中国に関する発言は見当たらない。", "url": "http://newdemactionfund.com/press-releases/2026/2/23/7-new-dem-endorsed-candidates-named-to-first-dccc-red-to-blue-list-of-2026-midterms", "pending": false, "tw": false, "back": false}, {"id": "DenisePowell", "n": "Denise Powell", "role": "下院議員 NE-2", "cat": "rep", "f": ["N"], "s": "unk", "note": "New Dem と EMILY's List が推薦。台湾・中国に関する発言は見当たらない。", "url": "http://newdemactionfund.com/press-releases/2026/2/23/7-new-dem-endorsed-candidates-named-to-first-dccc-red-to-blue-list-of-2026-midterms", "pending": false, "tw": false, "back": false}, {"id": "DanKoh", "n": "Dan Koh", "role": "下院議員 MA-6", "cat": "rep", "f": ["E"], "s": "unk", "note": "元バイデン顧問。韓国系・レバノン系米国人。台湾・中国に関する発言は見当たらない。", "url": "https://www.foxnews.com/politics/biden-harris-favorite-gets-second-shot-congress-beats-squad-backed-candidate.amp", "pending": false, "tw": false, "back": false}, {"id": "LukeBronin", "n": "Luke Bronin", "role": "下院議員 CT-1", "cat": "rep", "f": ["N", "V"], "s": "unk", "note": "元財務省テロ資金対策担当。イラン戦争は違法だと主張。台湾・中国に関する発言は見当たらない。", "url": "https://www.newdemactionfund.com/news/new-dems-endorse-two-candidates-in-nh-ct", "pending": false, "tw": false, "back": false}, {"id": "ElaineLuria", "n": "Elaine Luria", "role": "下院議員 VA-2", "cat": "rep", "f": ["N", "V"], "s": "pro", "note": "2021年の Washington Post 寄稿で、台湾防衛のための武力行使を議会が事前に承認するよう主張（Responsible Statecraft の引用による）。2026年の台湾に関する発言は見当たらない。下院に復帰。", "url": "https://responsiblestatecraft.org/2021/10/13/dem-lawmaker-wants-to-expand-trend-of-ceding-war-powers-to-the-president/", "pending": false, "tw": false, "back": true}, {"id": "CaitConley", "n": "Cait Conley", "role": "下院議員 NY-17", "cat": "rep", "f": ["N", "V"], "s": "china", "note": "元 NSC 高官。重要な国家安全保障上の利益を中国とロシアに譲りたくないと発言。台湾への言及なし。対立候補は敗北を認めたが、CBS と NBC はまだ当確を出していない。", "url": "https://www.cityandstateny.com/politics/2026/07/cait-conley-fears-trumps-cartel-focus-could-create-national-security-blind-spot/414821/", "pending": true, "tw": false, "back": false}, {"id": "RichardPan", "n": "Richard Pan", "role": "下院議員 CA-6", "cat": "rep", "f": ["N"], "s": "unk", "note": "今回唯一の新任台湾系米国人議員で、両親は台湾出身。本人の台湾・中国に関する発言は見当たらない。出自は立場を意味しない。", "url": "https://www.newdemactionfund.com/news/new-dems-endorse-five-candidates-in-california-florida-iowa-michigan-and-arizona", "pending": false, "tw": true, "back": false}, {"id": "BenMcAdams", "n": "Ben McAdams", "role": "下院議員 UT-1", "cat": "rep", "f": ["N"], "s": "unk", "note": "下院に復帰。連邦統一の AI 基準を支持。AI 業界の PAC が支援のため支出。台湾・中国に関する発言は見当たらない。", "url": "http://newdemactionfund.com/press-releases/2026/2/23/7-new-dem-endorsed-candidates-named-to-first-dccc-red-to-blue-list-of-2026-midterms", "pending": false, "tw": false, "back": true}, {"id": "BobHarvie", "n": "Bob Harvie", "role": "下院議員 PA-1", "cat": "rep", "f": ["N"], "s": "unk", "note": "New Dem の推薦。Fitzpatrick を破った。台湾・中国に関する発言は見当たらない。", "url": "http://newdemactionfund.com/press-releases/2026/2/23/7-new-dem-endorsed-candidates-named-to-first-dccc-red-to-blue-list-of-2026-midterms", "pending": false, "tw": false, "back": false}, {"id": "ShannonTaylor", "n": "Shannon Taylor", "role": "下院議員 VA-1", "cat": "rep", "f": ["N"], "s": "unk", "note": "New Dem の推薦。台湾・中国に関する発言は見当たらない。", "url": "http://newdemactionfund.com/press-releases/2026/2/23/7-new-dem-endorsed-candidates-named-to-first-dccc-red-to-blue-list-of-2026-midterms", "pending": false, "tw": false, "back": false}, {"id": "StefanyShaheen", "n": "Stefany Shaheen", "role": "下院議員 NH-1", "cat": "rep", "f": ["N"], "s": "unk", "note": "New Dem の推薦。Jeanne Shaheen 上院議員の娘。台湾・中国に関する発言は見当たらない。", "url": "https://www.newdemactionfund.com/news/new-dems-endorse-two-candidates-in-nh-ct", "pending": false, "tw": false, "back": false}, {"id": "MikeMcGuire", "n": "Mike McGuire", "role": "下院議員 CA-1", "cat": "rep", "f": ["E"], "s": "unk", "note": "Pelosi、Schiff、看護師組合が支援。議員連盟の分類は見当たらない。台湾・中国に関する発言は見当たらない。", "url": "https://lostcoastoutpost.com/2025/nov/13/video-sen-mike-mcguire-launches-grassroots-campaig", "pending": false, "tw": false, "back": false}, {"id": "RichardOjeda", "n": "Richard Ojeda", "role": "下院議員 NC-9", "cat": "rep", "f": ["E"], "s": "unk", "note": "退役陸軍空挺隊員。派閥の推薦資料は見当たらない。台湾・中国に関する発言は見当たらない。", "url": "https://www.wvva.com/2026/03/05/former-west-virginia-state-senator-wins-democratic-house-primary-north-carolina", "pending": false, "tw": false, "back": false}];
+const HUBS = [
+  {id:"D", label:"DSA / Justice Dem", full:"DSA / Justice Democrats", x:170, y:220},
+  {id:"P", label:"進歩派／労働", full:"進歩派／労働", x:330, y:640},
+  {id:"E", label:"派閥表示なし", full:"派閥表示なし／主流派の推薦", x:620, y:130},
+  {id:"N", label:"New Dem", full:"New Democrat", x:760, y:520},
+  {id:"B", label:"ブルードッグ／Welcome", full:"ブルードッグ／Welcome", x:1120, y:230},
+  {id:"V", label:"VoteVets", full:"VoteVets（退役軍人／国家安全保障）", x:1110, y:740},
+];
+const STANCE = {
+  pro:{label:"台湾関連の記録あり", v:"--pro"},
+  china:{label:"対中姿勢あり、台湾に言及なし", v:"--china"},
+  restraint:{label:"軍事的抑制、台湾に言及なし", v:"--restraint"},
+  unk:{label:"記録見当たらず", v:"--unk"},
+};
+const CAT = {sen:"上院議員", rep:"下院議員"};
+const NS = "http://www.w3.org/2000/svg", W = 1280, H = 900;
+const svg = document.getElementById('net'), stage = document.getElementById('stage'), tip = document.getElementById('tip');
+const el = (t, a={}) => { const e = document.createElementNS(NS, t); for (const k in a) e.setAttribute(k, a[k]); return e; };
+const fk = f => f.replace('h','');
+const hub = id => HUBS.find(h => h.id === id);
+const esc = s => s.replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+// ---- deterministic layout, settled before first paint ----
+NODES.forEach((d, i) => {
+  const a = d.f.map(f => hub(fk(f)));
+  const ax = a.reduce((s,h)=>s+h.x,0)/a.length, ay = a.reduce((s,h)=>s+h.y,0)/a.length;
+  d.x = ax + Math.cos(i*2.4)*(70+(i%7)*20); d.y = ay + Math.sin(i*2.4)*(70+(i%5)*24); d.vx = d.vy = 0;
+});
+const links = [];
+NODES.forEach(d => d.f.forEach(f => links.push({s:d, t:hub(fk(f)), f:fk(f), hist:f.endsWith('h')})));
+const ALL = HUBS.concat(NODES);
+function step(a) {
+  for (let i=0;i<ALL.length;i++) for (let j=i+1;j<ALL.length;j++) {
+    const p=ALL[i], q=ALL[j]; let dx=q.x-p.x, dy=q.y-p.y, d2=dx*dx+dy*dy||1;
+    if (d2>230*230) continue;
+    const d=Math.sqrt(d2), rep=(p.f&&q.f?3400:5200)/d2, fx=dx/d*rep, fy=dy/d*rep*1.25;
+    if (p.f) {p.vx-=fx;p.vy-=fy;} if (q.f) {q.vx+=fx;q.vy+=fy;}
+  }
+  links.forEach(l => { const dx=l.t.x-l.s.x, dy=l.t.y-l.s.y, d=Math.hypot(dx,dy)||1, f=.012*(d-(l.s.f.length>1?150:125)); l.s.vx+=dx/d*f; l.s.vy+=dy/d*f; });
+  NODES.forEach(d => { d.vx*=.84; d.vy*=.84; if (!d.pin) { d.x+=d.vx*a; d.y+=d.vy*a; }
+    d.x=Math.max(70,Math.min(W-70,d.x)); d.y=Math.max(34,Math.min(H-24,d.y)); });
+}
+for (let i=0;i<900;i++) step(1);
+// Separate labels that would still overlap (names are about 6px per character at label size)
+const lw = d => d.n.length*6+8;
+for (let it=0;it<80;it++) for (let i=0;i<NODES.length;i++) for (let j=i+1;j<NODES.length;j++) {
+  const p=NODES[i], q=NODES[j], dx=q.x-p.x, dy=q.y-p.y, ox=(lw(p)+lw(q))/2-Math.abs(dx), oy=30-Math.abs(dy);
+  if (ox>0&&oy>0) { if (oy<ox) { const m=oy/2*(dy<0?-1:1); p.y-=m; q.y+=m; } else { const m=ox/2*(dx<0?-1:1); p.x-=m; q.x+=m; } }
+}
+NODES.forEach(d=>{ d.x=Math.max(70,Math.min(W-70,d.x)); d.y=Math.max(34,Math.min(H-24,d.y)); });
+
+// ---- draw ----
+const gE=el('g'), gN=el('g'), gL=el('g'); svg.append(gE,gN,gL);
+links.forEach(l => { l.el = el('line',{class:'edge'+(l.hist?' hist':''),stroke:`var(--f${l.f})`}); gE.append(l.el); });
+NODES.forEach(d => {
+  const g = el('g',{class:'node',tabindex:0,role:'img','aria-label':`${d.n}, ${d.role}, ${STANCE[d.s].label}`});
+  const r = 9; d.r = r;
+  const a = {fill:`var(${STANCE[d.s].v})`, stroke:d.pending?'var(--ink-2)':'var(--ring)', 'stroke-width':d.pending?2:1.2};
+  if (d.pending) a['stroke-dasharray']='3 2.5';
+  const m = d.cat==='sen' ? el('circle',{r,...a}) : el('rect',{x:-r*.9,y:-r*.9,width:r*1.8,height:r*1.8,rx:r*.35,...a});
+  if (d.tw) g.append(el('circle',{r:r+4.5,fill:'none',stroke:'var(--tw)','stroke-width':1.6}));
+  g.append(m); d.el=g; gN.append(g);
+  d.lab = el('text',{class:'nl','text-anchor':'middle'}); d.lab.textContent=d.n; gL.append(d.lab);
+  g.addEventListener('focus',()=>showTip(d)); g.addEventListener('blur',hideTip);
+  g.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' '){e.preventDefault();focus=focus===d?null:d;apply();} });
+});
+HUBS.forEach(h => {
+  const g=el('g',{transform:`translate(${h.x},${h.y})`});
+  g.append(el('circle',{r:32,fill:`var(--f${h.id})`,'fill-opacity':.14,stroke:`var(--f${h.id})`,'stroke-width':2}));
+  gN.append(g);
+  const n=NODES.filter(d=>d.f.some(f=>fk(f)===h.id)).length;
+  const t=el('text',{class:'hl','text-anchor':'middle',x:h.x,y:h.y+3}); t.textContent=h.label; gL.append(t);
+  const c=el('text',{class:'hc','text-anchor':'middle',x:h.x,y:h.y+18}); c.textContent=n+'人'; gL.append(c);
+});
+function render() {
+  links.forEach(l => { l.el.setAttribute('x1',l.s.x);l.el.setAttribute('y1',l.s.y);l.el.setAttribute('x2',l.t.x);l.el.setAttribute('y2',l.t.y); });
+  NODES.forEach(d => { d.el.setAttribute('transform',`translate(${d.x},${d.y})`); d.lab.setAttribute('x',d.x); d.lab.setAttribute('y',d.y-d.r-(d.tw?8:4)); });
+}
+render();
+
+// ---- interaction ----
+let raf=null, ticks=0;
+function run() { if (raf) return; const go=()=>{ step(.6); render(); raf = --ticks>0 ? requestAnimationFrame(go) : null; }; raf=requestAnimationFrame(go); }
+const pt = e => { const r=svg.getBoundingClientRect(); return {x:(e.clientX-r.left)*W/r.width, y:(e.clientY-r.top)*H/r.height}; };
+const near = (p,R=16) => NODES.find(d=>(d.x-p.x)**2+(d.y-p.y)**2<R*R);
+let drag=null, moved=false;
+function showTip(n) {
+  tip.innerHTML = `<b>${esc(n.n)}</b> <span class="r">${esc(n.role)}</span>`
+    + (n.pending?`<div class="r">当選未確定</div>`:'') + (n.back?`<div class="r">元連邦議員で、初当選ではない</div>`:'')
+    + `<div class="tags">${n.f.map(f=>`<span class="tag"><i class="sw" style="background:var(--f${fk(f)})"></i>${esc(hub(fk(f)).label)}${f.endsWith('h')?'（過去）':''}</span>`).join('')}<span class="tag"><i class="sw" style="background:var(${STANCE[n.s].v})"></i>${STANCE[n.s].label}</span></div>`
+    + `<div class="n">${esc(n.note)}</div>`;
+  const sr=svg.getBoundingClientRect(), r=stage.getBoundingClientRect();
+  let x=sr.left-r.left+stage.scrollLeft+n.x*sr.width/W+16, y=sr.top-r.top+n.y*sr.height/H-10;
+  const vis=stage.scrollLeft+stage.clientWidth;
+  if (x+tip.offsetWidth>vis-6) x-=tip.offsetWidth+32;
+  if (y+tip.offsetHeight>stage.clientHeight-4) y=stage.clientHeight-tip.offsetHeight-4;
+  tip.style.left=Math.max(stage.scrollLeft+4,x)+'px'; tip.style.top=Math.max(4,y)+'px'; tip.style.opacity=1;
+}
+function hideTip(){ tip.style.opacity=0; }
+svg.addEventListener('pointerdown',e=>{ const n=near(pt(e)); moved=false; if(n){drag=n;n.pin=true;svg.setPointerCapture(e.pointerId);} });
+svg.addEventListener('pointermove',e=>{ const p=pt(e);
+  if(drag){ if(Math.hypot(drag.x-p.x,drag.y-p.y)>3)moved=true; drag.x=p.x;drag.y=p.y;ticks=60;run();showTip(drag);return; }
+  const n=near(p); n?showTip(n):hideTip(); });
+svg.addEventListener('pointerup',e=>{ if(!drag)return; const n=drag; n.pin=false; drag=null; if(!moved){focus=focus===n?null:n;apply();showTip(n);} });
+svg.addEventListener('pointerleave',()=>{ if(!drag)hideTip(); });
+
+// ---- filters ----
+const st={s:new Set(Object.keys(STANCE)),f:new Set(HUBS.map(h=>h.id)),c:new Set(Object.keys(CAT)),q:''};
+let focus=null;
+const chip=(box,key,set,label,sw)=>{ const b=document.createElement('button'); b.type='button'; b.className='chip'; b.setAttribute('aria-pressed','true');
+  b.innerHTML=(sw?`<i class="sw" style="background:var(${sw})"></i>`:'')+esc(label);
+  b.onclick=()=>{ if(set.has(key)&&set.size===1){ box.querySelectorAll('.chip').forEach(c=>c.click_all&&c.click_all()); } else { set.has(key)?set.delete(key):set.add(key); b.setAttribute('aria-pressed',set.has(key)); } apply(); };
+  b.click_all=()=>{ set.add(b.dataset.k); b.setAttribute('aria-pressed','true'); }; b.dataset.k=key; box.append(b); };
+for (const k in STANCE) chip(document.getElementById('sChips'),k,st.s,STANCE[k].label,STANCE[k].v);
+HUBS.forEach(h=>chip(document.getElementById('fChips'),h.id,st.f,h.label,`--f${h.id}`));
+for (const k in CAT) chip(document.getElementById('cChips'),k,st.c,CAT[k]);
+document.getElementById('q').addEventListener('input',e=>{st.q=e.target.value.trim().toLowerCase();apply();});
+const vis=d=>st.s.has(d.s)&&st.c.has(d.cat)&&d.f.some(f=>st.f.has(fk(f)))&&(!st.q||d.n.toLowerCase().includes(st.q)||d.role.toLowerCase().includes(st.q));
+function apply(){
+  NODES.forEach(d=>{ const on=vis(d)&&(!focus||d===focus); d.el.setAttribute('class','node'+(on?'':' dim')); d.lab.setAttribute('class','nl'+(on?'':' dim')); if(d.row)d.row.hidden=!vis(d); });
+  links.forEach(l=>{ const on=vis(l.s)&&(!focus||l.s===focus)&&st.f.has(l.f); l.el.setAttribute('class','edge'+(l.hist?' hist':'')+(on?'':' dim')); });
+}
+
+// ---- tiles, legend, tables ----
+const count=s=>NODES.filter(d=>d.s===s).length;
+document.getElementById('tiles').innerHTML = Object.keys(STANCE).map(k=>`<div class="tile"><b>${count(k)}</b><span><i class="sw" style="background:var(${STANCE[k].v})"></i>${STANCE[k].label}</span></div>`).join('');
+document.getElementById('legend').innerHTML = HUBS.map(h=>`<span><i class="lb" style="border-color:var(--f${h.id})"></i>${esc(h.full)}</span>`).join('')
+  + `<span><svg width="14" height="14" aria-hidden="true"><circle cx="7" cy="7" r="5.5" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>上院議員</span>`
+  + `<span><svg width="14" height="14" aria-hidden="true"><rect x="2" y="2" width="10" height="10" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>下院議員</span>`
+  + `<span><svg width="14" height="14" aria-hidden="true"><circle cx="7" cy="7" r="5.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="3 2"/></svg>破線の枠＝当選未確定</span>`
+  + `<span><svg width="16" height="16" aria-hidden="true"><circle cx="8" cy="8" r="7" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="8" cy="8" r="3" fill="currentColor"/></svg>外側の輪＝新任の台湾系米国人議員</span>`
+  + `<span><i class="lb" style="border-top-style:dashed;border-color:currentColor"></i>破線＝過去の関係</span>`;
+const keys=Object.keys(STANCE);
+document.getElementById('cross').innerHTML = `<thead><tr><th>派閥</th>${keys.map(k=>`<th class="num">${STANCE[k].label}</th>`).join('')}<th class="num">合計</th></tr></thead><tbody>`
+  + HUBS.map(h=>{ const m=NODES.filter(d=>d.f.some(f=>fk(f)===h.id)); return `<tr><td><i class="sw" style="background:var(--f${h.id});margin-right:6px"></i>${esc(h.full)}</td>${keys.map(k=>`<td class="num">${m.filter(d=>d.s===k).length}</td>`).join('')}<td class="num">${m.length}</td></tr>`; }).join('') + '</tbody>';
+const order={pro:0,china:1,restraint:2,unk:3}, list=document.getElementById('list');
+list.innerHTML='<thead><tr><th>氏名</th><th>議席</th><th>派閥</th><th>記録</th><th>根拠</th><th>出典</th></tr></thead>';
+const tb=document.createElement('tbody'); list.append(tb);
+[...NODES].sort((a,b)=>order[a.s]-order[b.s]||(a.cat<b.cat?1:a.cat>b.cat?-1:0)).forEach(d=>{
+  const tr=document.createElement('tr');
+  let host=''; try{ host=d.url?new URL(d.url).hostname.replace('www.',''):''; }catch(e){}
+  tr.innerHTML=`<td>${esc(d.n)}</td><td>${esc(d.role)}${d.pending?'（未確定）':''}</td><td>${d.f.map(f=>esc(hub(fk(f)).label)+(f.endsWith('h')?'（過去）':'')).join('、')}</td><td><span class="tag"><i class="sw" style="background:var(${STANCE[d.s].v})"></i>${STANCE[d.s].label}</span></td><td>${esc(d.note)}</td><td>${d.url?`<a href="${esc(d.url)}" target="_blank" rel="noopener">${esc(host)}</a>`:'見当たらず'}</td>`;
+  d.row=tr; tb.append(tr);
+});
+apply();
+</script>
+</body>
+</html>
