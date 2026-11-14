@@ -1218,4 +1218,67 @@ renderCard=function(){
  }}
 
 })();
-</script></body></html>
+</script><style>
+/* AI video production panel, opened from the survey bar */
+.survey-bar .sv-vid{background:#f0a33b;color:#1b3746}.survey-bar .sv-vid:hover{background:#e3912a}
+.vd-back{position:fixed;inset:0;z-index:90;background:#0f2530a6;display:flex;align-items:flex-start;justify-content:center;padding:max(16px,4vh) 16px 16px;overflow:auto}
+.vd-back[hidden]{display:none}
+.vd{width:min(860px,100%);background:#fffdf6;border-radius:20px;box-shadow:0 20px 60px #0f253066;padding:22px 24px 24px;color:#1f3a48;font:15px/1.65 system-ui,-apple-system,"Noto Sans TC",sans-serif}
+.vd-h{display:flex;align-items:flex-start;gap:12px;justify-content:space-between}
+.vd-h h2{margin:0;font-size:22px;line-height:1.3;color:#24485b}
+.vd-h small{display:block;color:#5b7480;font-weight:600;font-size:13px;margin-top:2px}
+.vd-x{border:0;background:#e6efe9;color:#24485b;border-radius:999px;width:36px;height:36px;font-size:18px;cursor:pointer;flex:none}
+.vd p{margin:10px 0}
+.vd h3{margin:18px 0 8px;font-size:16px;color:#24485b}
+.vd-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;counter-reset:s}
+.vd-steps div{background:#eef5f0;border-radius:14px;padding:10px 12px;font-size:14px;line-height:1.5}
+.vd-steps b{display:block;color:#24485b;margin-bottom:2px}
+.vd-steps b::before{counter-increment:s;content:counter(s);display:inline-grid;place-items:center;width:22px;height:22px;margin-right:6px;border-radius:50%;background:#24485b;color:#fff;font-size:12px}
+.vd-tools{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.vd-tools a{display:block;text-decoration:none;color:inherit;border:1.5px solid #cfe1d6;border-radius:14px;padding:10px 12px;background:#fff}
+.vd-tools a:hover{border-color:#24485b}
+.vd-tools b{color:#24485b;font-size:15px}.vd-tools span{display:block;font-size:13.5px;color:#4b6470;line-height:1.5;margin-top:2px}
+.vd-tools em{font-style:normal;font-size:11.5px;font-weight:700;color:#9a5b10;background:#fdebd0;border-radius:999px;padding:1px 8px;margin-left:6px}
+.vd ul{margin:6px 0 0;padding-left:20px}.vd li{margin:3px 0}
+@media (max-width:640px){.vd{padding:18px 16px 20px}.vd-steps,.vd-tools{grid-template-columns:1fr}}
+</style>
+<script>
+{const L=(document.documentElement.lang||'zh').slice(0,2);
+const TX={
+zh:{btn:'🎬 AI 影片製作',title:'AI 影片製作能力',sub:'用 AI 把犯罪學知識做成公共宣導短影音',
+intro:'本課程訓練學生用 AI 工具製作犯罪學短影音：從研究問題與腳本出發，生成鏡頭、剪輯、配上字幕與音樂，完成防詐、毒品防制、反霸凌等犯罪預防宣導，並清楚標示 AI 生成內容。',
+stepsH:'四步驟製作流程',steps:[['腳本與分鏡','以 Gemini、ChatGPT 依犯罪學理論寫腳本、拆分鏡頭'],['AI 生成鏡頭','用 Google Flow 與 Veo 3.1 由文字或圖片生成影片片段'],['剪輯與字幕','用 CapCut 自動上字幕、AI 剪輯；或用 iMovie 剪接與轉場'],['配樂與發布','以 Suno／Mureka 配樂，標示 AI 生成後發布']],
+toolsH:'影片製作 AI 工具',ethicsH:'製作時的查核原則',
+ethics:['標示「AI 生成」，不把合成畫面當真實紀錄','不重現真實案件被害人，避免二度傷害','不示範可被模仿的犯罪手法','數據與法條須查核出處，配樂與素材注意著作權'],close:'關閉'},
+en:{btn:'🎬 AI video',title:'AI video production skills',sub:'Turning criminology into public-awareness short videos with AI',
+intro:'Students learn to make criminology short videos with AI tools: starting from a research question and a script, they generate shots, edit, and add subtitles and music to produce crime-prevention videos on fraud, drugs or bullying, and they label AI-generated content clearly.',
+stepsH:'Four-step workflow',steps:[['Script & storyboard','Draft a theory-based script and shot list with Gemini or ChatGPT'],['Generate shots','Create clips from text or images with Google Flow and Veo 3.1'],['Edit & subtitle','Auto-subtitle and AI-edit in CapCut, or cut and add transitions in iMovie'],['Music & publish','Score with Suno or Mureka, label AI content, then publish']],
+toolsH:'AI video tools',ethicsH:'Checks while producing',
+ethics:['Label AI-generated footage; never present it as real recordings','Do not re-enact real victims; avoid re-victimisation','Do not demonstrate imitable criminal methods','Verify data and legal sources; respect copyright for music and assets'],close:'Close'},
+fr:{btn:'🎬 Vidéo IA',title:'Compétences en production vidéo IA',sub:'Transformer la criminologie en courtes vidéos de prévention grâce à l’IA',
+intro:'Les étudiants apprennent à réaliser de courtes vidéos de criminologie avec des outils d’IA : à partir d’une question de recherche et d’un scénario, ils génèrent des plans, montent, ajoutent sous-titres et musique pour produire des vidéos de prévention (fraude, drogues, harcèlement), en signalant clairement les contenus générés par IA.',
+stepsH:'Méthode en quatre étapes',steps:[['Scénario et découpage','Rédiger un scénario fondé sur la théorie avec Gemini ou ChatGPT'],['Générer les plans','Créer des séquences à partir de texte ou d’images avec Google Flow et Veo 3.1'],['Montage et sous-titres','Sous-titrage automatique et montage IA dans CapCut, ou montage dans iMovie'],['Musique et diffusion','Musique avec Suno ou Mureka, mention « généré par IA », puis diffusion']],
+toolsH:'Outils vidéo IA',ethicsH:'Points de vérification',
+ethics:['Signaler les images générées par IA ; ne jamais les présenter comme réelles','Ne pas reconstituer de vraies victimes ; éviter la revictimisation','Ne pas montrer de modes opératoires imitables','Vérifier les données et sources juridiques ; respecter le droit d’auteur'],close:'Fermer'}}[L==='en'?'en':L==='fr'?'fr':'zh'];
+const TOOLS=[
+['Google Flow','https://labs.google/flow/about',{zh:'Google 的 AI 影片創作工具，串接 Veo 生成的鏡頭成為完整場景',en:'Google’s AI filmmaking tool that strings Veo-generated shots into scenes',fr:'Outil de création vidéo IA de Google, qui enchaîne les plans générés par Veo'},{zh:'生成',en:'generate',fr:'génération'}],
+['Veo 3.1','https://deepmind.google/models/veo/',{zh:'Google DeepMind 的影片生成模型，可由文字或圖片生成含聲音的短片',en:'Google DeepMind’s video model: short clips with sound from text or images',fr:'Modèle vidéo de Google DeepMind : clips sonores à partir de texte ou d’images'},{zh:'生成',en:'generate',fr:'génération'}],
+['CapCut','https://www.capcut.com/',{zh:'短影音剪輯軟體，提供自動字幕、AI 剪輯與直式短影音範本',en:'Short-video editor with auto-subtitles, AI editing and vertical templates',fr:'Montage de vidéos courtes : sous-titres automatiques, montage IA, modèles verticaux'},{zh:'剪輯',en:'edit',fr:'montage'}],
+['iMovie','https://www.apple.com/imovie/',{zh:'Apple 免費剪輯軟體（Mac／iPhone），適合剪接、轉場、配音與匯出',en:'Apple’s free editor (Mac/iPhone) for cutting, transitions, voice-over and export',fr:'Logiciel gratuit d’Apple (Mac/iPhone) : coupes, transitions, voix off, export'},{zh:'剪輯',en:'edit',fr:'montage'}]];
+const K=L==='en'?'en':L==='fr'?'fr':'zh';
+const back=document.createElement('div');back.className='vd-back';back.hidden=true;
+back.innerHTML='<div class="vd" role="dialog" aria-modal="true" aria-label="'+TX.title+'"><div class="vd-h"><div><h2>'+TX.title+'</h2><small>'+TX.sub+'</small></div><button type="button" class="vd-x" aria-label="'+TX.close+'">✕</button></div>'
++'<p>'+TX.intro+'</p><h3>'+TX.stepsH+'</h3><div class="vd-steps">'+TX.steps.map(s=>'<div><b>'+s[0]+'</b>'+s[1]+'</div>').join('')+'</div>'
++'<h3>'+TX.toolsH+'</h3><div class="vd-tools">'+TOOLS.map(t=>'<a href="'+t[1]+'" target="_blank" rel="noopener noreferrer"><b>'+t[0]+'</b><em>'+t[3][K]+'</em><span>'+t[2][K]+'</span></a>').join('')+'</div>'
++'<h3>'+TX.ethicsH+'</h3><ul>'+TX.ethics.map(e=>'<li>'+e+'</li>').join('')+'</ul></div>';
+document.body.append(back);
+const show=on=>{back.hidden=!on;document.body.style.overflow=on?'hidden':''};
+back.querySelector('.vd-x').onclick=()=>show(false);
+back.addEventListener('click',e=>{if(e.target===back)show(false)});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!back.hidden)show(false)});
+const add=()=>{const bar=document.querySelector('.survey-bar');if(!bar||bar.querySelector('.sv-vid'))return!!bar;
+ const b=document.createElement('button');b.type='button';b.className='sv-vid';b.textContent=TX.btn;b.onclick=()=>show(true);
+ const qr=bar.querySelector('.sv-qr');bar.insertBefore(b,qr||null);return true};
+if(!add())addEventListener('DOMContentLoaded',add);}
+</script>
+</body></html>
